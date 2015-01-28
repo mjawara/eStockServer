@@ -1,0 +1,38 @@
+extends ../layouts/Main
+
+block scripts
+    script(src="../js/orders/OrdersController.js")
+    script(src="../js/orders/OrdersService.js")
+    
+block content
+    | Orders
+    
+    div(ng-controller="OrdersController")
+        .data-table-container
+            table.data-table.data-table--has-secondary
+                thead
+                    tr
+                        th #
+                        th วันที่
+                        th หน่วยบริการ
+                        th ราคา
+                        th เจ้าหน้าที่
+                        th 
+                tbody
+                    tr.data-table__clickable-row(ng-repeat="o in orders")
+                        td {{ $index+1 }}
+                        td {{ o.orders_date | toThaiDate }}
+                        td {{ o.hospcode }} {{ o.hospname }}
+                        td 123,2220.00
+                        td {{ o.client_staff_name }}
+                        td
+                            lx-dropdown(position="right", from-top)
+                                button.btn.btn--l.btn--black.btn--icon(lx-ripple, lx-dropdown-toggle)
+                                    i.mdi.mdi--more-vert
+
+                                lx-dropdown-menu
+                                    ul
+                                        li
+                                            a(href="/orders/{{o.id}}").dropdown-link Detail
+                                        li
+                                            a.dropdown-link Approve order

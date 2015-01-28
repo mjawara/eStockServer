@@ -1,0 +1,69 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        
+        title eStock : Server
+        
+        link(href="../vendor/lumx/dist/css/lumx.css", rel="stylesheet")
+        link(href="../css/style.css", rel="stylesheet")
+        
+    body(ng-app="App")
+        .grid
+            .grid__col12
+                .toolbar.bgc-green-700
+                    .toolbar__left.mr
+                        button.btn.btn--l.btn--white.btn--icon(lx-ripple)
+                            i.mdi.mdi--shopping-cart
+                    span(style="color: #fff;").toolbar__label.fs-title
+                        | Drug inventory system
+                        
+                    .toolbar__right
+                        lx-dropdown(position="right", from-top)
+                            button(lx-ripple, lx-dropdown-toggle).btn.btn--white.btn--l.btn--icon
+                                i.mdi.mdi--more-vert
+                                
+                            lx-dropdown-menu
+                                ul
+                                    li
+                                        a.dropdown-link.dropdown-link--is-header Tools
+                                        
+            .grid
+                .grid__col3
+                    ul.list
+                        li.list-row.list-row--has-primary.list-row--has-separator
+                            .list-primary-tile
+                                a
+                                    i.icon.icon--l.icon--teal.icon--circled.mdi.mdi--home
+                            .list-content-tile.list-content-tile--two-lines
+                                strong Home
+                                span หน้าหลัก
+                                
+                        li.list-row.list-row--has-primary.list-row--has-separator
+                            .list-primary-tile
+                                a(href="/orders")
+                                    i.icon.icon--l.icon--green.icon--circled.mdi.mdi--add-shopping-cart
+                            .list-content-tile.list-content-tile--two-lines
+                                strong Orders
+                                span ข้อมูลการเบิก
+            
+                .grid__col9
+                    .card
+                        .card__content
+                            block content
+                    
+                    
+        script(src="../vendor/jquery/dist/jquery.min.js")
+        script(src="../vendor/velocity/velocity.min.js")
+        script(src="../vendor/moment/min/moment-with-locales.min.js")
+        script(src="../vendor/angular/angular.js")
+        script(src="../vendor/lumx/dist/js/lumx.js")
+        script(src="../vendor/lodash/lodash.min.js")
+        
+        script(src="../app.js")
+        script(src="../js/common.js")
+        script(src="../js/filters.js")
+        
+        block scripts

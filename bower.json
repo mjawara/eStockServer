@@ -1,0 +1,14 @@
+{
+  "name": "eStockServ",
+  "version": "1.0.0",
+  "authors": [
+    "Satit Rianpit <siteslave@msn.com>"
+  ],
+  "description": "eStock Server",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "lumx": "~0.2.51",
+    "lodash": "~3.0.0"
+  }
+}
