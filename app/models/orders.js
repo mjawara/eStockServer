@@ -90,12 +90,12 @@ exports.getProducts = function (db, orderId) {
 exports.getLots = function (db, code) {
     var q = Q.defer();
     db('lots')
-    .where('product_code', code)
-    .orderBy('lot_name', 'asc')
-    .exec(function (err, rows) {
-        if (err) q.reject(err);
-        else q.resolve(rows);
-    });
-    
+        .where('product_code', code)
+        .orderBy('lot_name', 'asc')
+        .exec(function (err, rows) {
+            if (err) q.reject(err);
+            else q.resolve(rows);
+        });
+
     return q.promise;
 };
