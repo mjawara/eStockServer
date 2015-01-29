@@ -64,3 +64,8 @@ exports.getLots = function (req, res) {
             });
         });
 };
+
+exports.saveApprove = function (req, res) {
+    var items = req.body.items;
+    
+};

@@ -12,8 +12,7 @@ block content
         input(type="hidden", value="#{orderId}")#orderId
         .grid
             .grid__col3
-                lx-text-field(label="วันที่")
-                    input(type="text", ng-model="orders.orders_date | toThaiDate", ng-disabled="true")
+                lx-date-picker(model="orders.orders_date", ng-disabled="true")
             .grid__col3
                 lx-text-field(label="เลขที่เอกสาร")
                     input(type="text", ng-model="orders.orders_code", ng-disabled="true")
@@ -32,9 +31,10 @@ block content
                         th #
                         th รายการ
                         th หน่วย
-                        th ราคา@หน่วย
-                        th จำนวนเบิก
+                        th ราคา
+                        th เบิก
                         th อนุมัติ
+                        th Lot
                         th
                 tbody
                     tr.data-table__clickable-row(ng-repeat="p in products")
@@ -44,6 +44,7 @@ block content
                         td {{p.cost | number}}
                         td {{p.qty | number}}
                         td {{p.approve_qty | number}}
+                        td {{p.lot_name}}
                         td
                             lx-dropdown(position="right", from-top)
                                     button.btn.btn--m.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
@@ -61,7 +62,7 @@ block content
                 .grid__col8
                     | &nbsp;
                 .grid__col4
-                    button.btn.btn--m.btn--green.btn--raised(lx-ripple) บันทึกอนุมัติ
+                    button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doApprove()") บันทึกอนุมัติ
                     | &nbsp;
                     button.btn.btn--m.btn--red.btn--raised(lx-ripple) ไม่อนุมัติ
 
@@ -103,13 +104,11 @@ block content
                                         | {{$choice.lot_name}}
                         .grid
                             .grid__col3
-                                lx-text-field(label="วันผลิต")
-                                    input(type="text", ng-model="mfd | toThaiDate", ng-disabled="true")
+                                lx-date-picker(label="วันผลิต", model="mfd", ng-disabled="true")
                             .grid__col3
-                                lx-text-field(label="วันหมดอายุ")
-                                    input(type="text", ng-model="expd | toThaiDate", ng-disabled="true")
+                                lx-date-picker(label="วันหมดอายุ", model="expd", ng-disabled="true")
             .dialog__actions
-                button.btn.btn--m.btn--green.btn--raised(lx-ripple) Save
+                button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doAddApproveItem()") Save
                 | &nbsp;
                 button.btn.btn--m.btn--red.btn--raised(lx-ripple, lx-dialog-close) Cancel
                 

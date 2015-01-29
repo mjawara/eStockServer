@@ -1,9 +1,9 @@
-App.controller('DetailController', function ($scope, DetailService, LxNotificationService, LxDialogService) {
+App.controller('DetailController', function($scope, DetailService, LxNotificationService, LxDialogService) {
 
     var orderId = angular.element('#orderId').val();
 
     DetailService.getDetail(orderId)
-        .then(function (data) {
+        .then(function(data) {
             if (data.ok) {
                 $scope.orders = data.orders;
                 $scope.orders.hospital = [$scope.orders.hospcode, $scope.orders.hospname].join(' ');
@@ -11,7 +11,7 @@ App.controller('DetailController', function ($scope, DetailService, LxNotificati
                 var data = data.products;
                 $scope.products = [];
 
-                _.forEach(data, function (v) {
+                _.forEach(data, function(v) {
                     var obj = {};
                     obj.code = v.product_code;
                     obj.name = v.product_name;
@@ -20,6 +20,8 @@ App.controller('DetailController', function ($scope, DetailService, LxNotificati
                     obj.cost = v.cost;
                     obj.units = v.units;
                     obj.approve_qty = 0;
+                    obj.lot_id = null;
+                    obj.lot_name = null;
 
                     $scope.products.push(obj);
                 });
@@ -28,58 +30,110 @@ App.controller('DetailController', function ($scope, DetailService, LxNotificati
                 console.log(data.err);
                 LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู Log');
             }
-        }, function (err) {
+        }, function(err) {
             console.log(err);
             LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
         });
 
-    $scope.showApprove = function (code, name, qty) {
+    $scope.showApprove = function(code, name, qty) {
 
         $scope.orderQty = 0;
+        $scope.approveQty = 0;
+
         $scope.productCode = null;
         $scope.productName = null;
-        $scope.lot = null;
+        $scope.lots = [];
         $scope.expd = null;
         $scope.mfd = null;
 
         DetailService.getLots(code)
-            .then(function (data) {
+            .then(function(data) {
                 if (data.ok) {
                     $scope.lots = data.rows;
                     $scope.productCode = code;
                     $scope.productName = name;
                     $scope.orderQty = qty;
 
+                    var idx = _.findIndex($scope.products, {
+                        code: code
+                    });
+
+                    if ($scope.products[idx].approve_qty) {
+                        $scope.lotNumber = {
+                            lot_id: $scope.products[idx].lot_id,
+                            lot_name: $scope.products[idx].lot_name
+                        };
+
+                        $scope.approveQty = $scope.products[idx].approve_qty;
+                    }
+
                     LxDialogService.open('mdlApprove');
+
                 } else {
                     console.log(err);
                     LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
                 }
 
-            }, function (err) {
+            }, function(err) {
                 console.log(err);
                 LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
             });
 
     };
 
-    $scope.setLot = function (lotId) {
+    $scope.setLot = function(lotId) {
 
         var idx = _.findIndex($scope.lots, {
             lot_id: lotId
         });
 
         if (idx == -1) {
-            $scope.lot = null;
+            $scope.lot_id = null;
+            $scope.lot_name = null;
             $scope.expd = null;
             $scope.mfd = null;
         } else {
             var lot = $scope.lots[idx];
-            $scope.lot = lot.lot_id;
+            $scope.lot_id = lot.lot_id;
+            $scope.lot_name = lot.lot_name;
             $scope.expd = lot.expd;
             $scope.mfd = lot.mfd;
         }
 
+    };
+
+    $scope.doAddApproveItem = function() {
+        var idx = _.findIndex($scope.products, {
+            code: $scope.productCode
+        });
+
+        if ($scope.lots.length) {
+            if (!$scope.lot_id) {
+                LxNotificationService.warning('กรุณาระบุ Lot');
+            } else if ($scope.approveQty === 0) {
+                LxNotificationService.warning('กรุณาระบุจำนวนอนุมัติ');
+            } else {
+                $scope.products[idx].lot_id = $scope.lot_id;
+                $scope.products[idx].lot_name = $scope.lot_name;
+                $scope.products[idx].approve_qty = $scope.approveQty;
+
+                LxDialogService.close('mdlApprove');
+            }
+        } else {
+            if ($scope.approveQty === 0) {
+                LxNotificationService.warning('กรุณาระบุจำนวนอนุมัติ');
+            } else {
+                $scope.products[idx].lot_id = $scope.lot_id;
+                $scope.products[idx].lot_name = $scope.lot_name;
+                $scope.products[idx].approve_qty = $scope.approveQty;
+
+                LxDialogService.close('mdlApprove');
+            }
+        }
+    };
+
+    $scope.doApprove = function() {
+        console.log($scope.products);
     };
 
 });
