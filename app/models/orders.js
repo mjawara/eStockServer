@@ -42,7 +42,7 @@ exports.getOrdersList = function(db, opt) {
     db('orders as o')
         .select('o.*', 'h.hospname')
         .leftJoin('hospcode as h', 'h.hospcode', 'o.hospcode')
-        .where('o.is_approve', opt)
+        .where('o.orders_status', opt)
         .orderBy('o.created_at', 'asc')
         .exec(function(err, rows) {
             if (err) q.reject(err);
@@ -123,8 +123,24 @@ exports.updateOrdersApprove = function(db, orderId) {
     db('orders')
         .where('id', orderId)
         .update({
-            orders_status: '1',
+            orders_status: '2', // 1 = normal, 2 = approved, 3 = denied
             approve_date: moment().format('YYYY-MM-DD HH:mm:ss')
+        })
+        .exec(function(err) {
+            if (err) q.reject(err);
+            else q.resolve();
+        });
+
+    return q.promise;
+};
+
+exports.doCancel = function(db, orderId) {
+    var q = Q.defer();
+
+    db('orders')
+        .where('id', orderId)
+        .update({
+            orders_status: '3'
         })
         .exec(function(err) {
             if (err) q.reject(err);

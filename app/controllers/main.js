@@ -3,13 +3,12 @@ var Products = require('../models/products'),
     Utils = require('../models/utils'),
     _ = require('lodash');
 
-exports.index = function (req, res) {
+exports.index = function(req, res) {
 
     //res.send('Welcome to eStock server. [' + new Date().toString() + ']');
     res.render('pages/index');
 
 };
-
 
 /**
  * Get product list
@@ -19,22 +18,22 @@ exports.index = function (req, res) {
  * @return []
  **/
 
-exports.products = function (req, res) {
+exports.products = function(req, res) {
 
     var hospcode = req.query.hospcode;
     var key = req.query.key;
 
     var promise = Utils.checkAuth(req.db, hospcode, key);
 
-    promise.then(function (isOk) {
+    promise.then(function(isOk) {
         if (isOk) {
             Products.getProductList(req.db)
-                .then(function (rows) {
+                .then(function(rows) {
                     res.send({
                         ok: true,
                         rows: rows
                     });
-                }, function (err) {
+                }, function(err) {
                     res.send({
                         ok: false,
                         msg: err
@@ -46,7 +45,7 @@ exports.products = function (req, res) {
                 msg: 'Authentication failed.'
             });
         }
-    }, function (err) {
+    }, function(err) {
         res.send({
             ok: false,
             msg: err
@@ -55,7 +54,7 @@ exports.products = function (req, res) {
 
 };
 
-exports.saveOrders = function (req, res) {
+exports.saveOrders = function(req, res) {
     var hospcode = req.query.hospcode;
     var key = req.query.key;
 
@@ -63,15 +62,15 @@ exports.saveOrders = function (req, res) {
 
     var promise = Utils.checkAuth(req.db, hospcode, key);
 
-    promise.then(function (isOk) {
+    promise.then(function(isOk) {
         if (isOk) {
             // Do save order
             var promise = Orders.saveOrders(req.db, hospcode, orders);
 
-            promise.then(function (orderId) {
+            promise.then(function(orderId) {
                 var items = [];
 
-                _.forEach(orders.items, function (v) {
+                _.forEach(orders.items, function(v) {
                     var obj = {};
                     obj.orders_id = orderId;
                     obj.product_code = v.code;
@@ -82,11 +81,11 @@ exports.saveOrders = function (req, res) {
 
                 return Orders.saveOrdersDetail(req.db, items);
 
-            }).then(function () {
+            }).then(function() {
                 res.send({
                     ok: true
                 });
-            }, function (err) {
+            }, function(err) {
 
                 console.log(err);
 
@@ -102,7 +101,7 @@ exports.saveOrders = function (req, res) {
                 msg: 'Authentication failed.'
             });
         }
-    }, function (err) {
+    }, function(err) {
         res.send({
             ok: false,
             msg: err

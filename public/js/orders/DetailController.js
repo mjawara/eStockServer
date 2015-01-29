@@ -64,7 +64,12 @@ App.controller('DetailController', function($scope, DetailService, LxNotificatio
                             lot_name: $scope.products[idx].lot_name
                         };
 
+                        $scope.lot_id = $scope.products[idx].lot_id;
+                        $scope.lot_name = $scope.products[idx].lot_name;
+
                         $scope.approveQty = $scope.products[idx].approve_qty;
+                    } else {
+                        $scope.approveQty = $scope.orderQty;
                     }
 
                     LxDialogService.open('mdlApprove');
@@ -133,7 +138,55 @@ App.controller('DetailController', function($scope, DetailService, LxNotificatio
     };
 
     $scope.doApprove = function() {
-        console.log($scope.products);
+        //console.log($scope.products);
+
+        var products = [];
+
+        _.forEach($scope.products, function(v) {
+            var obj = {};
+            obj.code = v.code;
+            obj.qty = v.approve_qty;
+            obj.lot = v.lot_id;
+
+            products.push(obj);
+        });
+
+        //console.log(products);
+        DetailService.saveApprove(orderId, products)
+            .then(function(data) {
+                if (data.ok) {
+                    LxNotificationService.success('บันทึกรายการเสร็จเรียบร้อยแล้ว');
+                    window.location.href = '/orders';
+                } else {
+                    LxNotificationService.error(data.msg);
+                }
+            }, function(err) {
+                console.log(err);
+                LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
+            })
+
+    };
+
+    $scope.doCancel = function() {
+        LxNotificationService.confirm('กรุณายืนยัน', 'คุณต้องยกเลิกรายการขอเบิกนี้ ใช่หรือไม่?', {
+            ok: 'ใช่, ฉันต้องการยกเลิก',
+            cancel: 'ไม่'
+        }, function(res) {
+            if (res) {
+                DetailService.doCancel(orderId)
+                    .then(function(data) {
+                        if (data.ok) {
+                            window.location.href = '/orders';
+                        } else {
+                            console.log(data.msg);
+                            LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
+                        }
+                    }, function(err) {
+                        console.log(err);
+                        LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
+                    });
+            }
+        });
     };
 
 });

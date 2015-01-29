@@ -64,10 +64,10 @@ block content
                 .grid__col4
                     button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doApprove()") บันทึกอนุมัติ
                     | &nbsp;
-                    button.btn.btn--m.btn--red.btn--raised(lx-ripple) ไม่อนุมัติ
+                    button.btn.btn--m.btn--red.btn--raised(lx-ripple, ng-click="doCancel()") ไม่อนุมัติ
 
                     | &nbsp;
-                    button.btn.btn--m.btn--grey.btn--raised(lx-ripple) กลับหน้าหลัก
+                    a(href="/orders", lx-ripple).btn.btn--m.btn--grey.btn--raised กลับหน้าหลัก
                     
                     
         lx-dialog.dialog.dialog--m#mdlApprove

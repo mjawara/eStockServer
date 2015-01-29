@@ -13,6 +13,10 @@ module.exports = function (app) {
             orderId: req.params.id
         });
     });
+    // Cancel order request
+    app.post('/orders/cancel', orders.doCancel);
+    // Approve order request
+    app.post('/orders/approve', orders.saveApprove);
 
     app.post('/orders/lots', orders.getLots);
 

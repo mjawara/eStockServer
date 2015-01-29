@@ -1,8 +1,8 @@
-App.factory('DetailService', function ($q, $http) {
+App.factory('DetailService', function($q, $http) {
 
     return {
 
-        getDetail: function (orderId) {
+        getDetail: function(orderId) {
             var q = $q.defer();
 
             var options = {
@@ -14,17 +14,17 @@ App.factory('DetailService', function ($q, $http) {
             };
 
             $http(options)
-                .success(function (data) {
+                .success(function(data) {
                     q.resolve(data);
                 })
-                .error(function (err) {
+                .error(function(err) {
                     q.reject(err);
                 });
 
             return q.promise;
         },
 
-        getLots: function (code) {
+        getLots: function(code) {
             var q = $q.defer();
 
             var options = {
@@ -36,10 +36,55 @@ App.factory('DetailService', function ($q, $http) {
             };
 
             $http(options)
-                .success(function (data) {
+                .success(function(data) {
                     q.resolve(data);
                 })
-                .error(function (err) {
+                .error(function(err) {
+                    q.reject(err);
+                });
+
+            return q.promise;
+        },
+
+        saveApprove: function(orderId, products) {
+            var q = $q.defer();
+
+            var options = {
+                method: 'POST',
+                url: '/orders/approve',
+                data: {
+                    order_id: orderId,
+                    products: products
+                }
+            };
+
+            $http(options)
+                .success(function(data) {
+                    q.resolve(data);
+                })
+                .error(function(err) {
+                    q.reject(err);
+                });
+
+            return q.promise;
+        },
+
+        doCancel: function(orderId) {
+            var q = $q.defer();
+
+            var options = {
+                method: 'POST',
+                url: '/orders/cancel',
+                data: {
+                    order_id: orderId
+                }
+            };
+
+            $http(options)
+                .success(function(data) {
+                    q.resolve(data);
+                })
+                .error(function(err) {
                     q.reject(err);
                 });
 
