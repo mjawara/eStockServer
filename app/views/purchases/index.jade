@@ -1,0 +1,34 @@
+extends ../layouts/Main
+
+block content
+    | Purchases drugs
+    
+    .data-table-container(style="max-height: 480px;", lx-scrollbar)
+        table.data-table.data-table--has-secondary
+            thead
+                tr
+                    th #
+                    th เลขที่สั่งซื้อ
+                    th วันที่สั่งซื้อ
+                    th ซื้อจาก
+                    th รวมเป็นเงิน
+                    th นำเข้า
+                    th
+            tbody
+                tr.data-table__clickable-row
+                    td(colspan="6") 
+                    td
+                        lx-dropdown(position="right", from-top)
+                            button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                                i.mdi.mdi--more-vert
+                                    
+                            lx-dropdown-menu
+                                ul
+                                    li
+                                        a.dropdown-link ดูรายละเอียด
+                                    li
+                                        a.dropdown-link นำเข้ารายการเวชภัณฑ์
+
+    br
+    button(lx-ripple).btn.btn--red.btn--l.btn--fab
+        i.mdi.mdi--add

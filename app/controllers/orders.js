@@ -15,7 +15,6 @@ exports.getList = function(req, res) {
                 rows: rows
             });
         }, function(err) {
-            console.log(err);
             res.send({
                 ok: false,
                 msg: err

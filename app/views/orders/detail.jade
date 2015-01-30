@@ -70,7 +70,7 @@ block content
                     a(href="/orders", lx-ripple).btn.btn--m.btn--grey.btn--raised กลับหน้าหลัก
                     
                     
-        lx-dialog.dialog.dialog--m#mdlApprove
+        lx-dialog.dialog.dialog--l#mdlApprove
             .dialog__header
                 .toolbar.bgc-green-500
                     span.toolbar__label.tc-white.fs-title อนุมัติเบิกเวชภัณฑ์
@@ -108,8 +108,8 @@ block content
                             .grid__col3
                                 lx-date-picker(label="วันหมดอายุ", model="expd", ng-disabled="true")
             .dialog__actions
-                button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doAddApproveItem()") Save
+                button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doAddApproveItem()") บันทึก
                 | &nbsp;
-                button.btn.btn--m.btn--red.btn--raised(lx-ripple, lx-dialog-close) Cancel
+                button.btn.btn--m.btn--red.btn--raised(lx-ripple, lx-dialog-close) ยกเลิก
                 
                     

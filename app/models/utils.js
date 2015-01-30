@@ -6,6 +6,7 @@ exports.checkAuth = function (db, hospcode, private_key) {
     db('auth')
         .where('hospcode', hospcode)
         .where('private_key', private_key)
+        .where('is_active', 'Y')
         .count('* as total')
         .exec(function (err, rows) {
             if (err) q.reject(err);
