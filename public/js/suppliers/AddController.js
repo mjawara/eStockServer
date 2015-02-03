@@ -34,6 +34,6 @@ App.controller('AddController', function ($scope, AddService, LxNotificationServ
 
     };
 
-    
+
 
 });

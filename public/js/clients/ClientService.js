@@ -1,7 +1,7 @@
-App.factory('ClientService', function($q, $http) {
+App.factory('ClientService', function ($q, $http) {
 
     return {
-        doSave: function(client) {
+        doSave: function (client) {
             var q = $q.defer();
 
             var options = {
@@ -13,17 +13,17 @@ App.factory('ClientService', function($q, $http) {
             };
 
             $http(options)
-                .success(function(data) {
+                .success(function (data) {
                     q.resolve(data);
                 })
-                .error(function(data, status) {
+                .error(function (data, status) {
                     q.reject(status);
                 });
 
             return q.promise;
         },
 
-        getList: function() {
+        getList: function () {
             var q = $q.defer();
 
             var options = {
@@ -32,21 +32,21 @@ App.factory('ClientService', function($q, $http) {
             };
 
             $http(options)
-                .success(function(data) {
+                .success(function (data) {
                     if (data.ok) {
                         q.resolve(data.rows);
                     } else {
                         q.reject(data.msg);
                     }
                 })
-                .error(function(data, status) {
+                .error(function (data, status) {
                     q.reject(status);
                 });
 
             return q.promise;
         },
 
-        doActive: function(id, status) {
+        doActive: function (id, status) {
             var q = $q.defer();
 
             var options = {
@@ -59,14 +59,14 @@ App.factory('ClientService', function($q, $http) {
             };
 
             $http(options)
-                .success(function(data) {
+                .success(function (data) {
                     if (data.ok) {
                         q.resolve();
                     } else {
                         q.reject(data.msg);
                     }
                 })
-                .error(function(data, status) {
+                .error(function (data, status) {
                     q.reject(status);
                 });
 

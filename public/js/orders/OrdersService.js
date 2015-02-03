@@ -10,16 +10,16 @@ App.factory('OrdersService', function ($q, $http) {
                         opt: opt
                     }
                 };
-            
+
             // $http.post('/orders/list', {opt: opt})
-            
+
             $http(options)
-            .success(function (data) {
-                q.resolve(data);
-            })
-            .error(function (data, status, headers, config) {
-                q.reject('Internet connection failed.')
-            })
+                .success(function (data) {
+                    q.resolve(data);
+                })
+                .error(function (data, status, headers, config) {
+                    q.reject('Internet connection failed.')
+                })
 
             return q.promise;
         }

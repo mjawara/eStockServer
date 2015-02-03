@@ -10,13 +10,13 @@ App.factory('NewService', function ($q, $http) {
             };
 
             $http(options)
-            .success(function (data) {
-                q.resolve(data);
-            })
-            .error(function (data, status) {
-                console.log(status);
-                q.reject(status);
-            });
+                .success(function (data) {
+                    q.resolve(data);
+                })
+                .error(function (data, status) {
+                    console.log(status);
+                    q.reject(status);
+                });
 
             return q.promise;
         },
@@ -29,13 +29,13 @@ App.factory('NewService', function ($q, $http) {
             };
 
             $http(options)
-            .success(function (data) {
-                q.resolve(data);
-            })
-            .error(function (data, status) {
-                console.log(status);
-                q.reject(status);
-            });
+                .success(function (data) {
+                    q.resolve(data);
+                })
+                .error(function (data, status) {
+                    console.log(status);
+                    q.reject(status);
+                });
 
             return q.promise;
         }

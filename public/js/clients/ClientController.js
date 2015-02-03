@@ -1,6 +1,6 @@
-App.controller('ClientController', function($scope, ClientService, LxNotificationService, LxProgressService) {
+App.controller('ClientController', function ($scope, ClientService, LxNotificationService, LxProgressService) {
 
-    $scope.doSave = function() {
+    $scope.doSave = function () {
         var client = {
             hospcode: $scope.hospcode,
             hospname: $scope.hospname,
@@ -10,7 +10,7 @@ App.controller('ClientController', function($scope, ClientService, LxNotificatio
         LxProgressService.linear.show('#5fa2db', '#progress');
 
         ClientService.doSave(client)
-            .then(function(data) {
+            .then(function (data) {
                 if (data.ok) {
                     window.location.href = '/clients';
                 } else {
@@ -18,21 +18,21 @@ App.controller('ClientController', function($scope, ClientService, LxNotificatio
                     LxProgressService.linear.hide();
                 }
 
-            }, function(err) {
+            }, function (err) {
                 console.log(err);
                 LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู log');
                 LxProgressService.linear.hide();
             })
     };
 
-    $scope.getList = function() {
+    $scope.getList = function () {
         LxProgressService.linear.show('#5fa2db', '#progress');
 
         ClientService.getList()
-            .then(function(rows) {
+            .then(function (rows) {
                 $scope.clients = rows;
                 LxProgressService.linear.hide();
-            }, function(err) {
+            }, function (err) {
                 console.log(err);
                 LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู log');
                 LxProgressService.linear.hide();
@@ -41,17 +41,17 @@ App.controller('ClientController', function($scope, ClientService, LxNotificatio
     };
 
     // Deactive client
-    $scope.active = function(id, status) {
+    $scope.active = function (id, status) {
         LxNotificationService.confirm('ยืนยันการแก้ไขสิทธิ', 'คุณต้องการแก้ไขสิทธิการใช้งานของหน่วยงานนี้ ใช่หรือไม่?', {
             ok: 'ใช่, ฉันต้องการแก้ไข',
             cancel: 'ไม่ใช่'
-        }, function(res) {
+        }, function (res) {
             if (res) {
                 ClientService.doActive(id, status)
-                    .then(function() {
+                    .then(function () {
                         LxNotificationService.success('แก้ไขรายการเสร็จเรียบร้อยแล้ว');
                         $scope.getList();
-                    }, function(err) {
+                    }, function (err) {
                         console.log(err);
                         LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู log');
                     });

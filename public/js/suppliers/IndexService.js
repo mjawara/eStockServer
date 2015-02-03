@@ -28,17 +28,19 @@ App.factory('IndexService', function ($q, $http) {
             var options = {
                 url: '/suppliers/remove',
                 method: 'POST',
-                data: {id: id}
+                data: {
+                    id: id
+                }
             };
 
             $http(options)
-            .success(function (data) {
-                q.resolve(data);
-            })
-            .error(function (data, status) {
-                console.log(status);
-                q.reject(status);
-            });
+                .success(function (data) {
+                    q.resolve(data);
+                })
+                .error(function (data, status) {
+                    console.log(status);
+                    q.reject(status);
+                });
 
             return q.promise;
         }

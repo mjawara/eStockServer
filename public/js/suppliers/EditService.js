@@ -4,7 +4,7 @@ App.factory('EditService', function ($q, $http) {
         getDetail: function (id) {
 
             var q = $q.defer();
-            
+
             var options = {
                 url: '/suppliers/detail',
                 method: 'POST',
@@ -14,13 +14,13 @@ App.factory('EditService', function ($q, $http) {
             };
 
             $http(options)
-            .success(function (data) {
-                q.resolve(data);
-            })
-            .error(function (data, status) {
-                console.log(status);
-                q.reject(status);
-            });
+                .success(function (data) {
+                    q.resolve(data);
+                })
+                .error(function (data, status) {
+                    console.log(status);
+                    q.reject(status);
+                });
 
             return q.promise;
         },
@@ -38,13 +38,13 @@ App.factory('EditService', function ($q, $http) {
             };
 
             $http(options)
-            .success(function (data) {
-                q.resolve(data);
-            })
-            .error(function (data, status) {
-                console.log(status);
-                q.reject(status);
-            });
+                .success(function (data) {
+                    q.resolve(data);
+                })
+                .error(function (data, status) {
+                    console.log(status);
+                    q.reject(status);
+                });
 
             return q.promise;
         }

@@ -1,4 +1,4 @@
-App.controller('OrdersController', function($scope, OrdersService,
+App.controller('OrdersController', function ($scope, OrdersService,
     LxNotificationService, LxProgressService) {
 
     $scope.onlyApproved = false;
@@ -19,12 +19,12 @@ App.controller('OrdersController', function($scope, OrdersService,
         name: 'รออนุมัติ'
     };
 
-    $scope.getOrders = function(opt) {
+    $scope.getOrders = function (opt) {
 
         LxProgressService.linear.show('#5fa2db', '#progress');
 
         OrdersService.getOrderList(opt)
-            .then(function(data) {
+            .then(function (data) {
                 if (data.ok) {
                     $scope.orders = data.rows;
                     LxProgressService.linear.hide();
@@ -34,7 +34,7 @@ App.controller('OrdersController', function($scope, OrdersService,
                     LxProgressService.linear.hide();
                 }
 
-            }, function(err) {
+            }, function (err) {
                 console.log(err);
                 LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log.');
                 LxProgressService.linear.hide();
@@ -44,11 +44,11 @@ App.controller('OrdersController', function($scope, OrdersService,
 
     $scope.getOrders('1');
 
-    $scope.setStatus = function(status) {
+    $scope.setStatus = function (status) {
         $scope.statusCode = status;
     };
 
-    $scope.changeSatus = function() {
+    $scope.changeSatus = function () {
         $scope.getOrders($scope.statusCode);
     };
 

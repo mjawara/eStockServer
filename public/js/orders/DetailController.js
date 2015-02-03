@@ -1,9 +1,9 @@
-App.controller('DetailController', function($scope, DetailService, LxNotificationService, LxDialogService) {
+App.controller('DetailController', function ($scope, DetailService, LxNotificationService, LxDialogService) {
 
     var orderId = angular.element('#orderId').val();
 
     DetailService.getDetail(orderId)
-        .then(function(data) {
+        .then(function (data) {
             if (data.ok) {
                 $scope.orders = data.orders;
                 $scope.orders.hospital = [$scope.orders.hospcode, $scope.orders.hospname].join(' ');
@@ -11,7 +11,7 @@ App.controller('DetailController', function($scope, DetailService, LxNotificatio
                 var data = data.products;
                 $scope.products = [];
 
-                _.forEach(data, function(v) {
+                _.forEach(data, function (v) {
                     var obj = {};
                     obj.code = v.product_code;
                     obj.name = v.product_name;
@@ -30,12 +30,12 @@ App.controller('DetailController', function($scope, DetailService, LxNotificatio
                 console.log(data.err);
                 LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู Log');
             }
-        }, function(err) {
+        }, function (err) {
             console.log(err);
             LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
         });
 
-    $scope.showApprove = function(code, name, qty) {
+    $scope.showApprove = function (code, name, qty) {
 
         $scope.orderQty = 0;
         $scope.approveQty = 0;
@@ -47,7 +47,7 @@ App.controller('DetailController', function($scope, DetailService, LxNotificatio
         $scope.mfd = null;
 
         DetailService.getLots(code)
-            .then(function(data) {
+            .then(function (data) {
                 if (data.ok) {
                     $scope.lots = data.rows;
                     $scope.productCode = code;
@@ -79,14 +79,14 @@ App.controller('DetailController', function($scope, DetailService, LxNotificatio
                     LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
                 }
 
-            }, function(err) {
+            }, function (err) {
                 console.log(err);
                 LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
             });
 
     };
 
-    $scope.setLot = function(lotId) {
+    $scope.setLot = function (lotId) {
 
         var idx = _.findIndex($scope.lots, {
             lot_id: lotId
@@ -107,7 +107,7 @@ App.controller('DetailController', function($scope, DetailService, LxNotificatio
 
     };
 
-    $scope.doAddApproveItem = function() {
+    $scope.doAddApproveItem = function () {
         var idx = _.findIndex($scope.products, {
             code: $scope.productCode
         });
@@ -137,12 +137,12 @@ App.controller('DetailController', function($scope, DetailService, LxNotificatio
         }
     };
 
-    $scope.doApprove = function() {
+    $scope.doApprove = function () {
         //console.log($scope.products);
 
         var products = [];
 
-        _.forEach($scope.products, function(v) {
+        _.forEach($scope.products, function (v) {
             var obj = {};
             obj.code = v.code;
             obj.qty = v.approve_qty;
@@ -153,35 +153,35 @@ App.controller('DetailController', function($scope, DetailService, LxNotificatio
 
         //console.log(products);
         DetailService.saveApprove(orderId, products)
-            .then(function(data) {
+            .then(function (data) {
                 if (data.ok) {
                     LxNotificationService.success('บันทึกรายการเสร็จเรียบร้อยแล้ว');
                     window.location.href = '/orders';
                 } else {
                     LxNotificationService.error(data.msg);
                 }
-            }, function(err) {
+            }, function (err) {
                 console.log(err);
                 LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
             })
 
     };
 
-    $scope.doCancel = function() {
+    $scope.doCancel = function () {
         LxNotificationService.confirm('กรุณายืนยัน', 'คุณต้องยกเลิกรายการขอเบิกนี้ ใช่หรือไม่?', {
             ok: 'ใช่, ฉันต้องการยกเลิก',
             cancel: 'ไม่'
-        }, function(res) {
+        }, function (res) {
             if (res) {
                 DetailService.doCancel(orderId)
-                    .then(function(data) {
+                    .then(function (data) {
                         if (data.ok) {
                             window.location.href = '/orders';
                         } else {
                             console.log(data.msg);
                             LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
                         }
-                    }, function(err) {
+                    }, function (err) {
                         console.log(err);
                         LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
                     });
