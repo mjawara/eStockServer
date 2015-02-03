@@ -1,0 +1,106 @@
+.fs-headline
+    i.mdi.mdi--add-shopping-cart.icon.icon--l.icon--green.icon--circled
+    | &nbsp;บันทึกการจัดซื้อ
+form(name="frmPurchases")
+    .grid
+        .grid__col2
+            lx-text-field(label="เลขที่สั่งซื้อ")
+                input(type="text", ng-model="code")
+        .grid__col3
+            lx-date-picker(model="purchaseDate", label="วันที่สั่งซื้อ")
+        .grid__col7
+            lx-select(ng-model="selectedSupplier", placeholder="บริษัท/ร้านค้า...", choices="suppliers", floating-label)
+                lx-select-selected
+                    | {{ $selected.name }}
+                lx-select-choices
+                    | {{ $choice.name }}
+    br
+    .fs-subhead
+        i.mdi.mdi--shopping-cart
+        | &nbsp;รายการเวชภัณฑ์
+
+    .data-table-container
+        table.data-table.data-table--has-secondary
+            thead
+                tr
+                    th #
+                    th รายการเวชภัณฑ์
+                    th หน่วย
+                    th ราคา
+                    th จำนวน
+                    th รวม
+                    th
+            tbody
+                tr(ng-repeat="d in drugs").data-table__clickable-row
+                    td {{$index+1}}
+                    td {{d.name}}
+                    td {{d.units}}
+                    td {{d.cost}}
+                    td {{d.qty}}
+                    td {{d.qty*d.cost | number}}
+                    td
+                        lx-dropdown(position="right", from-top)
+                            button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                                i.mdi.mdi--settings-ethernet
+                                    
+                            lx-dropdown-menu
+                                ul
+                                    li
+                                        a(ng-click="doEdit(d.code)").dropdown-link 
+                                            i.mdi.mdi--edit
+                                            | &nbsp; Edit
+                                    li
+                                        a(ng-click="doRemove(d.code)").dropdown-link
+                                            i.mdi.mdi--remove-circle
+                                            | &nbsp; Delete
+    br
+    .grid
+        .grid__col11
+            | &nbsp;
+        .grid__col1
+            button(type="button", ng-click="showModal()").btn.btn--m.btn--green.btn--fab
+                i.mdi.mdi--add
+                    
+                    
+    br
+    button.btn.btn--m.btn--raised.btn--green Save
+    | &nbsp;
+    button.btn.btn--m.btn--raised.btn--grey Clear
+        
+
+lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
+    .dialog__header
+        .toolbar.bgc-light-blue-500
+            span.toolbar__label.tc-white.fs-title
+                | เพิ่มรายการเวชภัณฑ์
+            .toolbar__right
+                button.btn.btn--l.btn--white.btn--icon(lx-ripple, lx-dialog-close)
+                    i.mdi.mdi--clear
+                        
+    .dialog__content
+        .card
+            .card__content
+
+                lx-text-field(label="ระบุชื่อเพื่อค้นหา", fixed-label="true", icon="search")
+                    input(type="text", ng-model="query")
+                .data-data-table-container
+                    table.data-table.data-data-table--has-secondary
+                        thead
+                            tr
+                                th รหัส
+                                th รายการ
+                                th หน่วย
+                                th ราคา
+                                th 
+                        tbody
+                            tr(ng-repeat="p in products | filter: query")
+                                td {{p.code}}
+                                td {{p.name}}
+                                td {{p.units}}
+                                td {{p.cost}}
+                                td
+                                    button.btn.btn--m.btn--flat.btn--green(lx-ripple, ng-click="addItem(p.code)", ng-disabled="p.added == 'Y'") Add
+                                        
+                            
+    .dialog__actions
+        button.btn.btn--m.btn--red.btn--raised(lx-ripple, lx-dialog-close) Close

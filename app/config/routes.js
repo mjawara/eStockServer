@@ -1,15 +1,17 @@
 var main = require('../controllers/main'),
     orders = require('../controllers/orders'),
-    clients = require('../controllers/clients');
+    clients = require('../controllers/clients'),
+    suppliers = require('../controllers/suppliers'),
+    products = require('../controllers/products');
 
-module.exports = function(app) {
+module.exports = function (app) {
     // Main page
     app.get('/', main.index);
-    app.get('/orders', function(req, res) {
+    app.get('/orders', function (req, res) {
         res.render('orders/index');
     });
 
-    app.get('/orders/:id([0-9]+)', function(req, res) {
+    app.get('/orders/:id([0-9]+)', function (req, res) {
         res.render('orders/detail', {
             orderId: req.params.id
         });
@@ -26,12 +28,14 @@ module.exports = function(app) {
     app.post('/orders/list', orders.getList);
 
     app.get('/products', main.products);
+    app.post('/products/list', products.getList);
+
     app.get('/orders/save', main.saveOrders);
 
 
     /** Purchases drug **/
 
-    app.get('/purchases', function(req, res) {
+    app.get('/purchases', function (req, res) {
         res.render('purchases/index');
     });
 
@@ -48,5 +52,40 @@ module.exports = function(app) {
     app.post('/clients/list', clients.getList);
     app.post('/clients/active', clients.active);
 
+    // Suppliers
+    app.get('/suppliers', function (req, res) {
+        res.render('suppliers/index');
+    });
 
+    // Suppliers partials
+    app.get('/partials/suppliers/index', function (req, res) {
+        res.render('suppliers/partials/index');
+    });
+
+    app.get('/partials/suppliers/add', function (req, res) {
+        res.render('suppliers/partials/add');
+    });
+
+    app.get('/partials/suppliers/edit', function (req, res) {
+        res.render('suppliers/partials/edit');
+    });
+
+    // Save supplier
+    app.post('/suppliers/save', suppliers.doSave);
+    // Update
+    app.post('/suppliers/update', suppliers.doUpdate);
+    // Get supplies list
+    app.post('/suppliers/list', suppliers.getList);
+    app.post('/suppliers/detail', suppliers.detail);
+    app.post('/suppliers/remove', suppliers.doRemove);
+
+
+    // Purchases
+    app.get('/partials/purchases/index', function (req, res) {
+        res.render('purchases/partials/index');
+    });
+
+    app.get('/partials/purchases/new', function (req, res) {
+        res.render('purchases/partials/new');
+    });
 };

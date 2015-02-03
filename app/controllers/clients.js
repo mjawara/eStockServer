@@ -56,20 +56,25 @@ exports.getList = function(req, res) {
                 ok: false,
                 msg: err
             });
-        })
+        });
 
 };
 
-exports.active = function (req, res) {
+exports.active = function(req, res) {
 
     var db = req.db;
     var id = req.body.id;
     var status = req.body.status;
 
     Clients.active(db, id, status)
-    .then(function () {
-        res.send({ok: true});
-    }, function (err) {
-        res.send({ok: false, msg: err});
-    });
+        .then(function() {
+            res.send({
+                ok: true
+            });
+        }, function(err) {
+            res.send({
+                ok: false,
+                msg: err
+            });
+        });
 };

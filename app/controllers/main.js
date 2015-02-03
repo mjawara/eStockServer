@@ -86,15 +86,11 @@ exports.saveOrders = function(req, res) {
                     ok: true
                 });
             }, function(err) {
-
-                console.log(err);
-
                 res.send({
                     ok: false,
                     msg: 'Error'
                 });
             });
-
         } else {
             res.send({
                 ok: false,

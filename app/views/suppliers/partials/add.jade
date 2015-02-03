@@ -1,0 +1,40 @@
+.fs-headline
+    | เพิ่มข้อมูลผู้จำหน่ายเวชภัณฑ์
+    
+form(name="frmNew")
+    br
+    .grid
+        .grid__col6
+            lx-text-field(label="ชื่อ บริษัท/ร้านค้า", fixed-label="true", icon="quick-contacts-mail")
+                input(type="text", ng-model="name", ng-required="true")           
+        .grid__col6
+            lx-text-field(label="ชื่อผู้ติดต่อ", icon="person", fixed-label="true")
+                input(type="text", ng-model="contact_name", ng-required="true")
+    .grid
+        .grid__col12
+            lx-text-field(label="ที่อยู่", fixed-label="true", icon="home")
+                input(type="text", ng-model="address", ng-required="true")
+                    
+    .grid
+        .grid__col6
+            lx-text-field(label="เบอร์โทรศัพท์", fixed-label="true", icon="phone")
+                input(type="text", ng-model="telephone", ng-required="true")           
+        .grid__col6
+            lx-text-field(label="เบอร์แฟกซ์", fixed-label="true", icon="print")
+                input(type="text", ng-model="fax", ng-required="false")
+        
+    .grid
+        .grid__col12
+            |&nbsp;
+            #progress            
+    .grid
+        
+        .grid__col10
+            | &nbsp;
+        .grid__col2
+            br
+            button.btn.btn--l.btn--green.btn--raised(lx-ripple, ng-disabled="frmNew.$invalid", ng-click="doSave()") Save
+            | &nbsp;
+            a.btn.btn--l.btn--grey.btn--raised(lx-ripple, href="#/") Back
+                
+    

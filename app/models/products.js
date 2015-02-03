@@ -5,6 +5,7 @@ exports.getProductList = function (db) {
 
     db('products')
         .select('*')
+        .orderBy('name', 'asc')
         .exec(function (err, rows) {
             if (err) q.reject(err);
             else q.resolve(rows);
