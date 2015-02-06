@@ -9,15 +9,42 @@
                 th วันที่
                 th เลขที่ใบสั่งซื้อ
                 th บริษัท/ร้านค้า
-                th ราคา
+                th ติดต่อ
                 th
         tbody
-            tr
-                td(colspan="6") ...
+            tr(ng-repeat="p in purchases")
+                td {{$index+1}}
+                td {{p.purchase_date | toThaiDate }}
+                td {{p.code}}
+                td {{p.supplier_name}}
+                td {{p.contact_name}}
+                td 
+                    lx-dropdown(position="right", from-top)
+                        button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                            i.mdi.mdi--settings-ethernet
+                                
+                        lx-dropdown-menu
+                            ul
+                                li(ng-show="p.is_imported == 'Y'")
+                                    a(href="#/detail/{{p.id}}").dropdown-link 
+                                        i.mdi.mdi--edit
+                                        | &nbsp; ดูรายละเอียด
+                                li(ng-show="p.is_imported == 'N'")
+                                    a(href="#/edit/{{p.id}}").dropdown-link 
+                                        i.mdi.mdi--edit
+                                        | &nbsp; แก้ไข
+                                li(ng-show="p.is_imported == 'N'")
+                                    a(ng-click="doRemove(p.id)").dropdown-link
+                                        i.mdi.mdi--remove-circle
+                                        | &nbsp; ลบ
+                                li(ng-show="p.is_imported == 'N'")
+                                    a(ng-click="doImport(p.id)").dropdown-link
+                                        i.mdi.mdi--save
+                                        | &nbsp; ตัดสต๊อก
 br
 .grid
     .grid__col11
         | &nbsp;
     .grid__col1
-        a(href="#/new", lx-ripple).btn.btn--l.btn--green.btn--fab
+        a(href="#/new", lx-ripple).btn.btn--m.btn--green.btn--fab
             i.mdi.mdi--add

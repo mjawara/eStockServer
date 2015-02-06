@@ -1,13 +1,13 @@
 .fs-headline
     i.mdi.mdi--add-shopping-cart.icon.icon--l.icon--green.icon--circled
-    | &nbsp;บันทึกการจัดซื้อ
+    | &nbsp;แก้ไขการจัดซื้อ
 form(name="frmPurchases")
     .grid
         .grid__col2
             lx-text-field(label="เลขที่สั่งซื้อ")
-                input(type="text", ng-model="purchaseCode")
+                input(type="text", ng-model="purchaseCode", ng-disabled="true")
         .grid__col3
-            lx-date-picker(model="purchaseDate", label="วันที่สั่งซื้อ", locale="th")
+            lx-date-picker(model="purchaseDate", label="วันที่สั่งซื้อ")
     .grid
         .grid__col6
             lx-select(ng-model="selectedSupplier", placeholder="บริษัท/ร้านค้า...", choices="suppliers", floating-label)
@@ -18,7 +18,7 @@ form(name="frmPurchases")
                     | {{ $choice.name }}
         .grid__col6
             lx-text-field(label="ชื่อผู้ติดต่อ")
-                input(type="text", ng-model="contact_name")
+                input(type="text", ng-model="contact_name", ng-disabled="false")
     br
     .fs-subhead
         i.mdi.mdi--shopping-cart

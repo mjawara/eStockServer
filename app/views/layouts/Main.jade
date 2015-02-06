@@ -50,7 +50,7 @@ html(lang="en")
                                 span ข้อมูลการเบิก
                         li.list-row.list-row--has-primary.list-row--has-separator
                             .list-primary-tile
-                                a(href="/purchases")
+                                a(href="/purchases#/")
                                     i.icon.icon--l.icon--blue.icon--circled.mdi.mdi--shopping-cart
                             .list-content-tile.list-content-tile--two-lines
                                 strong Purchases
@@ -78,7 +78,7 @@ html(lang="en")
                                 span กำหนดค่าระบบ
                 .grid__col9
                     .card
-                        .card__content
+                        div(class="p+")
                             block content
                     
                     
@@ -87,6 +87,7 @@ html(lang="en")
         script(src="../vendor/moment/min/moment-with-locales.min.js")
         script(src="../vendor/angular/angular.js")
         script(src="../vendor/angular-route/angular-route.min.js")
+        script(src="../vendor/angular-i18n/angular-locale_th-th.js")
         script(src="../vendor/lumx/dist/js/lumx.js")
         script(src="../vendor/lodash/lodash.min.js")
         

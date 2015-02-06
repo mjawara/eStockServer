@@ -1,34 +1,45 @@
-App.controller('NewController', function ($scope, $location, NewService, LxDialogService, LxNotificationService) {
+/**
+ * Edit controller
+ */
 
-    $scope.suppliers = [];
-    $scope.supplier = null;
-    $scope.contact_name = null;
+App.controller('EditController', function ($scope, $routeParams, $location, EditService,
+    LxNotificationService, LxDialogService) {
+
+    $scope.purchaseId = $routeParams.id;
+
     $scope.products = [];
-    $scope.drugs = [];
 
-    NewService.getSuppliers()
-        .then(function (data) {
-            if (data.ok) {
-                $scope.suppliers = data.rows;
-            } else {
-                console.log(data.msg);
-                LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
-            }
-        }, function (err) {
-            LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
-        });
+    var promise = EditService.getProductsList();
 
-    NewService.getProducts()
-        .then(function (data) {
-            if (data.ok) {
-                $scope.products = data.rows;
-            } else {
-                console.log(data.msg);
-                LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
-            }
-        }, function (err) {
-            LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
+    promise.then(function (products) {
+        $scope.products = products;
+        return EditService.getSuppliers();
+    }).then(function (suppliers) {
+        $scope.suppliers = suppliers;
+        return EditService.getPurchase($scope.purchaseId);
+    }).then(function (items) {
+        $scope.purchaseCode = items.purchase.code;
+        $scope.purchaseDate = moment(items.purchase.purchase_date);
+        $scope.supplier_name = items.purchase.supplier_name;
+        $scope.contact_name = items.purchase.contact_name;
+
+        $scope.selectedSupplier = {id: items.purchase.supplier_id, name: items.purchase.supplier_name};
+
+        $scope.drugs = items.drugs;
+
+        _.forEach($scope.drugs, function (v) {
+            $scope.setSelected(v.code);
         });
+    }, function (err) {
+        LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
+    });
+
+    $scope.setSelected = function (code) {
+        var idx = _.findIndex($scope.products, {
+            code: code
+        });
+        $scope.products[idx].added = 'Y';
+    };
 
     $scope.showModal = function () {
         LxDialogService.open('mdlNew');
@@ -82,15 +93,8 @@ App.controller('NewController', function ($scope, $location, NewService, LxDialo
             if (res) {
                 $scope.products[idxProduct].added = 'N';
                 $scope.drugs.splice(idx, 1);
-                console.log(idx);
-                console.log($scope.drugs);
             }
         });
-    };
-
-    $scope.setSupplier = function (id, contact_name) {
-        $scope.supplier = id;
-        $scope.contact_name = contact_name;
     };
 
     $scope.doSavePurchase = function () {
@@ -101,27 +105,24 @@ App.controller('NewController', function ($scope, $location, NewService, LxDialo
 
                 _.forEach($scope.drugs, function (v) {
                     var obj = {};
-                    obj.code = v.code;
+                    obj.product_code = v.code;
+                    obj.purchase_id = $scope.purchaseId;
                     obj.qty = v.qty;
                     drugs.push(obj);
                 });
 
-                var purchase = {};
-                purchase.code = $scope.purchaseCode;
-                purchase.date = moment($scope.purchaseDate).format('YYYY-MM-DD');
-                purchase.supplier = $scope.supplier;
-                purchase.contact_name = $scope.contact_name;
+                var purchase = {
+                    code: $scope.purchaseCode,
+                    date: moment($scope.purchaseDate).format('YYYY-MM-DD'),
+                    supplier_id: $scope.supplier,
+                    contact_name: $scope.contact_name,
+                    purchase_id: $scope.purchaseId
+                };
 
-                NewService.savePurchase(purchase, drugs)
-                    .then(function (data) {
-                        if (data.ok) {
-                            LxNotificationService.success('บันทึกรายการเสร็จเรียบร้อยแล้ว');
-                            $location.path('/');
-                        } else {
-                            console.log(data.msg);
-                            LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
-                        }
-                    }, function (err) {
+                EditService.updatePurchases(purchase, drugs)
+                    .then(function () {
+                        $location.path('/');
+                    }, function () {
                         LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
                     });
             } else {
@@ -132,4 +133,10 @@ App.controller('NewController', function ($scope, $location, NewService, LxDialo
             LxNotificationService.error('กรุณาเลือกรายการเวชภัณฑ์ที่ต้องการจัดซื้อ');
         }
     };
+
+    $scope.setSupplier = function (id, contact_name) {
+        $scope.supplier = id;
+        //$scope.contact_name = contact_name;
+    };
+
 });

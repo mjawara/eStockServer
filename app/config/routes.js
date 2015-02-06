@@ -2,7 +2,9 @@ var main = require('../controllers/main'),
     orders = require('../controllers/orders'),
     clients = require('../controllers/clients'),
     suppliers = require('../controllers/suppliers'),
-    products = require('../controllers/products');
+    products = require('../controllers/products'),
+
+    purchases = require('../controllers/purchases');
 
 module.exports = function (app) {
     // Main page
@@ -88,4 +90,16 @@ module.exports = function (app) {
     app.get('/partials/purchases/new', function (req, res) {
         res.render('purchases/partials/new');
     });
+
+    app.get('/partials/purchases/edit', function (req, res) {
+        res.render('purchases/partials/edit');
+    });
+
+    // Save purchase
+    app.post('/purchases/save', purchases.doSave);
+
+    app.post('/purchases/list', purchases.getList);
+    app.post('/purchases/edit/detail', purchases.detail);
+    app.put('/purchases', purchases.update);
+    app.post('/purchases/remove', purchases.remove);
 };

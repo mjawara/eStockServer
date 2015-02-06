@@ -9,6 +9,10 @@ App.config(function ($routeProvider) {
             templateUrl: '/partials/purchases/new',
             controller: 'NewController'
         })
+        .when('/edit/:id', {
+            templateUrl: '/partials/purchases/edit',
+            controller: 'EditController'
+        })
         .otherwise({
             redirectTo: '/'
         });
