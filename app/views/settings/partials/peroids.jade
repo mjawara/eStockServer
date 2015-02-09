@@ -8,11 +8,13 @@ span.fs-headline.display-block
             table.data-table.data-table--has-secondary
                 thead
                     tr
+                        th #
                         th ปีงบประมาณ
                         th ช่วงเวลา
                         th 
                 tbody
                     tr(ng-repeat="y in years")
+                        td {{$index+1}}
                         td {{y.name}}
                         td 
                             | {{y.start_date | toThaiDate}} - {{y.end_date | toThaiDate}}
