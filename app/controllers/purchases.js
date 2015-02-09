@@ -151,5 +151,4 @@ exports.remove = function (req, res) {
                 msg: err
             });
         });
-
 };

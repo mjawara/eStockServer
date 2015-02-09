@@ -42,7 +42,10 @@ exports.getList = function (db) {
     var q = Q.defer();
 
     db('purchases as p')
-        .select('p.purchase_date', 'p.code', 'p.contact_name', 'p.id', 'p.is_imported', 's.name as supplier_name')
+        .select(
+            'p.purchase_date', 'p.code', 'p.contact_name', 'p.id',
+            'p.is_imported', 's.name as supplier_name'
+        )
         .leftJoin('suppliers as s', 's.id', 'p.supplier_id')
         .orderBy('p.purchase_date', 'asc')
         .exec(function (err, rows) {
@@ -61,7 +64,10 @@ exports.getPurchaseDetail = function (db, id) {
     var q = Q.defer();
 
     db('purchases as p')
-        .select('p.code', 'p.supplier_id', 'p.purchase_date', 's.contact_name', 's.name as supplier_name')
+        .select(
+            'p.code', 'p.supplier_id', 'p.purchase_date',
+            's.contact_name', 's.name as supplier_name'
+        )
         .leftJoin('suppliers as s', 's.id', 'p.supplier_id')
         .where('p.id', id)
         .limit(1)

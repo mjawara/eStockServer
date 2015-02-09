@@ -4,7 +4,8 @@ var main = require('../controllers/main'),
     suppliers = require('../controllers/suppliers'),
     products = require('../controllers/products'),
 
-    purchases = require('../controllers/purchases');
+    purchases = require('../controllers/purchases'),
+    peroids = require('../controllers/peroids');
 
 module.exports = function (app) {
     // Main page
@@ -97,9 +98,38 @@ module.exports = function (app) {
 
     // Save purchase
     app.post('/purchases/save', purchases.doSave);
-
     app.post('/purchases/list', purchases.getList);
     app.post('/purchases/edit/detail', purchases.detail);
     app.put('/purchases', purchases.update);
     app.post('/purchases/remove', purchases.remove);
+
+    //Settings
+    app.get('/settings', function (req, res) {
+        res.render('settings/index');
+    });
+    /**
+     * GET  /partials/settings/index
+     */
+    app.get('/partials/settings/index', function (req, res) {
+        res.render('settings/partials/index');
+    });
+    /**
+     * GET  /partials/settings/years
+     */
+    app.get('/partials/settings/peroids', function (req, res) {
+        res.render('settings/partials/peroids');
+    });
+
+    /**
+     * POST  /settings/peroids/all
+     */
+    app.post('/settings/peroids/all', peroids.all);
+    /**
+     * POST  /settings/peroids/save
+     */
+    app.post('/settings/peroids/save', peroids.save);
+    /**
+     * POST  /settings/peroids/remove
+     */
+    app.post('/settings/peroids/remove', peroids.remove);
 };

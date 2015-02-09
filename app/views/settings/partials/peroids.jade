@@ -1,0 +1,71 @@
+span.fs-headline.display-block
+    i.icon.icon--l.icon--green.icon--circled.mdi.mdi--contacts
+    | &nbsp;ปีงบประมาณ
+
+.grid
+    .grid__col12
+        .data-table-container
+            table.data-table.data-table--has-secondary
+                thead
+                    tr
+                        th ปีงบประมาณ
+                        th ช่วงเวลา
+                        th 
+                tbody
+                    tr(ng-repeat="y in years")
+                        td {{y.name}}
+                        td 
+                            | {{y.start_date | toThaiDate}} - {{y.end_date | toThaiDate}}
+                        td
+                            lx-dropdown(position="right", from-top)
+                                button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                                    i.mdi.mdi--settings-ethernet
+                                lx-dropdown-menu
+                                    ul
+                                        li
+                                            a.dropdown-link 
+                                                i.mdi.mdi--edit
+                                                | &nbsp;แก้ไข
+                                        li
+                                            a.dropdown-link(ng-click="remove($index, y.id)")
+                                                i.mdi.mdi--cancel
+                                                | &nbsp;ลบรายการ
+br
+.grid
+    .grid__col10
+        | &nbsp;
+            
+    .grid__col2
+        button(lx-ripple, ng-click="showModal()").btn.btn--l.btn--green.btn--fab
+            i.mdi.mdi--add
+        | &nbsp;
+        a(href="#!/", lx-ripple).btn.btn--l.btn--grey.btn--fab
+            i.mdi.mdi--home
+    
+lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
+    div.dialog__header
+        div.toolbar.bgc-indigo-500(class="pl++")
+            span.toolbar__label.tc-white.fs-title
+                | เพิ่ม/แก้ไขข้อมูลปีงบประมาณ
+            div.toolbar__right
+                button.btn.btn--l.btn--white.btn--icon(lx-ripple, lx-dialog-close)
+                    i.mdi.mdi--cancel
+                    
+    div.dialog__content
+        div.card
+            div(class="p+")
+                .fs-subheadline
+                    i.mdi.mdi--edit
+                    | &nbsp;ข้อมูลปีงบประมาณ
+                .grid
+                    .grid__col3
+                        lx-text-field(label="ปีงบประมาณ")
+                            input(type="text", ng-model="name")
+                    .grid__col3
+                        lx-date-picker(model="startDate", label="ตั้งแต่", locale="th")
+                    .grid__col3
+                        lx-date-picker(model="endDate", label="ตั้งแต่", locale="th")        
+        div.dialog__actions
+            button.btn.btn--m.btn--blue.btn--raised(lx-ripple, ng-click="save()") บันทึก
+            | &nbsp;
+            button.btn.btn--m.btn--red.btn--raised(lx-ripple. lx-dialog-close) ปิดหน้าต่าง

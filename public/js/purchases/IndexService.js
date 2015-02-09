@@ -1,3 +1,7 @@
+/**
+ * Index Service
+ */
+
 App.factory('IndexService', function ($q, $http) {
 
     return {

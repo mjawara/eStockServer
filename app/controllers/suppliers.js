@@ -113,7 +113,6 @@ exports.doUpdate = function (req, res) {
                 msg: err
             });
         });
-
 };
 
 exports.doRemove = function (req, res) {

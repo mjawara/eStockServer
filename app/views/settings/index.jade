@@ -1,0 +1,10 @@
+extends ../layouts/Main
+
+block scripts
+    script(src="../js/settings/Settings.js")
+    script(src="../js/settings/IndexController.js")
+    script(src="../js/settings/PeroidsController.js")
+    script(src="../js/settings/PeroidsService.js")
+        
+block content
+    div(ng-view)
