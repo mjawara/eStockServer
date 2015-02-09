@@ -32,9 +32,10 @@ exports.save = function (req, res) {
     year.end_date = req.body.e;
 
     Peroids.save(db, year)
-        .then(function () {
+        .then(function (id) {
             res.send({
-                ok: true
+                ok: true,
+                id: id
             });
         }, function (err) {
             res.send({
@@ -50,8 +51,8 @@ exports.remove = function (req, res) {
     var id = req.body.id;
 
     Peroids.remove(db, id)
-    .then(function () {
-        res.send({ok: true});
+    .then(function (id) {
+        res.send({ok: true, id: id});
     }, function (err) {
         res.send({ok: false, msg: err});
     });

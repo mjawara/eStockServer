@@ -22,9 +22,10 @@ exports.save = function (db, year) {
 
     db('peroids')
         .insert(year)
-        .exec(function (err) {
+        .returning('id')
+        .exec(function (err, id) {
             if (err) q.reject(err);
-            else q.resolve();
+            else q.resolve(id[0]);
         });
 
     return q.promise;

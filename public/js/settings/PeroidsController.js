@@ -33,6 +33,8 @@ App.controller('PeroidsController', function ($scope, PeroidsService, LxNotifica
 
     $scope.save = function () {
 
+        console.log($scope.id);
+
         if (!$scope.name || !$scope.startDate || !$scope.endDate) {
             LxNotificationService.error('กรุณาระบุข้อมูลให้ครบถ้วน');
         } else {
@@ -58,6 +60,7 @@ App.controller('PeroidsController', function ($scope, PeroidsService, LxNotifica
                         $scope.years[idx].end_date = $scope.endDate;
                     } else {
                         $scope.years.push({
+                            id: data.id,
                             name: year.n,
                             start_date: year.s,
                             end_date: year.e
@@ -107,11 +110,10 @@ App.controller('PeroidsController', function ($scope, PeroidsService, LxNotifica
 
         var year = $scope.years[idx];
 
+        $scope.id = year.id;
         $scope.name = year.name;
         $scope.startDate = moment(year.start_date);
         $scope.endDate = moment(year.end_date);
-
-        $scope.id = year.id;
 
         LxDialogService.open('mdlNew');
 
@@ -119,8 +121,8 @@ App.controller('PeroidsController', function ($scope, PeroidsService, LxNotifica
 
     $scope.closingDialog = function () {
         $scope.name = null;
-        $scope.startDate = null;
-        $scope.endDate = null;
+        $scope.startDate = moment();
+        $scope.endDate = moment();
         $scope.id = null;
     };
 
