@@ -56,3 +56,25 @@ exports.remove = function (req, res) {
         res.send({ok: false, msg: err});
     });
 };
+
+exports.update = function (req, res) {
+    var db = req.db;
+
+    var year = {};
+    year.name = req.body.n;
+    year.start_date = req.body.s;
+    year.end_date = req.body.e;
+    year.id = req.body.id;
+
+    Peroids.update(db, year)
+        .then(function () {
+            res.send({
+                ok: true
+            });
+        }, function (err) {
+            res.send({
+                ok: false,
+                msg: err
+            });
+        });
+};

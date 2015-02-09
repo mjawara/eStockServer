@@ -132,4 +132,8 @@ module.exports = function (app) {
      * POST  /settings/peroids/remove
      */
     app.post('/settings/peroids/remove', peroids.remove);
+    /**
+     * POST  /settings/peroids/update
+     */
+    app.post('/settings/peroids/update', peroids.update);
 };

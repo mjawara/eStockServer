@@ -94,7 +94,32 @@ App.factory('PeroidsService', function ($q, $http) {
             return q.promise;
         },
 
-        update: function (year) {}
+        update: function (id, year) {
+
+            var q = $q.defer();
+
+            var options = {
+                url: '/settings/peroids/update',
+                method: 'POST',
+                data: {
+                    id: id,
+                    n: year.n,
+                    s: year.s,
+                    e: year.e
+                }
+            };
+
+            $http(options)
+                .success(function (data) {
+                    q.resolve(data);
+                })
+                .error(function (data, status) {
+                    q.reject(status);
+                });
+
+            return q.promise;
+            
+        }
 
     }
 

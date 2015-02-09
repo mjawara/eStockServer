@@ -31,6 +31,26 @@ exports.save = function (db, year) {
 
 };
 
+exports.update = function (db, year) {
+
+    var q = Q.defer();
+
+    db('peroids')
+        .update({
+            name: year.name,
+            start_date: year.start_date,
+            end_date: year.end_date
+        })
+        .where('id', year.id)
+        .exec(function (err) {
+            if (err) q.reject(err);
+            else q.resolve();
+        });
+
+    return q.promise;
+
+};
+
 exports.remove = function (db, id) {
 
     var q = Q.defer();

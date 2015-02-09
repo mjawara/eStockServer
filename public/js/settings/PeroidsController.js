@@ -5,6 +5,8 @@
 App.controller('PeroidsController', function ($scope, PeroidsService, LxNotificationService,
     LxDialogService) {
 
+    $scope.id = null;
+
     $scope.getYearList = function () {
 
         PeroidsService.all()
@@ -39,25 +41,40 @@ App.controller('PeroidsController', function ($scope, PeroidsService, LxNotifica
             year.s = moment($scope.startDate).format('YYYY-MM-DD');
             year.e = moment($scope.endDate).format('YYYY-MM-DD');
 
-            PeroidsService.save(year)
-                .then(function (data) {
-                    if (data.ok) {
+            var promise = null;
+
+            if ($scope.id) {
+                promise = PeroidsService.update($scope.id, year);
+            } else {
+                promise = PeroidsService.save(year);
+            }
+
+            promise.then(function (data) {
+                if (data.ok) {
+                    if ($scope.id) {
+                        var idx = _.findIndex($scope.years, {id: $scope.id});
+                        $scope.years[idx].name = $scope.name;
+                        $scope.years[idx].start_date = $scope.startDate;
+                        $scope.years[idx].end_date = $scope.endDate;
+                    } else {
                         $scope.years.push({
                             name: year.n,
                             start_date: year.s,
                             end_date: year.e
                         });
-                        LxNotificationService.success('บันทึกข้อมูลเสร็จเรียบร้อยแล้ว');
-                        LxDialogService.close('mdlNew');
-                    } else {
-                        console.log(data.msg);
-                        LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
                     }
 
-                }, function (err) {
-                    console.log(err);
+                    LxNotificationService.success('บันทึกข้อมูลเสร็จเรียบร้อยแล้ว');
+                    LxDialogService.close('mdlNew');
+                } else {
+                    console.log(data.msg);
                     LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
-                });
+                }
+
+            }, function (err) {
+                console.log(err);
+                LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
+            });
         }
 
     };
@@ -84,6 +101,27 @@ App.controller('PeroidsController', function ($scope, PeroidsService, LxNotifica
                     });
             }
         });
+    };
+
+    $scope.edit = function (idx) {
+
+        var year = $scope.years[idx];
+
+        $scope.name = year.name;
+        $scope.startDate = moment(year.start_date);
+        $scope.endDate = moment(year.end_date);
+
+        $scope.id = year.id;
+
+        LxDialogService.open('mdlNew');
+
+    };
+
+    $scope.closingDialog = function () {
+        $scope.name = null;
+        $scope.startDate = null;
+        $scope.endDate = null;
+        $scope.id = null;
     };
 
 });
