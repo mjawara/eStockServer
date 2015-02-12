@@ -41,11 +41,11 @@ exports.doSave = function(req, res) {
 
 };
 
-exports.getList = function(req, res) {
+exports.all = function(req, res) {
 
     var db = req.db;
 
-    Clients.getList(db)
+    Clients.all(db)
         .then(function(rows) {
             res.send({
                 ok: true,
@@ -67,6 +67,62 @@ exports.active = function(req, res) {
     var status = req.body.status;
 
     Clients.active(db, id, status)
+        .then(function() {
+            res.send({
+                ok: true
+            });
+        }, function(err) {
+            res.send({
+                ok: false,
+                msg: err
+            });
+        });
+};
+
+exports.get = function(req, res) {
+
+    var db = req.db;
+    var id = req.body.id;
+
+    Clients.get(db, id)
+        .then(function(rows) {
+            res.send({
+                ok: true,
+                rows: rows
+            });
+        }, function(err) {
+            res.send({
+                ok: false,
+                msg: err
+            });
+        });
+};
+
+
+exports.update = function(req, res) {
+
+    var db = req.db;
+    var client = req.body.client;
+
+    Clients.update(db, client)
+        .then(function() {
+            res.send({
+                ok: true
+            });
+        }, function(err) {
+            res.send({
+                ok: false,
+                msg: err
+            });
+        });
+};
+
+exports.remove = function(req, res) {
+
+    var db = req.db;
+    var id = req.body.id;
+
+    Clients.remove(db, id)
         .then(function() {
             res.send({
                 ok: true

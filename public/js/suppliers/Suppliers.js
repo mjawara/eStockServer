@@ -1,4 +1,6 @@
-App.config(function ($routeProvider) {
+App.config(function ($routeProvider, $locationProvider) {
+
+    $locationProvider.hashPrefix('!');
 
     $routeProvider
         .when('/', {

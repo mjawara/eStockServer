@@ -1,17 +1,18 @@
 App.config(function ($routeProvider, $locationProvider) {
+
     $locationProvider.hashPrefix('!');
-    
+
     $routeProvider
         .when('/', {
-            templateUrl: '/partials/purchases/index',
+            templateUrl: '/partials/clients/index',
             controller: 'IndexController'
         })
         .when('/new', {
-            templateUrl: '/partials/purchases/new',
+            templateUrl: '/partials/clients/new',
             controller: 'NewController'
         })
         .when('/edit/:id', {
-            templateUrl: '/partials/purchases/edit',
+            templateUrl: '/partials/clients/edit',
             controller: 'EditController'
         })
         .otherwise({

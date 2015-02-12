@@ -1,0 +1,61 @@
+
+.fs-headline 
+    //- i.mdi.mdi--people.icon.icon--l.icon--green.icon--circled
+    | Clients Management
+    
+.gird
+    .grid__col12
+        | &nbsp;
+        #progress
+            
+.data-table-container
+    table.data-table.data-table--has-secondary
+        thead
+            tr
+                th #
+                th รหัส
+                th ชื่อหน่วยบริการ
+                th Private key
+                th สถานะ
+                th
+        tbody
+            tr.data-table__clickable-row(ng-repeat="c in clients")
+                td {{ $index+1 }}
+                td {{ c.hospcode }}
+                td {{ c.hospname }}
+                td {{ c.private_key }}
+                td(ng-if="c.is_active == 'Y'")
+                    i.icon.icon--l.icon--green.icon--flat.mdi.mdi--check
+                td(ng-if="c.is_active == 'N'")
+                    i.icon.icon--l.icon--red.icon--flat.mdi.mdi--do-not-disturb
+                td
+                    lx-dropdown(position="right", from-top)
+                        button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                            i.mdi.mdi--more-vert
+                                
+                        lx-dropdown-menu
+                            ul
+                                li(ng-if="c.is_active=='Y'")
+                                    a(ng-click="setActive(c.id, 'N')").dropdown-link 
+                                        i.mdi.mdi--do-not-disturb
+                                        | &nbsp; ยกเลิกการใช้งาน
+                                li(ng-if="c.is_active=='N'")
+                                    a(ng-click="setActive(c.id, 'Y')").dropdown-link 
+                                        i.mdi.mdi--check
+                                        | &nbsp; เปิดการใช้งาน
+                                li
+                                    a(href="#!/edit/{{c.id}}").dropdown-link
+                                        i.mdi.mdi--mode-edit
+                                        | &nbsp; แก้ไขข้อมูล
+                                li
+                                    a(ng-click="remove(c.id)").dropdown-link
+                                        i.mdi.mdi--remove
+                                        | &nbsp; ลบรายการ
+
+br
+.grid
+    .grid__col11
+        | &nbsp;
+    .gird__col1
+        a(lx-ripple, href="#!new").btn.btn--red.btn--l.btn--fab
+            i.mdi.mdi--person-add

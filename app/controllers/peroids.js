@@ -51,11 +51,16 @@ exports.remove = function (req, res) {
     var id = req.body.id;
 
     Peroids.remove(db, id)
-    .then(function (id) {
-        res.send({ok: true, id: id});
-    }, function (err) {
-        res.send({ok: false, msg: err});
-    });
+        .then(function (id) {
+            res.send({
+                ok: true
+            });
+        }, function (err) {
+            res.send({
+                ok: false,
+                msg: err
+            });
+        });
 };
 
 exports.update = function (req, res) {

@@ -1,10 +1,48 @@
 extends ../layouts/Main
 
-block scripts
-    script(src="../js/settings/Settings.js")
-    script(src="../js/settings/IndexController.js")
-    script(src="../js/settings/PeroidsController.js")
-    script(src="../js/settings/PeroidsService.js")
-        
 block content
-    div(ng-view)
+    
+    .fs-headline
+        i.icon.icon--l.icon--green.icon--circled.mdi.mdi--settings
+        | &nbsp;กำหนดค่าการใช้งานระบบ
+    br
+    .grid
+        .grid__col4
+
+            .card
+                div(class="p+")
+                    span.fs-subhead.tc-black-2.display-block
+                        | กำหนดค่าปีงบประมาณ
+                    .paragraph.fs-body-1
+                        p
+                            | กำหนดช่วงปีงบประมาณที่ดำเนินงาน เพื่อใช้ในการกำหนดระยะเวลาในการทำรายงาน หรือการทำสต๊อกการ์ด (Stockcard)
+                .card__actions
+                    a.btn.btn--l.btn--green.btn--raised(lx-ripple, href="/settings/peroids") จัดการข้อมูลปีงบ
+                            
+        .grid__col4
+
+            .card
+                div(class="p+")
+                    span.fs-subhead.tc-black-2.display-block
+                        | &nbsp;ผู้ใช้งานในระบบ
+                    .paragraph.fs-body-1
+                        | กำหนดผู้ใช้งานในระบบ ทั้งระบบเบิกจ่าย จัดซื้อ และอนุมัติเบิกจ่ายเวชภัณฑ์ในคลังหลัก
+                        br
+                        br
+                .card__actions
+                    a.btn.btn--l.btn--blue.btn--raised(href="/settings/users", lx-ripple) จัดการผู้ใช้งานระบบ
+                            
+                    
+        .grid__col4
+
+            .card
+                div(class="p+")
+                    span.fs-subhead.tc-black-2.display-block
+                        | &nbsp;ผู้ใช้งานในระบบ
+                    .paragraph.fs-body-1
+                        | กำหนดผู้ใช้งานในระบบ ทั้งระบบเบิกจ่าย จัดซื้อ และอนุมัติเบิกจ่ายเวชภัณฑ์ในคลังหลัก
+                        br
+                        br
+                .card__actions
+                    button.btn.btn--l.btn--orange.btn--raised(lx-ripple) จัดการข้อมูลปีงบ
+                        

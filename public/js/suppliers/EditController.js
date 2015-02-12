@@ -1,4 +1,4 @@
-App.controller('EditController', function ($scope, $routeParams, EditService, LxNotificationService, LxProgressService) {
+App.controller('EditController', function ($scope, $routeParams, $location, EditService, LxNotificationService, LxProgressService) {
     var id = $routeParams.id;
 
     LxProgressService.linear.show('#5fa2db', '#progress');
@@ -30,6 +30,7 @@ App.controller('EditController', function ($scope, $routeParams, EditService, Lx
                         if (data.ok) {
                             LxNotificationService.success('บันทึกข้อมูลเสร็จเรียบร้อยแล้ว');
                             LxProgressService.linear.hide();
+                            $location.path('/');
                         } else {
                             LxNotificationService.error(data.msg);
                             LxProgressService.linear.hide();

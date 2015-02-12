@@ -26,11 +26,11 @@
                         lx-dropdown-menu
                             ul
                                 li(ng-show="p.is_imported == 'Y'")
-                                    a(href="#/detail/{{p.id}}").dropdown-link 
+                                    a(href="#!detail/{{p.id}}").dropdown-link 
                                         i.mdi.mdi--edit
                                         | &nbsp; ดูรายละเอียด
                                 li(ng-show="p.is_imported == 'N'")
-                                    a(href="#/edit/{{p.id}}").dropdown-link 
+                                    a(href="#!edit/{{p.id}}").dropdown-link 
                                         i.mdi.mdi--edit
                                         | &nbsp; แก้ไข
                                 li(ng-show="p.is_imported == 'N'")
@@ -46,5 +46,5 @@ br
     .grid__col11
         | &nbsp;
     .grid__col1
-        a(href="#/new", lx-ripple).btn.btn--m.btn--green.btn--fab
+        a(href="#!new", lx-ripple).btn.btn--m.btn--green.btn--fab
             i.mdi.mdi--add
