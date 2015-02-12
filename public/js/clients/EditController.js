@@ -10,7 +10,7 @@ App.controller('EditController', function ($scope, $routeParams, $location,
                     $scope.client = data.rows;
                 } else {
                     if (angular.isObject(data.msg)) {
-                        console.log(err);
+                        console.log(data.msg);
                         LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู log');
                     } else {
                         LxNotificationService.error(data.msg);
@@ -35,7 +35,7 @@ App.controller('EditController', function ($scope, $routeParams, $location,
                             $location.path('/');
                         } else {
                             if (angular.isObject(data.msg)) {
-                                console.log(err);
+                                console.log(data.msg);
                                 LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู log');
                             } else {
                                 LxNotificationService.error(data.msg);

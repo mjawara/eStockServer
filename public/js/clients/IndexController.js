@@ -11,7 +11,7 @@ App.controller('IndexController', function ($scope, IndexService, LxNotification
                     LxProgressService.linear.hide();
                 } else {
                     if (angular.isObject(data.msg)) {
-                        console.log(err);
+                        console.log(data.msg);
                         LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู log');
                     } else {
                         LxNotificationService.error(data.msg);
@@ -40,7 +40,7 @@ App.controller('IndexController', function ($scope, IndexService, LxNotification
                             $scope.all();
                         } else {
                             if (angular.isObject(data.msg)) {
-                                console.log(err);
+                                console.log(data.msg);
                                 LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู log');
                             } else {
                                 LxNotificationService.error(data.msg);
@@ -68,7 +68,7 @@ App.controller('IndexController', function ($scope, IndexService, LxNotification
                             $scope.all();
                         } else {
                             if (angular.isObject(data.msg)) {
-                                console.log(err);
+                                console.log(data.msg);
                                 LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู log');
                             } else {
                                 LxNotificationService.error(data.msg);

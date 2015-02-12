@@ -90,7 +90,6 @@ exports.detail = function (req, res) {
                 purchase: _purchase
             });
         }, function (err) {
-            console.log(err);
             res.send({
                 ok: false,
                 msg: err
@@ -120,7 +119,6 @@ exports.update = function (req, res) {
                 });
             },
             function (err) {
-                console.log(err);
                 res.send({
                     ok: false,
                     msg: err
@@ -136,7 +134,7 @@ exports.remove = function (req, res) {
     var id = req.body.id;
 
     console.log(id);
-    
+
     Purchases.removePurchase(db, id)
         .then(function () {
             return Purchases.removeOldProducts(db, id);

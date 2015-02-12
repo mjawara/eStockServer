@@ -14,8 +14,14 @@ App.controller('NewController', function ($scope, NewService, LxProgressService,
                 if (data.ok) {
                     window.location.href = '/clients';
                 } else {
-                    LxNotificationService.error(data.msg);
-                    LxProgressService.linear.hide();
+                    if (angular.isObject(data.msg)) {
+                        console.log(data.msg);
+                        LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู log');
+                    } else {
+                        LxNotificationService.error(data.msg);
+                        LxProgressService.linear.hide();
+                    }
+
                 }
 
             }, function (err) {

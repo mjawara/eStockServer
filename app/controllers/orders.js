@@ -41,7 +41,6 @@ exports.getDetail = function(req, res) {
                 products: orders.products
             });
         }, function(err) {
-            console.log(err);
             res.send({
                 ok: false,
                 msg: err
