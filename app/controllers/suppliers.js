@@ -64,6 +64,7 @@ exports.getList = function (req, res) {
 };
 
 exports.detail = function (req, res) {
+
     var db = req.db;
     var id = req.body.id;
 
@@ -113,9 +114,11 @@ exports.doUpdate = function (req, res) {
                 msg: err
             });
         });
+
 };
 
 exports.doRemove = function (req, res) {
+
     var db = req.db;
     var id = req.body.id;
 
@@ -130,4 +133,5 @@ exports.doRemove = function (req, res) {
                 msg: err
             });
         });
+
 };
