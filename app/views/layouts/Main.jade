@@ -7,88 +7,92 @@ html(lang="en")
         
         title eStock : Server
         
-        link(href="../vendor/lumx/dist/css/lumx.css", rel="stylesheet")
+        link(href="../vendor/lumx/dist/lumx.css", rel="stylesheet")
         link(href="../css/style.css", rel="stylesheet")
+        link(href="../vendor/mdi/materialdesignicons.css", rel="stylesheet")
+
         
     body(ng-app="App")
-        .grid
-            .grid__col12
-                .toolbar.bgc-indigo-500
-                    .toolbar__left.mr
-                        button.btn.btn--l.btn--white.btn--icon(lx-ripple)
-                            i.mdi.mdi--shopping-cart
-                    span(style="color: #fff;").toolbar__label.fs-title
-                        | Drug inventory system
-                        
-                    .toolbar__right
-                        lx-dropdown(position="right", from-top)
-                            button(lx-ripple, lx-dropdown-toggle).btn.btn--white.btn--l.btn--icon
-                                i.mdi.mdi--more-vert
-                                
-                            lx-dropdown-menu
-                                ul
-                                    li
-                                        a.dropdown-link.dropdown-link--is-header Tools
-                                        
-            .grid
-                .grid__col3
-                    ul.list
-                        li.list-row.list-row--has-primary.list-row--has-separator
-                            .list-primary-tile
-                                a(href="/")
-                                    i.icon.icon--l.icon--teal.icon--circled.mdi.mdi--home
-                            .list-content-tile.list-content-tile--two-lines
-                                strong Home
-                                span หน้าหลัก
-                                
-                        li.list-row.list-row--has-primary.list-row--has-separator
-                            .list-primary-tile
-                                a(href="/orders")
-                                    i.icon.icon--l.icon--green.icon--circled.mdi.mdi--add-shopping-cart
-                            .list-content-tile.list-content-tile--two-lines
-                                strong Orders
-                                span ข้อมูลการเบิก
-                        li.list-row.list-row--has-primary.list-row--has-separator
-                            .list-primary-tile
-                                a(href="/purchases")
-                                    i.icon.icon--l.icon--blue.icon--circled.mdi.mdi--shopping-cart
-                            .list-content-tile.list-content-tile--two-lines
-                                strong Purchases
-                                span ข้อมูลจัดซื้อเวชภัณฑ์
-                        li.list-row.list-row--has-primary.list-row--has-separator
-                            .list-primary-tile
-                                a(href="/clients")
-                                    i.icon.icon--l.icon--red.icon--circled.mdi.mdi--group
-                            .list-content-tile.list-content-tile--two-lines
-                                strong Clients
-                                span ข้อมูลเครือข่าย
-                        li.list-row.list-row--has-primary.list-row--has-separator
-                            .list-primary-tile
-                                a(href="/suppliers")
-                                    i.icon.icon--l.icon--pink.icon--circled.mdi.mdi--group-add
-                            .list-content-tile.list-content-tile--two-lines
-                                strong Suppliers
-                                span ข้อมูลผู้จำหน่าย                                
-                        li.list-row.list-row--has-primary.list-row--has-separator
-                            .list-primary-tile
-                                a(href="/settings")
-                                    i.icon.icon--l.icon--deep-purple.icon--circled.mdi.mdi--settings
-                            .list-content-tile.list-content-tile--two-lines
-                                strong Settings
-                                span กำหนดค่าระบบ
-                .grid__col9
-                    .card
-                        div(class="p+")
-                            block content
-                    
-                    
+        .toolbar.bgc-indigo-500
+            .toolbar__left.mr
+                button.btn.btn--l.btn--white.btn--icon(lx-ripple)
+                    i.mdi.mdi-windows
+            span(style="color: #fff;").toolbar__label.fs-title
+                | Drug inventory system
+
+            .toolbar__right
+                lx-dropdown(position="right", from-top)
+                    button(lx-ripple, lx-dropdown-toggle).btn.btn--white.btn--l.btn--icon
+                        i.mdi.mdi-dots-vertical
+
+                    lx-dropdown-menu
+                        ul
+                            li
+                                a.dropdown-link.dropdown-link--is-header Tools
+                            li
+                                a(href="/logout").dropdown-link
+                                    i.mdi.mdi-logout
+                                    | &nbsp; Log out
+
+        div(flex-container="row", flex-gutter="24")
+            div(flex-item="3")
+                ul.list
+                    li.list-row.list-row--has-primary.list-row--has-separator
+                        .list-primary-tile
+                            a(href="/")
+                                i.icon.icon--l.icon--teal.icon--circled.mdi.mdi-home
+                        .list-content-tile.list-content-tile--two-lines
+                            strong Home
+                            span หน้าหลัก
+
+                    li.list-row.list-row--has-primary.list-row--has-separator
+                        .list-primary-tile
+                            a(href="/orders")
+                                i.icon.icon--l.icon--green.icon--circled.mdi.mdi-cart-outline
+                        .list-content-tile.list-content-tile--two-lines
+                            strong Orders
+                            span ข้อมูลการเบิก
+                    li.list-row.list-row--has-primary.list-row--has-separator
+                        .list-primary-tile
+                            a(href="/purchases")
+                                i.icon.icon--l.icon--blue.icon--circled.mdi.mdi-cart
+                        .list-content-tile.list-content-tile--two-lines
+                            strong Purchases
+                            span ข้อมูลจัดซื้อเวชภัณฑ์
+                    li.list-row.list-row--has-primary.list-row--has-separator
+                        .list-primary-tile
+                            a(href="/clients")
+                                i.icon.icon--l.icon--red.icon--circled.mdi.mdi-account-multiple-plus
+                        .list-content-tile.list-content-tile--two-lines
+                            strong Clients
+                            span ข้อมูลเครือข่าย
+                    li.list-row.list-row--has-primary.list-row--has-separator
+                        .list-primary-tile
+                            a(href="/suppliers")
+                                i.icon.icon--l.icon--pink.icon--circled.mdi.mdi-account-network
+                        .list-content-tile.list-content-tile--two-lines
+                            strong Suppliers
+                            span ข้อมูลผู้จำหน่าย
+                    li.list-row.list-row--has-primary.list-row--has-separator
+                        .list-primary-tile
+                            a(href="/settings")
+                                i.icon.icon--l.icon--deep-purple.icon--circled.mdi.mdi-security
+                        .list-content-tile.list-content-tile--two-lines
+                            strong Settings
+                            span กำหนดค่าระบบ
+            div(flex-item="9")
+                .card
+                    div(class="p+")
+                        block content
+
+
         script(src="../vendor/jquery/dist/jquery.min.js")
         script(src="../vendor/velocity/velocity.min.js")
         script(src="../vendor/moment/min/moment-with-locales.min.js")
         script(src="../vendor/angular/angular.js")
         script(src="../vendor/angular-route/angular-route.min.js")
         script(src="../vendor/angular-i18n/angular-locale_th-th.js")
-        script(src="../vendor/lumx/dist/js/lumx.js")
+        script(src="../vendor/lumx/dist/lumx.min.js")
         script(src="../vendor/lodash/lodash.min.js")
         
         script(src="../app.js")

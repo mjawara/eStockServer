@@ -1,18 +1,19 @@
 
-i.icon.icon--l.icon--green.icon--circled.mdi.mdi--add-shopping-cart
+i.icon.icon--l.icon--green.icon--circled.mdi.mdi-shopping
 span.fs-headline &nbsp;รายการเบิกเวชภัณฑ์
 
-.grid
-    .grid__col3
-        lx-date-picker(model="orders.orders_date", ng-disabled="true")
-    .grid__col3
+div(flex-container="row", flex-gutter="24")
+    div(flex-item="3")
+        lx-text-field(label="วันที่เบิก")
+            input(type="text", ng-model="orders_date", ng-disabled="true")
+    div(flex-item="3")
         lx-text-field(label="เลขที่เอกสาร")
             input(type="text", ng-model="orders.orders_code", ng-disabled="true")
-.grid
-    .grid__col6
+div(flex-container="row", flex-gutter="24")
+    div(flex-item="6")
         lx-text-field(label="เจ้าหน้าที่เบิก")
             input(type="text", ng-model="orders.client_staff_name", ng-disabled="true")
-    .grid__col6
+    div(flex-item="6")
         lx-text-field(label="หน่วยงานที่เบิก")
             input(type="text", ng-model="orders.hospital", ng-disabled="true")
 
@@ -28,6 +29,8 @@ span.fs-headline &nbsp;รายการเบิกเวชภัณฑ์
                 th อนุมัติ
                 th Lot
                 th
+            tr
+                td(colspan="8").divider.divider--dark
         tbody
             tr.data-table__clickable-row(ng-repeat="p in products")
                 td {{$index+1}}
@@ -40,20 +43,20 @@ span.fs-headline &nbsp;รายการเบิกเวชภัณฑ์
                 td
                     lx-dropdown(position="right", from-top)
                             button.btn.btn--m.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
-                                i.mdi.mdi--more-vert
+                                i.mdi.mdi-dots-vertical
 
                             lx-dropdown-menu
                                 ul
                                     li
                                         a.dropdown-link(ng-click="showApprove(p.code, p.name, p.qty)")
-                                            i.mdi.mdi--add-circle
+                                            i.mdi.mdi-plus-circle
                                             | &nbsp;ระบุยอดอนุมัติเบิก
     br
     br
-    .grid
-        .grid__col8
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="8")
             | &nbsp;
-        .grid__col4
+        div(flex-item="4")
             button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doApprove()") บันทึกอนุมัติ
             | &nbsp;
             button.btn.btn--m.btn--red.btn--raised(lx-ripple, ng-click="doCancel()") ไม่อนุมัติ
@@ -73,31 +76,31 @@ lx-dialog.dialog.dialog--l#mdlApprove
     .dialog__content
         .card
             div(class="p+")
-                .grid
-                    .grid__col2
+                div(flex-container="row", flex-gutter="24")
+                    div(flex-item="2")
                         lx-text-field(label="รหัส")
                             input(type="text", ng-model="productCode", ng-disabled="true")
-                    .grid__col10
+                    div(flex-item="10")
                         lx-text-field(label="รายการ")
                             input(type="text", ng-model="productName", ng-disabled="true")
-                .grid
-                    .grid__col3
+                div(flex-container="row", flex-gutter="24")
+                    div(flex-item="3")
                         lx-text-field(label="จำนวนขอเบิก")
                             input(type="number", ng-model="orderQty", ng-disabled="true")
-                    .grid__col3
+                    div(flex-item="3")
                         lx-text-field(label="อนุมัติเบิก")
                             input(type="number", ng-model="approveQty")
-                    .grid__col6
+                    div(flex-item="3")
                         lx-select(ng-model="lotNumber", placeholder="ระบุ Lot", choices="lots", floating-label)
                             lx-select-selected
                                 | {{setLot($selected.lot_id)}}
                                 | {{$selected.lot_name}}
                             lx-select-choices
                                 | {{$choice.lot_name}}
-                .grid
-                    .grid__col3
+                div(flex-container="row", flex-gutter="24")
+                    div(flex-item="3")
                         lx-date-picker(label="วันผลิต", model="mfd", ng-disabled="true")
-                    .grid__col3
+                    div(flex-item="3")
                         lx-date-picker(label="วันหมดอายุ", model="expd", ng-disabled="true")
     .dialog__actions
         button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doAddApproveItem()") บันทึก

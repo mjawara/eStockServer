@@ -2,6 +2,7 @@
  * Detail Controller
  */
 App.controller('DetailController', function ($scope, $routeParams, DetailService, LxNotificationService) {
+
     var purchaseId = $routeParams.id;
 
     DetailService.getPurchase(purchaseId)

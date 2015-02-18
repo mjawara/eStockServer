@@ -2,8 +2,8 @@
  * Edit controller
  */
 
-App.controller('EditController', function ($scope, $routeParams, $location, EditService,
-    LxNotificationService, LxDialogService) {
+App.controller('EditController', function ($scope, $routeParams, $location, $filter,
+                                           EditService, LxNotificationService, LxDialogService) {
 
     $scope.purchaseId = $routeParams.id;
 
@@ -19,7 +19,7 @@ App.controller('EditController', function ($scope, $routeParams, $location, Edit
         return EditService.getPurchase($scope.purchaseId);
     }).then(function (items) {
         $scope.purchaseCode = items.purchase.code;
-        $scope.purchaseDate = moment(items.purchase.purchase_date);
+        $scope.purchaseDate = $filter('toThaiDate')(items.purchase.purchase_date);
         $scope.supplier_name = items.purchase.supplier_name;
         $scope.contact_name = items.purchase.contact_name;
 
@@ -113,7 +113,7 @@ App.controller('EditController', function ($scope, $routeParams, $location, Edit
 
                 var purchase = {
                     code: $scope.purchaseCode,
-                    date: moment($scope.purchaseDate).format('YYYY-MM-DD'),
+                    //date: moment($scope.purchaseDate).format('YYYY-MM-DD'),
                     supplier_id: $scope.supplier,
                     contact_name: $scope.contact_name,
                     purchase_id: $scope.purchaseId

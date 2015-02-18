@@ -1,4 +1,4 @@
-App.controller('ApproveController', function ($scope, $location, $routeParams, ApproveService,
+App.controller('ApproveController', function ($scope, $location, $routeParams, $filter, ApproveService,
                                               LxNotificationService, LxDialogService) {
 
     var orderId = $routeParams.id;
@@ -7,6 +7,7 @@ App.controller('ApproveController', function ($scope, $location, $routeParams, A
         .then(function (data) {
             if (data.ok) {
                 $scope.orders = data.orders;
+                $scope.orders_date = $filter('toThaiDate')($scope.orders.orders_date);
                 $scope.orders.hospital = [$scope.orders.hospcode, $scope.orders.hospname].join(' ');
 
                 var data = data.products;

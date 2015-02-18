@@ -1,6 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
+    session = require('express-session'),
     path = require('path'),
     methodOverride = require('method-override');
 
@@ -13,10 +14,11 @@ module.exports = function (app, config) {
         extended: false
     }));
     app.use(methodOverride());
-    
-    // Error handlerer
-    app.use(function (err, req, res, next) {
-        console.error(err.strack);
-        res.send(500, 'Server error!');
-    });
+    app.use(session({
+        secret: 'MySeCrETkEy',
+        resave: false,
+        saveUninitialized: true,
+        secure: true
+    }));
+
 };

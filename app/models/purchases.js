@@ -109,8 +109,7 @@ exports.updatePurchase = function (db, purchase) {
         .update({
             supplier_id: purchase.supplier_id,
             contact_name: purchase.contact_name,
-            purchase_date: purchase.date,
-            code: purchase.code,
+            code: purchase.code
         })
         .where('id', purchase.purchase_id)
         .exec(function (err) {

@@ -7,22 +7,24 @@ var Main = require('../controllers/Main'),
     Peroids = require('../controllers/Peroids'),
     Users = require('../controllers/Users');
 
-module.exports = function (app) {
+var Auth = require('../models/Auth');
+
+module.exports = function (app, auth) {
     // Main page
-    app.get('/', Main.index);
+    app.get('/', auth, Main.index);
     app.get('/orders', function (req, res) {
         res.render('orders/Index');
     });
 
-    app.get('/partials/orders/main', function (req, res) {
+    app.get('/partials/orders/main', auth, function (req, res) {
         res.render('orders/partials/Main');
     });
 
-    app.get('/partials/orders/approve', function (req, res) {
+    app.get('/partials/orders/approve', auth, function (req, res) {
         res.render('orders/partials/Approve');
     });
 
-    app.get('/partials/orders/detail', function (req, res) {
+    app.get('/partials/orders/detail', auth, function (req, res) {
         res.render('orders/partials/Detail');
     });
 
@@ -39,19 +41,19 @@ module.exports = function (app) {
     app.post('/products/list', Products.getList);
 
     /** Clients setting **/
-    app.get('/clients', function (req, res) {
+    app.get('/clients', auth, function (req, res) {
         res.render('clients/Index');
     });
 
-    app.get('/partials/clients/index', function (req, res) {
+    app.get('/partials/clients/index', auth, function (req, res) {
         res.render('clients/partials/Index');
     });
 
-    app.get('/partials/clients/new', function (req, res) {
+    app.get('/partials/clients/new', auth, function (req, res) {
         res.render('clients/partials/New');
     });
 
-    app.get('/partials/clients/edit', function (req, res) {
+    app.get('/partials/clients/edit', auth, function (req, res) {
         res.render('clients/partials/Edit');
     });
 
@@ -63,20 +65,20 @@ module.exports = function (app) {
     app.post('/clients/remove', Clients.remove);
 
     // Suppliers
-    app.get('/suppliers', function (req, res) {
+    app.get('/suppliers', auth, function (req, res) {
         res.render('suppliers/Index');
     });
 
     // Suppliers partials
-    app.get('/partials/suppliers/index', function (req, res) {
+    app.get('/partials/suppliers/index', auth, function (req, res) {
         res.render('suppliers/partials/Index');
     });
 
-    app.get('/partials/suppliers/add', function (req, res) {
+    app.get('/partials/suppliers/add', auth, function (req, res) {
         res.render('suppliers/partials/Add');
     });
 
-    app.get('/partials/suppliers/edit', function (req, res) {
+    app.get('/partials/suppliers/edit', auth, function (req, res) {
         res.render('suppliers/partials/Edit');
     });
 
@@ -91,23 +93,23 @@ module.exports = function (app) {
 
 
     // Purchases
-    app.get('/partials/purchases/index', function (req, res) {
+    app.get('/partials/purchases/index', auth, function (req, res) {
         res.render('purchases/partials/Index');
     });
 
-    app.get('/partials/purchases/new', function (req, res) {
+    app.get('/partials/purchases/new', auth, function (req, res) {
         res.render('purchases/partials/New');
     });
 
-    app.get('/partials/purchases/edit', function (req, res) {
+    app.get('/partials/purchases/edit', auth, function (req, res) {
         res.render('purchases/partials/Edit');
     });
 
-    app.get('/partials/purchases/detail', function (req, res) {
+    app.get('/partials/purchases/detail', auth, function (req, res) {
         res.render('purchases/partials/Detail');
     });
 
-    app.get('/purchases', function (req, res) {
+    app.get('/purchases', auth, function (req, res) {
         res.render('purchases/Index');
     });
 
@@ -120,13 +122,13 @@ module.exports = function (app) {
     app.post('/purchases/import', Purchases.import);
 
     //Settings
-    app.get('/settings', function (req, res) {
+    app.get('/settings', auth, function (req, res) {
         res.render('settings/Index');
     });
     /**
      * GET  /partials/settings/years
      */
-    app.get('/settings/peroids', function (req, res) {
+    app.get('/settings/peroids', auth, function (req, res) {
         res.render('settings/peroids/Peroids');
     });
 
@@ -137,7 +139,7 @@ module.exports = function (app) {
     /**
      * User management
      */
-    app.get('/settings/users', function (req, res) {
+    app.get('/settings/users', auth, function (req, res) {
         res.render('settings/users/Users');
     });
 
@@ -145,4 +147,44 @@ module.exports = function (app) {
     app.post('/settings/users/save', Users.save);
     app.post('/settings/users/remove', Users.remove);
     app.post('/settings/users/update', Users.update);
+
+
+    /** login **/
+    app.get('/login', function (req, res) {
+        if (req.session.username) {
+            res.redirect('/');
+        } else {
+            res.render('Login');
+        }
+    });
+
+    app.post('/login', function (req, res) {
+        var username = req.body.username;
+        var password = req.body.password;
+
+        Auth.doAuth(req.db, username, password)
+            .then(function (success) {
+                if (success) {
+                    req.session.username = username;
+                    //res.send({ok: true, username: req.session.username});
+                    res.redirect('/');
+                } else {
+                    req.session.error = 'Username/Password incorrect.';
+                    res.redirect('/login');
+                    //res.send({ok: false, username: username});
+                }
+            }, function (err) {
+                console.log(err);
+                req.session.error = 'Server error!';
+                res.redirect('/login');
+            });
+
+    });
+
+    app.get('/logout', function (req, res) {
+        req.session.destroy(function(err) {
+            if (err) console.log(err);
+            else res.redirect('/login');
+        });
+    });
 };

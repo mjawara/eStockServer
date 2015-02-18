@@ -89,3 +89,4 @@ exports.isDuplicated = function (db, username) {
 
     return q.promise;
 };
+

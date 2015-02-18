@@ -1,18 +1,19 @@
 
-i.icon.icon--l.icon--green.icon--circled.mdi.mdi--add-shopping-cart
+i.icon.icon--l.icon--green.icon--circled.mdi.mdi-cart-outline
 span.fs-headline &nbsp;รายการเบิกเวชภัณฑ์
 
-.grid
-    .grid__col3
-        lx-date-picker(model="orders.orders_date", ng-disabled="true")
-    .grid__col3
+div(flex-container="row", flex-gutter="24")
+    div(flex-item="3")
+        lx-text-field(label="วันที่เบิก")
+            input(type="text", ng-model="orders_date", ng-disabled="true")
+    div(flex-item="3")
         lx-text-field(label="เลขที่เอกสาร")
             input(type="text", ng-model="orders.orders_code", ng-disabled="true")
-.grid
-    .grid__col6
+div(flex-container="row", flex-gutter="24")
+    div(flex-item="6")
         lx-text-field(label="เจ้าหน้าที่เบิก")
             input(type="text", ng-model="orders.client_staff_name", ng-disabled="true")
-    .grid__col6
+    div(flex-item="6")
         lx-text-field(label="หน่วยงานที่เบิก")
             input(type="text", ng-model="orders.hospital", ng-disabled="true")
 
@@ -27,6 +28,8 @@ span.fs-headline &nbsp;รายการเบิกเวชภัณฑ์
                 th เบิก
                 th อนุมัติ
                 th Lot
+            tr
+                td(colspan="7").divider.divider--dark
         tbody
             tr.data-table__clickable-row(ng-repeat="p in products")
                 td {{$index+1}}
