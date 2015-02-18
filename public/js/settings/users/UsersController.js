@@ -1,11 +1,15 @@
 /**
  * User Controller
  */
-App.controller('UsersController', function ($scope, UsersService, LxNotificationService, LxDialogService) {
+App.controller('UsersController', function ($scope, UsersService, LxNotificationService,
+    LxDialogService) {
 
     $scope.isEdit = false;
     $scope.id = null;
 
+    /**
+     * Get users list
+     */
     $scope.getList = function () {
 
         UsersService.all()
@@ -23,6 +27,9 @@ App.controller('UsersController', function ($scope, UsersService, LxNotification
 
     };
 
+    /**
+     * Get users list
+     */
     $scope.getList();
 
     $scope.showModal = function () {
@@ -31,6 +38,9 @@ App.controller('UsersController', function ($scope, UsersService, LxNotification
 
     };
 
+    /**
+     * Save users
+     */
     $scope.save = function () {
 
         if ($scope.isEdit) {
@@ -96,6 +106,9 @@ App.controller('UsersController', function ($scope, UsersService, LxNotification
 
     };
 
+    /**
+     * Remove user
+     */
     $scope.remove = function (id, fullname) {
         LxNotificationService.confirm('ยืนยันการลบ', 'คุณต้องการลบผู้ใช้ [' + fullname + '] ใช่หรือไม่?', {
             ok: 'ใช่, ฉันต้องการลบ',
@@ -119,6 +132,9 @@ App.controller('UsersController', function ($scope, UsersService, LxNotification
         });
     };
 
+    /**
+     * Show edit user
+     */
     $scope.edit = function (item) {
 
         $scope.fullname = item.fullname;
@@ -132,6 +148,9 @@ App.controller('UsersController', function ($scope, UsersService, LxNotification
 
     };
 
+    /**
+     * Clear data when dialog was closing
+     */
     $scope.closingDialog = function () {
         $scope.fullname = null;
         $scope.username = null;

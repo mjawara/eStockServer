@@ -1,0 +1,46 @@
+
+i.icon.icon--l.icon--green.icon--circled.mdi.mdi--add-shopping-cart
+span.fs-headline &nbsp;รายการเบิกเวชภัณฑ์
+
+.grid
+    .grid__col3
+        lx-date-picker(model="orders.orders_date", ng-disabled="true")
+    .grid__col3
+        lx-text-field(label="เลขที่เอกสาร")
+            input(type="text", ng-model="orders.orders_code", ng-disabled="true")
+.grid
+    .grid__col6
+        lx-text-field(label="เจ้าหน้าที่เบิก")
+            input(type="text", ng-model="orders.client_staff_name", ng-disabled="true")
+    .grid__col6
+        lx-text-field(label="หน่วยงานที่เบิก")
+            input(type="text", ng-model="orders.hospital", ng-disabled="true")
+
+.data-table-container
+    table.data-table.data-table--has-secondary
+        thead
+            tr
+                th #
+                th รายการ
+                th หน่วย
+                th ราคา
+                th เบิก
+                th อนุมัติ
+                th Lot
+        tbody
+            tr.data-table__clickable-row(ng-repeat="p in products")
+                td {{$index+1}}
+                td {{p.name}}
+                td {{p.units}}
+                td {{p.cost | number}}
+                td {{p.qty | number}}
+                td {{p.approve_qty | number}}
+                td {{p.lot_name}}
+    br
+    br
+    .grid
+        .grid__col8
+            | &nbsp;
+        .grid__col4
+            | &nbsp;
+            a(href="#!/", lx-ripple).btn.btn--m.btn--grey.btn--raised กลับหน้าหลัก

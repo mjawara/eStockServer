@@ -101,6 +101,7 @@ exports.detail = function (req, res) {
  * Update purchase
  */
 exports.update = function (req, res) {
+
     var db = req.db;
     var purchase = req.body.purchase;
     var drugs = req.body.drugs;
@@ -133,8 +134,6 @@ exports.remove = function (req, res) {
     var db = req.db;
     var id = req.body.id;
 
-    console.log(id);
-
     Purchases.removePurchase(db, id)
         .then(function () {
             return Purchases.removeOldProducts(db, id);
@@ -149,4 +148,75 @@ exports.remove = function (req, res) {
                 msg: err
             });
         });
+};
+
+/**
+ * Import data
+ */
+exports.import = function (req, res) {
+    var db = req.db;
+    var id = req.body.id;
+    var _purchase = null;
+    var _products = null;
+
+    // Get purchase detail
+    Purchases.checkImported(db, id)
+        .then(function (isImported) {
+            if (isImported) {
+                res.send({
+                    ok: false,
+                    msg: 'รายการนี้ถูกนำเข้าไปแล้ว ไม่สามารถนำเข้าได้อีก'
+                });
+            } else {
+                var promise = Purchases.getImportData(db, id);
+
+                promise.then(function (data) {
+
+                    Q.forEach(data, function (v) {
+                        var defer = Q.defer();
+
+                        Purchases.doImport(db, v)
+                            .then(function () {
+                                // Success
+                                defer.resolve();
+                            }, function (err) {
+                                console.log(err);
+                                defer.reject(err);
+                            });
+
+                        return defer.promise;
+
+                    }).then(function (resolve) {
+                        Purchases.changeImportStatus(db, id)
+                            .then(function () {
+                                res.send({
+                                    ok: true
+                                });
+                            }, function (err) {
+                                console.log(err);
+                                res.send({
+                                    ok: false,
+                                    msg: err
+                                });
+                            });
+
+                    });
+
+                }, function (err) {
+
+                    console.log(err);
+                    res.send({
+                        ok: false,
+                        msg: err
+                    });
+
+                });
+            }
+        }, function (err) {
+            res.send({
+                ok: false,
+                msg: err
+            });
+        });
+
 };

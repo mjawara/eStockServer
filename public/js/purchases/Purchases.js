@@ -1,4 +1,5 @@
 App.config(function ($routeProvider, $locationProvider) {
+
     $locationProvider.hashPrefix('!');
     
     $routeProvider
@@ -13,6 +14,10 @@ App.config(function ($routeProvider, $locationProvider) {
         .when('/edit/:id', {
             templateUrl: '/partials/purchases/edit',
             controller: 'EditController'
+        })
+        .when('/detail/:id', {
+            templateUrl: '/partials/purchases/detail',
+            controller: 'DetailController'
         })
         .otherwise({
             redirectTo: '/'

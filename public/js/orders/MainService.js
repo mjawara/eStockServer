@@ -1,4 +1,4 @@
-App.factory('OrdersService', function ($q, $http) {
+App.factory('MainService', function ($q, $http) {
 
     return {
         getOrderList: function (opt) {

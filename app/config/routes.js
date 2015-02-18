@@ -3,7 +3,6 @@ var Main = require('../controllers/Main'),
     Clients = require('../controllers/Clients'),
     Suppliers = require('../controllers/Suppliers'),
     Products = require('../controllers/Products'),
-
     Purchases = require('../controllers/Purchases'),
     Peroids = require('../controllers/Peroids'),
     Users = require('../controllers/Users');
@@ -15,33 +14,29 @@ module.exports = function (app) {
         res.render('orders/Index');
     });
 
-    app.get('/orders/:id([0-9]+)', function (req, res) {
-        res.render('orders/Detail', {
-            orderId: req.params.id
-        });
+    app.get('/partials/orders/main', function (req, res) {
+        res.render('orders/partials/Main');
     });
+
+    app.get('/partials/orders/approve', function (req, res) {
+        res.render('orders/partials/Approve');
+    });
+
+    app.get('/partials/orders/detail', function (req, res) {
+        res.render('orders/partials/Detail');
+    });
+
     // Cancel order request
     app.post('/orders/cancel', Orders.doCancel);
     // Approve order request
     app.post('/orders/approve', Orders.saveApprove);
-
     app.post('/orders/lots', Orders.getLots);
-
     app.post('/orders/detail', Orders.getDetail);
-
     app.post('/orders/list', Orders.getList);
+    app.get('/orders/save', Main.saveOrders);
 
     app.get('/products', Main.products);
     app.post('/products/list', Products.getList);
-
-    app.get('/orders/save', Main.saveOrders);
-
-
-    /** Purchases drug **/
-
-    app.get('/purchases', function (req, res) {
-        res.render('purchases/Index');
-    });
 
     /** Clients setting **/
     app.get('/clients', function (req, res) {
@@ -108,12 +103,21 @@ module.exports = function (app) {
         res.render('purchases/partials/Edit');
     });
 
+    app.get('/partials/purchases/detail', function (req, res) {
+        res.render('purchases/partials/Detail');
+    });
+
+    app.get('/purchases', function (req, res) {
+        res.render('purchases/Index');
+    });
+
     // Save purchase
     app.post('/purchases/save', Purchases.doSave);
     app.post('/purchases/list', Purchases.getList);
     app.post('/purchases/edit/detail', Purchases.detail);
     app.put('/purchases', Purchases.update);
     app.post('/purchases/remove', Purchases.remove);
+    app.post('/purchases/import', Purchases.import);
 
     //Settings
     app.get('/settings', function (req, res) {
@@ -126,21 +130,9 @@ module.exports = function (app) {
         res.render('settings/peroids/Peroids');
     });
 
-    /**
-     * POST  /settings/peroids/all
-     */
     app.post('/settings/peroids/all', Peroids.all);
-    /**
-     * POST  /settings/peroids/save
-     */
     app.post('/settings/peroids/save', Peroids.save);
-    /**
-     * POST  /settings/peroids/remove
-     */
     app.post('/settings/peroids/remove', Peroids.remove);
-    /**
-     * POST  /settings/peroids/update
-     */
     app.post('/settings/peroids/update', Peroids.update);
     /**
      * User management

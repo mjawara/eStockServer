@@ -1,0 +1,44 @@
+.fs-headline
+    i.mdi.mdi--add-shopping-cart.icon.icon--l.icon--green.icon--circled
+    | &nbsp;แก้ไขการจัดซื้อ
+form(name="frmPurchases")
+    .grid
+        .grid__col2
+            lx-text-field(label="เลขที่สั่งซื้อ")
+                input(type="text", ng-model="purchaseCode", ng-disabled="true")
+        .grid__col3
+            lx-date-picker(model="purchaseDate", label="วันที่สั่งซื้อ")
+    .grid
+        .grid__col6
+            lx-text-field(label="บริษัท/ร้านค้า")
+                input(type="text", ng-model="supplier_name", ng-disabled="true")
+        .grid__col6
+            lx-text-field(label="ชื่อผู้ติดต่อ")
+                input(type="text", ng-model="contact_name", ng-disabled="true")
+    br
+    .fs-subhead
+        i.mdi.mdi--shopping-cart
+        | &nbsp;รายการเวชภัณฑ์
+
+    .data-table-container
+        table.data-table.data-table--has-secondary
+            thead
+                tr
+                    th #
+                    th รายการเวชภัณฑ์
+                    th หน่วย
+                    th ราคา
+                    th จำนวน
+                    th รวม
+            tbody
+                tr(ng-repeat="d in drugs").data-table__clickable-row
+                    td {{$index+1}}
+                    td {{d.name}}
+                    td {{d.units}}
+                    td {{d.cost | currency}}
+                    td {{d.qty | number}}
+                    td {{d.qty*d.cost | currency}}
+
+    br
+    a(href="#!/").btn.btn--m.btn--raised.btn--grey Back
+

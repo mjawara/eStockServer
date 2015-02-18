@@ -156,3 +156,96 @@ exports.removePurchase = function (db, id) {
     return q.promise;
 
 };
+
+/**
+ * Get purchase detail for import
+ */
+exports.getImportData = function (db, id) {
+    /*
+    select p.code, p.purchase_date, s.name, pd.product_code, pd.qty
+from purchases_detail as pd
+left join purchases as p on p.id=pd.purchase_id
+left join suppliers as s on s.id=p.supplier_id
+where pd.purchase_id=4
+     */
+    var q = Q.defer();
+
+    db('purchases_detail as pd')
+        .select('p.code', 'p.purchase_date', 'p.supplier_id', 'pd.product_code', 'pd.qty')
+        .leftJoin('purchases as p', 'p.id', 'pd.purchase_id')
+        //.leftJoin('suppliers as s', 's.id', 'p.supplier_id')
+        .where('pd.purchase_id', id)
+        .exec(function (err, rows) {
+            if (err) q.reject(err);
+            else q.resolve(rows);
+        });
+
+    return q.promise;
+
+};
+/**
+ * Import data
+ */
+exports.doImport = function (db, item) {
+
+    var q = Q.defer();
+
+    db('stock_cards')
+        .insert({
+            ccode: item.code,
+            supplier_id: item.supplier_id,
+            cdate: moment(item.purchase_date).format('YYYY-MM-DD HH:mm:ss'),
+            product_code: item.product_code,
+            qty_in: item.qty,
+            created_at: moment().format('YYYY-MM-DD HH:mm:ss')
+        })
+        .exec(function (err) {
+            if (err) q.reject(err);
+            else q.resolve();
+        });
+
+    return q.promise;
+
+};
+
+/**
+ * Update purchase status to imported
+ */
+exports.changeImportStatus = function (db, id) {
+
+    var q = Q.defer();
+
+    db('purchases')
+        .where('id', id)
+        .update({
+            is_imported: 'Y'
+        })
+        .exec(function (err) {
+            if (err) q.reject(err);
+            else q.resolve();
+        });
+
+    return q.promise;
+};
+
+/**
+ * Check is imported
+ */
+exports.checkImported = function (db, id) {
+
+    var q = Q.defer();
+
+    db('purchases')
+        .count('* as total')
+        .where('id', id)
+        .where('is_imported', 'Y')
+        .exec(function (err, rows) {
+            if (err) q.reject(err);
+            else {
+                var isImported = rows[0].total > 0 ? true : false;
+                q.resolve(isImported);
+            }
+        });
+
+    return q.promise;
+};

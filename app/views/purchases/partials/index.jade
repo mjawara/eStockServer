@@ -1,6 +1,17 @@
 .fs-headline
     | ประวัติการจัดซื้อเวชภัณฑ์
-    
+br
+.grid
+    .grid__col7
+        lx-text-field(label="พิมพ์รหัสสั่งซื้อเพื่อค้นหา...", fixed-label="true", icon="search")
+            input(type="text", ng-model="query")
+    .grid__col2
+        button.btn.btn--m.btn--blue.btn--raised(lx-ripple) ค้นหา
+    .grid__col3
+        .switch
+            input(type="checkbox")#isImported.switch__input
+            label(for="isImported").switch__label นำเข้าแล้ว
+            span.switch__help แสดงเฉพาะรายการที่นำเข้าแล้ว
 .data-table-container
     table.data-table.data-table--has-secondary
         thead
@@ -10,14 +21,18 @@
                 th เลขที่ใบสั่งซื้อ
                 th บริษัท/ร้านค้า
                 th ติดต่อ
+                th นำเข้า
                 th
         tbody
-            tr(ng-repeat="p in purchases")
+            tr(ng-repeat="p in purchases | filter: query").data-table__clickable-row
                 td {{$index+1}}
                 td {{p.purchase_date | toThaiDate }}
                 td {{p.code}}
                 td {{p.supplier_name}}
                 td {{p.contact_name}}
+                td 
+                    i.icon.icon--l.icon--green.icon--flat.mdi.mdi--check(ng-if="p.is_imported == 'Y'")
+                    i.icon.icon--l.icon--red.icon--flat.mdi.mdi--remove(ng-if="p.is_imported == 'N'")
                 td 
                     lx-dropdown(position="right", from-top)
                         button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)

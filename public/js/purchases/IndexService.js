@@ -62,6 +62,29 @@ App.factory('IndexService', function ($q, $http) {
                 });
 
             return q.promise;
+        },
+
+        doImport: function (id) {
+            var q = $q.defer();
+
+            var options = {
+                url: '/purchases/import',
+                method: 'POST',
+                data: {
+                    id: id
+                }
+            };
+
+            $http(options)
+                .success(function (data) {
+                    q.resolve(data);
+                })
+                .error(function (data, status) {
+                    console.log('Status code: ' + status);
+                    q.reject();
+                });
+
+            return q.promise;
         }
     };
 

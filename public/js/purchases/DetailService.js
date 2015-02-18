@@ -4,23 +4,27 @@
 App.factory('DetailService', function ($q, $http) {
 
     return {
-        getDetail: function (orderId) {
+        getPurchase: function (id) {
             var q = $q.defer();
 
             var options = {
+                url: '/purchases/edit/detail',
                 method: 'POST',
-                url: '/orders/detail',
                 data: {
-                    id: orderId
+                    id: id
                 }
             };
 
             $http(options)
                 .success(function (data) {
-                    q.resolve(data);
+                    if (data.ok) q.resolve(data);
+                    else {
+                        q.reject(data.msg);
+                    }
                 })
-                .error(function (err) {
-                    q.reject(err);
+                .error(function (data, status) {
+                    console.log('Error code: ' + status);
+                    q.reject();
                 });
 
             return q.promise;
