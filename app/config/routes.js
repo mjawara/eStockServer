@@ -4,7 +4,7 @@ var Main = require('../controllers/Main'),
     Suppliers = require('../controllers/Suppliers'),
     Products = require('../controllers/Products'),
     Purchases = require('../controllers/Purchases'),
-    Peroids = require('../controllers/Peroids'),
+    Period = require('../controllers/Period'),
     Users = require('../controllers/Users');
 
 var Auth = require('../models/Auth');
@@ -128,14 +128,14 @@ module.exports = function (app, auth) {
     /**
      * GET  /partials/settings/years
      */
-    app.get('/settings/peroids', auth, function (req, res) {
-        res.render('settings/peroids/Peroids');
+    app.get('/settings/period', auth, function (req, res) {
+        res.render('settings/periods/Period');
     });
 
-    app.post('/settings/peroids/all', Peroids.all);
-    app.post('/settings/peroids/save', Peroids.save);
-    app.post('/settings/peroids/remove', Peroids.remove);
-    app.post('/settings/peroids/update', Peroids.update);
+    app.post('/settings/period/all', Period.all);
+    app.post('/settings/period/save', Period.save);
+    app.post('/settings/period/remove', Period.remove);
+    app.post('/settings/period/update', Period.update);
     /**
      * User management
      */

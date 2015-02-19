@@ -6,7 +6,7 @@ br
 div(flex-container="row")
     div(flex-item="8")
         br
-        lx-text-field(label="ระบุเลขที่ใบขอเบิก", fixed-label="true", icon="search")
+        lx-text-field(label="ระบุเลขที่ใบขอเบิก", fixed-label="true", icon="magnify")
             input(type="text", ng-model="query")
     div(flex-item="2")
         br
@@ -36,7 +36,7 @@ div(flex-container="row")
                 th วันที่
                 th เลขที่ใบเบิก
                 th หน่วยบริการ
-                th ราคา
+                //- th ราคา
                 th เจ้าหน้าที่
                 th
             tr
@@ -47,7 +47,7 @@ div(flex-container="row")
                 td {{ o.orders_date | toThaiDate }}
                 td {{ o.orders_code }}
                 td {{ o.hospcode }} {{ o.hospname }}
-                td 123,2220.00
+                //- td 123,2220.00
                 td {{ o.client_staff_name }}
                 td
                     lx-dropdown(position="right", from-top)

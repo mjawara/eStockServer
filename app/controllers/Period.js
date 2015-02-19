@@ -1,13 +1,13 @@
 /**
  * Peroids controller
  */
-var Peroids = require('../models/peroids');
+var Period = require('../models/period');
 
 exports.all = function (req, res) {
 
     var db = req.db;
 
-    Peroids.all(db)
+    Period.all(db)
         .then(function (rows) {
             res.send({
                 ok: true,
@@ -31,7 +31,7 @@ exports.save = function (req, res) {
     year.start_date = req.body.s;
     year.end_date = req.body.e;
 
-    Peroids.save(db, year)
+    Period.save(db, year)
         .then(function (id) {
             res.send({
                 ok: true,
@@ -50,7 +50,7 @@ exports.remove = function (req, res) {
     var db = req.db;
     var id = req.body.id;
 
-    Peroids.remove(db, id)
+    Period.remove(db, id)
         .then(function (id) {
             res.send({
                 ok: true
@@ -72,7 +72,7 @@ exports.update = function (req, res) {
     year.end_date = req.body.e;
     year.id = req.body.id;
 
-    Peroids.update(db, year)
+    Period.update(db, year)
         .then(function () {
             res.send({
                 ok: true

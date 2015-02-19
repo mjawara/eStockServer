@@ -2,14 +2,14 @@
  * Year controller
  */
 
-App.controller('PeroidsController', function ($scope, PeroidsService, LxNotificationService,
+App.controller('PeriodController', function ($scope, PeriodService, LxNotificationService,
     LxDialogService) {
 
     $scope.id = null;
 
     $scope.getYearList = function () {
 
-        PeroidsService.all()
+        PeriodService.all()
             .then(function (data) {
                 if (data.ok) {
                     $scope.years = data.rows;
@@ -33,8 +33,6 @@ App.controller('PeroidsController', function ($scope, PeroidsService, LxNotifica
 
     $scope.save = function () {
 
-        console.log($scope.id);
-
         if (!$scope.name || !$scope.startDate || !$scope.endDate) {
             LxNotificationService.error('กรุณาระบุข้อมูลให้ครบถ้วน');
         } else {
@@ -46,9 +44,9 @@ App.controller('PeroidsController', function ($scope, PeroidsService, LxNotifica
             var promise = null;
 
             if ($scope.id) {
-                promise = PeroidsService.update($scope.id, year);
+                promise = PeriodService.update($scope.id, year);
             } else {
-                promise = PeroidsService.save(year);
+                promise = PeriodService.save(year);
             }
 
             promise.then(function (data) {
@@ -89,7 +87,7 @@ App.controller('PeroidsController', function ($scope, PeroidsService, LxNotifica
             cancel: 'ไม่ใช่'
         }, function (resp) {
             if (resp) {
-                PeroidsService.delete(id)
+                PeriodService.delete(id)
                     .then(function (data) {
                         if (data.ok) {
                             $scope.years.splice(idx, 1); // Remove year

@@ -3,11 +3,11 @@ extends ../layouts/Main
 block content
     
     .fs-headline
-        i.icon.icon--l.icon--green.icon--circled.mdi.mdi--settings
+        i.icon.icon--l.icon--deep-purple.icon--circled.mdi.mdi-security-network
         | &nbsp;กำหนดค่าการใช้งานระบบ
     br
-    .grid
-        .grid__col4
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="4")
 
             .card
                 div(class="p+")
@@ -17,9 +17,9 @@ block content
                         p
                             | กำหนดช่วงปีงบประมาณที่ดำเนินงาน เพื่อใช้ในการกำหนดระยะเวลาในการทำรายงาน หรือการทำสต๊อกการ์ด (Stockcard)
                 .card__actions
-                    a.btn.btn--l.btn--green.btn--raised(lx-ripple, href="/settings/peroids") จัดการข้อมูลปีงบ
+                    a(href="/settings/period", lx-ripple).btn.btn--l.btn--green.btn--raised จัดการข้อมูลปีงบ
                             
-        .grid__col4
+        div(flex-item="4")
 
             .card
                 div(class="p+")
@@ -33,7 +33,7 @@ block content
                     a.btn.btn--l.btn--blue.btn--raised(href="/settings/users", lx-ripple) จัดการผู้ใช้งานระบบ
                             
                     
-        .grid__col4
+        div(flex-item="4")
 
             .card
                 div(class="p+")

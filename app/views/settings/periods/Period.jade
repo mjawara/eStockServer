@@ -1,14 +1,14 @@
 extends ../../layouts/Main
 
 block scripts
-    script(src="../js/settings/peroids/PeroidsController.js")
-    script(src="../js/settings/peroids/PeroidsService.js")
+    script(src="../js/settings/period/PeriodController.js")
+    script(src="../js/settings/period/PeriodService.js")
 
 block content
-    div(ng-controller="PeroidsController")
+    div(ng-controller="PeriodController")
         
         span.fs-headline.display-block
-            i.icon.icon--l.icon--green.icon--circled.mdi.mdi--contacts
+            i.icon.icon--l.icon--green.icon--circled.mdi.mdi-calendar
             | &nbsp;ปีงบประมาณ
 
         .grid
@@ -20,7 +20,9 @@ block content
                                 th #
                                 th ปีงบประมาณ
                                 th ช่วงเวลา
-                                th 
+                                th
+                            tr
+                                td(colspan="4").divider.divider--dark
                         tbody
                             tr(ng-repeat="y in years")
                                 td {{$index+1}}
@@ -30,28 +32,28 @@ block content
                                 td
                                     lx-dropdown(position="right", from-top)
                                         button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
-                                            i.mdi.mdi--settings-ethernet
+                                            i.mdi.mdi-dots-vertical
                                         lx-dropdown-menu
                                             ul
                                                 li
                                                     a.dropdown-link(ng-click="edit($index)")
-                                                        i.mdi.mdi--edit
+                                                        i.mdi.mdi-pencil
                                                         | &nbsp;แก้ไข
                                                 li
                                                     a.dropdown-link(ng-click="remove($index, y.id)")
-                                                        i.mdi.mdi--cancel
+                                                        i.mdi.mdi-close
                                                         | &nbsp;ลบรายการ
         br
-        .grid
-            .grid__col10
+        div(flex-container="row", flex-gutter="24")
+            div(flex-item="10")
                 | &nbsp;
                     
-            .grid__col2
+            div(flex-item="2")
                 button(lx-ripple, ng-click="showModal()").btn.btn--l.btn--green.btn--fab
-                    i.mdi.mdi--add
+                    i.mdi.mdi-plus
                 | &nbsp;
                 a(href="#!/", lx-ripple).btn.btn--l.btn--grey.btn--fab
-                    i.mdi.mdi--home
+                    i.mdi.mdi-home
             
         lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
             div.dialog__header
@@ -60,21 +62,21 @@ block content
                         | เพิ่ม/แก้ไขข้อมูลปีงบประมาณ
                     div.toolbar__right
                         button.btn.btn--l.btn--white.btn--icon(lx-ripple, lx-dialog-close)
-                            i.mdi.mdi--cancel
+                            i.mdi.mdi-close
                             
             div.dialog__content
                 div.card
                     div(class="p+")
                         .fs-subheadline
-                            i.mdi.mdi--edit
+                            i.mdi.mdi-pencil
                             | &nbsp;ข้อมูลปีงบประมาณ
-                        .grid
-                            .grid__col3
+                        div(flex-container="row", flex-gutter="24")
+                            div(flex-item="3")
                                 lx-text-field(label="ปีงบประมาณ")
                                     input(type="text", ng-model="name")
-                            .grid__col3
+                            div(flex-item="3")
                                 lx-date-picker(model="startDate", label="ตั้งแต่", locale="th")
-                            .grid__col3
+                            div(flex-item="3")
                                 lx-date-picker(model="endDate", label="ตั้งแต่", locale="th")        
                 div.dialog__actions
                     button.btn.btn--m.btn--blue.btn--raised(lx-ripple, ng-click="save()") บันทึก

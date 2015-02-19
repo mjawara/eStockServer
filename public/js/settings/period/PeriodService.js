@@ -1,7 +1,7 @@
 /**
  * Year Service
  */
-App.factory('PeroidsService', function ($q, $http) {
+App.factory('PeriodService', function ($q, $http) {
 
 
     return {
@@ -10,7 +10,7 @@ App.factory('PeroidsService', function ($q, $http) {
             var q = $q.defer();
 
             var options = {
-                url: '/settings/peroids/all',
+                url: '/settings/period/all',
                 method: 'POST'
             };
 
@@ -30,7 +30,7 @@ App.factory('PeroidsService', function ($q, $http) {
             var q = $q.defer();
 
             var options = {
-                url: '/settings/peroids/detail',
+                url: '/settings/period/detail',
                 method: 'POST',
                 data: {
                     id: id
@@ -52,7 +52,7 @@ App.factory('PeroidsService', function ($q, $http) {
             var q = $q.defer();
 
             var options = {
-                url: '/settings/peroids/save',
+                url: '/settings/period/save',
                 method: 'POST',
                 data: {
                     n: year.n,
@@ -76,7 +76,7 @@ App.factory('PeroidsService', function ($q, $http) {
             var q = $q.defer();
 
             var options = {
-                url: '/settings/peroids/remove',
+                url: '/settings/period/remove',
                 method: 'POST',
                 data: {
                     id: id
@@ -99,7 +99,7 @@ App.factory('PeroidsService', function ($q, $http) {
             var q = $q.defer();
 
             var options = {
-                url: '/settings/peroids/update',
+                url: '/settings/period/update',
                 method: 'POST',
                 data: {
                     id: id,

@@ -4,7 +4,7 @@ exports.all = function (db) {
 
     var q = Q.defer();
 
-    db('peroids')
+    db('periods')
         .orderBy('name', 'desc')
         .exec(function (err, rows) {
             if (err) q.reject(err);
@@ -20,7 +20,7 @@ exports.save = function (db, year) {
 
     var q = Q.defer();
 
-    db('peroids')
+    db('periods')
         .insert(year)
         .returning('id')
         .exec(function (err, id) {
@@ -36,7 +36,7 @@ exports.update = function (db, year) {
 
     var q = Q.defer();
 
-    db('peroids')
+    db('periods')
         .update({
             name: year.name,
             start_date: year.start_date,
@@ -56,7 +56,7 @@ exports.remove = function (db, id) {
 
     var q = Q.defer();
 
-    db('peroids')
+    db('periods')
         .where('id', id)
         .delete()
         .exec(function (err) {
