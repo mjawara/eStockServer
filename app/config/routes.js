@@ -37,8 +37,8 @@ module.exports = function (app, auth) {
     app.post('/orders/list', Orders.getList);
     app.get('/orders/save', Main.saveOrders);
 
-    app.get('/products', Main.products);
-    app.post('/products/list', Products.getList);
+    app.get('/api/products', Main.products);
+    app.post('/api/products/list', Products.getList);
 
     /** Clients setting **/
     app.get('/clients', auth, function (req, res) {
@@ -148,6 +148,19 @@ module.exports = function (app, auth) {
     app.post('/settings/users/remove', Users.remove);
     app.post('/settings/users/update', Users.update);
 
+    /**
+     * Product resources
+     */
+    app.get('/products', auth, function (req, res) {
+        res.render('products/Products');
+    });
+
+    app.get('/partials/products/main', auth, function (req, res) {
+        res.render('products/partials/Main');
+    });
+
+    app.post('/products/list', Products.getList);
+    app.post('/products/save', Products.save);
 
     /** login **/
     app.get('/login', function (req, res) {

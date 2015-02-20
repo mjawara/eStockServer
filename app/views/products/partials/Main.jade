@@ -1,0 +1,93 @@
+div(flex-container="row")
+    div(flex-item="11")
+        .fs-headline.display-block
+            i.icon.icon--l.icon--green.icon--circled.mdi.mdi-cart
+            | &nbsp; รายการเวชภัณฑ์
+    div(flex-item="1")
+        button.btn.btn--l.btn--red.btn--fab(lx-ripple, ng-click="showModal()")
+            i.mdi.mdi-plus
+
+.data-table-container
+    table.data-table.data-table--has-secondary
+        thead
+            tr
+                th #
+                th รหัส
+                th รายการ
+                th หน่วย
+                th ต้นทุน
+                th ขาย
+                th เหลือ
+                //th รหัสมาตรฐาน
+                th
+            tr
+                td(colspan="8").divider.divider--dark
+
+        tbody
+            tr.data-table__clickable-row(ng-repeat="p in products")
+                td {{ $index + 1 }}
+                td {{ p.code }}
+                td {{ p.name }}
+                td {{ p.units }}
+                td {{ p.cost | number }}
+                td {{ p.price | number }}
+                td
+                //td {{ p.stdcode }}
+                td
+                    lx-dropdown(position="right", from-top)
+                        button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                            i.mdi.mdi-dots-vertical
+
+                        lx-dropdown-menu
+                            ul
+                                li
+                                    a.dropdown-link
+                                        i.mdi.mdi-pencil
+                                        | &nbsp; แก้ไขรายการ
+                                li
+                                    a.dropdown-link
+                                        i.mdi.mdi-close
+                                        | &nbsp; ลบรายการ
+                                li
+                                    a.dropdown-link
+                                        i.mdi.mdi-block-helper
+                                        | &nbsp; ยกเลิกการใช้งาน
+
+lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
+    .dialog__header
+        .toolbar.bgc-indigo-500
+            span.toolbar__label.tc-white.fs-title
+                | เพิ่ม/แก้ไขรายการเวชภัณฑ์
+            .toolbar__right
+                button.btn.btn--l.btn--white.btn--icon(lx-ripple, lx-dialog-close=)
+                    i.mdi.mdi-close
+
+    .dialog__content
+        div(class="p++")
+            div(flex-container="row", flex-gutter="24")
+                div(flex-item="3")
+                    lx-text-field(label="รหัสเวชภัณฑ์")
+                        input(type="text", ng-model="code")
+                div(flex-item="9")
+                    lx-text-field(label="ชื่อเวชภัณฑ์")
+                        input(type="text", ng-model="name")
+                div(flex-item="3")
+                    lx-text-field(label="หน่วย")
+                        input(type="text", ng-model="units")
+            div(flex-container="rows", flex-gutter="24")
+                div(flex-item="6")
+                    lx-text-field(label="ราคาทุน")
+                        input(type="text", ng-model="cost")
+                div(flex-item="6")
+                    lx-text-field(label="ราคาขาย")
+                        input(type="text", ng-model="price")
+            div(flex-container="rows", flex-gutter="24")
+                div(flex-item="12")
+                    lx-text-field(label="รหัสมาตรฐาน")
+                        input(type="text", ng-model="stdcode")
+    .dialog__actions
+        button.btn.btn--m.btn--red.btn--raised(lx-ripple, lx-dialog-close)
+            | ปิดหน้าต่าง
+        | &nbsp;
+        button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="save()")
+            | บันทึกรายการ

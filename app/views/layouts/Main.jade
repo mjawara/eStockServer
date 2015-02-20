@@ -23,8 +23,7 @@ html(lang="en")
             .toolbar__right
                 lx-dropdown(position="right", from-top)
                     button(lx-ripple, lx-dropdown-toggle).btn.btn--white.btn--l.btn--icon
-                        i.mdi.mdi-dots-vertical
-
+                        i.mdi.mdi-bell-ring
                     lx-dropdown-menu
                         ul
                             li
@@ -32,7 +31,19 @@ html(lang="en")
                             li
                                 a(href="/logout").dropdown-link
                                     i.mdi.mdi-logout
-                                    | &nbsp; Log out
+                                    | &nbsp; ออกจากระบบ
+                lx-dropdown(position="right", from-top)
+                    button(lx-ripple, lx-dropdown-toggle).btn.btn--white.btn--l.btn--icon
+                        i.mdi.mdi-settings
+                    lx-dropdown-menu
+                        ul
+                            li
+                                a.dropdown-link.dropdown-link--is-header Tools
+                            li
+                                a(href="/logout").dropdown-link
+                                    i.mdi.mdi-power
+                                    | &nbsp; ออกจากระบบ
+
 
         div(flex-container="row")
             div(flex-item="3")
@@ -76,7 +87,7 @@ html(lang="en")
                     li.list-row.list-row--has-primary.list-row--has-separator
                         .list-primary-tile
                             a(href="/settings")
-                                i.icon.icon--l.icon--deep-purple.icon--circled.mdi.mdi-security
+                                i.icon.icon--l.icon--deep-purple.icon--circled.mdi.mdi-settings
                         .list-content-tile.list-content-tile--two-lines
                             strong Settings
                             span กำหนดค่าระบบ
