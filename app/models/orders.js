@@ -149,3 +149,28 @@ exports.doCancel = function(db, orderId) {
 
     return q.promise;
 };
+
+/**
+ * Import data
+ */
+exports.doImport = function (db, item) {
+
+    var q = Q.defer();
+
+    db('stock_cards')
+        .insert({
+            ccode: item.code,
+            hospcode: item.hospcode,
+            cdate: moment(item.purchase_date).format('YYYY-MM-DD HH:mm:ss'),
+            product_code: item.product_code,
+            qty_out: item.qty,
+            created_at: moment().format('YYYY-MM-DD HH:mm:ss')
+        })
+        .exec(function (err) {
+            if (err) q.reject(err);
+            else q.resolve();
+        });
+
+    return q.promise;
+
+};

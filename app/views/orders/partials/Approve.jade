@@ -99,9 +99,11 @@ lx-dialog.dialog.dialog--l#mdlApprove
                                 | {{$choice.lot_name}}
                 div(flex-container="row", flex-gutter="24")
                     div(flex-item="3")
-                        lx-date-picker(label="วันผลิต", model="mfd", ng-disabled="true")
+                        lx-text-field(label="วันผลิต", ng-disabled="true")
+                            input(type="text", ng-model="mfd")
                     div(flex-item="3")
-                        lx-date-picker(label="วันหมดอายุ", model="expd", ng-disabled="true")
+                        lx-text-field(label="วันหมดอายุ", ng-disabled="true")
+                            input(type="text", ng-model="expd")
     .dialog__actions
         button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doAddApproveItem()") บันทึก
         | &nbsp;

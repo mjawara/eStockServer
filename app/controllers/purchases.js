@@ -2,8 +2,9 @@
  * Purchase model
  */
 
-var Purchases = require('../models/purchases.js'),
+var Purchases = require('../models/Purchases'),
     _ = require('lodash');
+
 var Q = require('q');
 
 require('q-foreach')(Q);

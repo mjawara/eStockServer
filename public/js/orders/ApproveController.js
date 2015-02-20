@@ -103,8 +103,8 @@ App.controller('ApproveController', function ($scope, $location, $routeParams, $
             var lot = $scope.lots[idx];
             $scope.lot_id = lot.lot_id;
             $scope.lot_name = lot.lot_name;
-            $scope.expd = lot.expd;
-            $scope.mfd = lot.mfd;
+            $scope.expd = $filter('toThaiDate')(lot.expd);
+            $scope.mfd = $filter('toThaiDate')(lot.mfd);
         }
 
     };
@@ -158,7 +158,8 @@ App.controller('ApproveController', function ($scope, $location, $routeParams, $
             .then(function (data) {
                 if (data.ok) {
                     LxNotificationService.success('บันทึกรายการเสร็จเรียบร้อยแล้ว');
-                    window.location.href = '/orders';
+                    // Redirect to main page
+                    $location.path('/');
                 } else {
                     LxNotificationService.error(data.msg);
                 }
@@ -178,7 +179,7 @@ App.controller('ApproveController', function ($scope, $location, $routeParams, $
                 ApproveService.doCancel(orderId)
                     .then(function (data) {
                         if (data.ok) {
-                            $locatioin.path('/');
+                            $location.path('/');
                         } else {
                             console.log(data.msg);
                             LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
