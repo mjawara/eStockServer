@@ -1,0 +1,108 @@
+extends ../../layouts/Main
+
+block scripts
+    script(src="../js/settings/users/UsersController.js")
+    script(src="../js/settings/users/UsersService.js")
+
+block content
+    div(ng-controller="UsersController")
+        
+        span.fs-headline.display-block
+            i.icon.icon--l.icon--green.icon--circled.mdi.mdi-account-multiple
+            | &nbsp;รายชื่อผู้ใช้งานระบบ
+
+        div(flex-container="row", flex-gutter="24")
+            div(flex-item="12")
+                .data-table-container
+                    table.data-table.data-table--has-secondary
+                        thead
+                            tr
+                                th #
+                                th ชื่อ - สกุล
+                                th ชื่อผู้ใช้งาน
+                                th ผู้ดูแลระบบ
+                                th สถานะ
+                                th เข้าใช้งานล่าสุด
+                                th
+                            tr
+                                td(colspan="7").divider.divider--dark
+                        tbody
+                            tr(ng-repeat="u in users")
+                                td {{$index+1}}
+                                td {{u.fullname}}
+                                td {{u.username}}    
+                                td
+                                    i.icon.icon--l.icon--green.icon--flat.mdi.mdi-check(ng-if="u.is_admin == 'Y'")
+                                    i.icon.icon--l.icon--red.icon--flat.mdi.mdi-close(ng-if="u.is_admin == 'N'")
+                                    
+                                td
+                                    i.icon.icon--l.icon--green.icon--flat.mdi.mdi-check(ng-if="u.is_active == 'Y'")
+                                    i.icon.icon--l.icon--red.icon--flat.mdi.mdi-close(ng-if="u.is_active == 'N'")
+                                
+                                td {{u.last_login | date: 'dd/MM/yyyy HH:mm:ss'}}
+                                td
+                                    lx-dropdown(position="right", from-top)
+                                        button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                                            i.mdi.mdi-dots-vertical
+                                        lx-dropdown-menu
+                                            ul
+                                                li
+                                                    a.dropdown-link(ng-click="edit(u)")
+                                                        i.mdi.mdi-pencil
+                                                        | &nbsp;แก้ไข
+                                                li
+                                                    a.dropdown-link(ng-click="remove(u.id, u.fullname)")
+                                                        i.mdi.mdi-account-remove
+                                                        | &nbsp;ลบรายการ
+        br
+        div(flex-container="row", flex-gutter="24")
+            div(flex-item="11")
+                | &nbsp;
+                    
+            div(flex-item="1")
+                button(lx-ripple, ng-click="showModal()").btn.btn--l.btn--green.btn--fab
+                    i.mdi.mdi-account-plus
+            
+        lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
+            div.dialog__header
+                div.toolbar.bgc-indigo-500(class="pl++")
+                    span.toolbar__label.tc-white.fs-title
+                        | เพิ่ม/แก้ไขข้อมูลผู้ใช้งาน
+                    div.toolbar__right
+                        button.btn.btn--l.btn--white.btn--icon(lx-ripple, lx-dialog-close)
+                            i.mdi.mdi-close
+                            
+            div.dialog__content
+                div.card
+                    div(class="p+")
+                        .fs-subheadline
+                            i.mdi.mdi-pencil
+                            | &nbsp;ข้อมูลผู้ใช้งานระบบ
+                        div(flex-container="row", flex-gutter="24")
+                            div(flex-item="3")
+                                lx-text-field(label="ชื่อผู้ใช้งาน")
+                                    input(type="text", ng-model="username", ng-disabled="isEdit")
+                            div(flex-item="9")
+                                lx-text-field(label="ชื่อ - สกุล")
+                                    input(type="text", ng-model="fullname")
+                        div(flex-container="row", flex-gutter="24")
+                            div(flex-item="6")
+                                lx-text-field(label="รหัสผ่าน")
+                                    input(type="password", ng-model="password", ng-disabled="isEdit")
+                            div(flex-item="6")
+                                lx-text-field(label="รหัสผ่าน (ยืนยัน)")
+                                    input(type="password", ng-model="password2", ng-disabled="isEdit")
+                        div(flex-container="row", flex-gutter="24")
+                            div(flex-item="6")
+                                input(type="checkbox", ng-model="isAdmin")#isAdmin.checkbox__input
+                                label(for="isAdmin").checkbox__label ผู้ดูแลระบบ
+                                span.checkbox__help เป็นผู้ดูแลระบบ      
+                        
+                            div(flex-item="6")
+                                input(type="checkbox", ng-model="isActive")#isActive.checkbox__input
+                                label(for="isActive").checkbox__label เปิดใช้งาน
+                                span.checkbox__help เปิด/ระงับการใช้งาน    
+                div.dialog__actions
+                    button.btn.btn--m.btn--blue.btn--raised(lx-ripple, ng-click="save()") บันทึก
+                    | &nbsp;
+                    button.btn.btn--m.btn--red.btn--raised(lx-ripple. lx-dialog-close) ปิดหน้าต่าง

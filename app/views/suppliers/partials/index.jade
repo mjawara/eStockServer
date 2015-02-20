@@ -11,6 +11,8 @@
                 th ที่อยู่
                 th เบอร์โทร
                 th
+            tr
+                td(colspan="6").divider.divider--dark
         tbody
             tr(ng-repeat="s in suppliers")
                 td {{$index+1}}
@@ -20,25 +22,25 @@
                 td {{s.telephone}}
                 td
                     lx-dropdown(position="right", from-top)
-                        button.btn.btn--l.btn--black.btn--icon(lx-ripple, lx-dropdown-toggle)
-                            i.mdi.mdi--more-vert
+                        button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                            i.mdi.mdi-dots-vertical
                                 
                         lx-dropdown-menu
                             ul
                                 li
-                                    a(href="#/edit/{{s.id}}").dropdown-link 
-                                        i.mdi.mdi--edit
+                                    a(href="#!edit/{{s.id}}").dropdown-link 
+                                        i.mdi.mdi-pencil
                                         | &nbsp; Edit
                                 li
                                     a(ng-click="doRemove(s.id)").dropdown-link
-                                        i.mdi.mdi--remove-circle
+                                        i.mdi.mdi-close
                                         | &nbsp; Delete
 
-.grid
-    .grid__col11
+div(flex-container="row", flex-gutter="24")
+    div(flex-item="11")
         | &nbsp;
-    .grid__col1
+    div(flex-item="1")
         br
         br
-        a(href="#/add", lx-ripple).btn.btn--l.btn--green.btn--fab
-            i.mdi.mdi--add
+        a(href="#!add", lx-ripple).btn.btn--m.btn--red.btn--fab
+            i.mdi.mdi-plus

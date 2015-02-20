@@ -4,31 +4,31 @@
 form(name="frmNew")
     br
     input(type="hidden", ng-model="supplier.id")
-    .grid
-        .grid__col6
-            lx-text-field(label="ชื่อ บริษัท/ร้านค้า", fixed-label="true", icon="quick-contacts-mail")
-                input(type="text", ng-model="supplier.name", ng-required="true")           
-        .grid__col6
-            lx-text-field(label="ชื่อผู้ติดต่อ", icon="person", fixed-label="true")
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="6")
+            lx-text-field(label="ชื่อ บริษัท/ร้านค้า", fixed-label="true", icon="credit-card")
+                input(type="text", ng-model="supplier.name", ng-required="true")
+        div(flex-item="6")
+            lx-text-field(label="ชื่อผู้ติดต่อ", icon="clipboard-account", fixed-label="true")
                 input(type="text", ng-model="supplier.contact_name", ng-required="true")
-    .grid
-        .grid__col12
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="12")
             lx-text-field(label="ที่อยู่", fixed-label="true", icon="home")
                 input(type="text", ng-model="supplier.address", ng-required="true")
                     
-    .grid
-        .grid__col6
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="6")
             lx-text-field(label="เบอร์โทรศัพท์", fixed-label="true", icon="phone")
-                input(type="text", ng-model="supplier.telephone", ng-required="true")           
-        .grid__col6
-            lx-text-field(label="เบอร์แฟกซ์", fixed-label="true", icon="print")
+                input(type="text", ng-model="supplier.telephone", ng-required="true")
+        div(flex-item="6")
+            lx-text-field(label="เบอร์แฟกซ์", fixed-label="true", icon="library-books")
                 input(type="text", ng-model="supplier.fax", ng-required="false")
                 
-    .grid
-        .grid__col12
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="12")
             |&nbsp;
             #progress
-    .grid
+    div(flex-container="row", flex-gutter="24")
         
         .grid__col9
             | &nbsp;
@@ -36,6 +36,6 @@ form(name="frmNew")
             br
             button.btn.btn--l.btn--green.btn--raised(lx-ripple, ng-disabled="frmNew.$invalid", ng-click="doUpdate()") Update
             | &nbsp;
-            a.btn.btn--l.btn--grey.btn--raised(lx-ripple, href="#/") Back
+            a.btn.btn--l.btn--grey.btn--raised(lx-ripple, href="#!/") Back
                 
     

@@ -1,14 +1,44 @@
-App.factory('ClientService', function ($q, $http) {
+/**
+ * User service
+ */
+
+App.factory('UsersService', function ($q, $http) {
 
     return {
-        doSave: function (client) {
+
+        /**
+         * Get all users
+         */
+        all: function () {
             var q = $q.defer();
 
             var options = {
+                url: '/settings/users/all',
+                method: 'POST'
+            };
+
+            $http(options)
+                .success(function (data) {
+                    q.resolve(data);
+                })
+                .error(function (data, status) {
+                    q.reject(status);
+                });
+
+            return q.promise;
+        },
+
+        /**
+         * Save service
+         */
+        save: function (items) {
+            var q = $q.defer();
+
+            var options = {
+                url: '/settings/users/save',
                 method: 'POST',
-                url: '/clients/save',
                 data: {
-                    client: client
+                    items: items
                 }
             };
 
@@ -23,21 +53,23 @@ App.factory('ClientService', function ($q, $http) {
             return q.promise;
         },
 
-        getList: function () {
+        /**
+         * Remove service
+         */
+        remove: function (id) {
             var q = $q.defer();
 
             var options = {
+                url: '/settings/users/remove',
                 method: 'POST',
-                url: '/clients/list'
+                data: {
+                    id: id
+                }
             };
 
             $http(options)
                 .success(function (data) {
-                    if (data.ok) {
-                        q.resolve(data.rows);
-                    } else {
-                        q.reject(data.msg);
-                    }
+                    q.resolve(data);
                 })
                 .error(function (data, status) {
                     q.reject(status);
@@ -46,25 +78,23 @@ App.factory('ClientService', function ($q, $http) {
             return q.promise;
         },
 
-        doActive: function (id, status) {
+        /**
+         * Update service
+         */
+        update: function (user) {
             var q = $q.defer();
 
             var options = {
+                url: '/settings/users/update',
                 method: 'POST',
-                url: '/clients/active',
                 data: {
-                    id: id,
-                    status: status
+                    user: user
                 }
             };
 
             $http(options)
                 .success(function (data) {
-                    if (data.ok) {
-                        q.resolve();
-                    } else {
-                        q.reject(data.msg);
-                    }
+                    q.resolve(data);
                 })
                 .error(function (data, status) {
                     q.reject(status);

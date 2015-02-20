@@ -1,0 +1,48 @@
+extends ../layouts/Main
+
+block content
+    
+    .fs-headline
+        i.icon.icon--l.icon--deep-purple.icon--circled.mdi.mdi-security-network
+        | &nbsp;กำหนดค่าการใช้งานระบบ
+    br
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="4")
+
+            .card
+                div(class="p+")
+                    span.fs-subhead.tc-black-2.display-block
+                        | กำหนดค่าปีงบประมาณ
+                    .paragraph.fs-body-1
+                        p
+                            | กำหนดช่วงปีงบประมาณที่ดำเนินงาน เพื่อใช้ในการกำหนดระยะเวลาในการทำรายงาน หรือการทำสต๊อกการ์ด (Stockcard)
+                .card__actions
+                    a(href="/settings/period", lx-ripple).btn.btn--l.btn--green.btn--raised จัดการข้อมูลปีงบ
+                            
+        div(flex-item="4")
+
+            .card
+                div(class="p+")
+                    span.fs-subhead.tc-black-2.display-block
+                        | &nbsp;ผู้ใช้งานในระบบ
+                    .paragraph.fs-body-1
+                        | กำหนดผู้ใช้งานในระบบ ทั้งระบบเบิกจ่าย จัดซื้อ และอนุมัติเบิกจ่ายเวชภัณฑ์ในคลังหลัก
+                        br
+                        br
+                .card__actions
+                    a.btn.btn--l.btn--blue.btn--raised(href="/settings/users", lx-ripple) จัดการผู้ใช้งานระบบ
+                            
+                    
+        div(flex-item="4")
+
+            .card
+                div(class="p+")
+                    span.fs-subhead.tc-black-2.display-block
+                        | &nbsp;ผู้ใช้งานในระบบ
+                    .paragraph.fs-body-1
+                        | กำหนดผู้ใช้งานในระบบ ทั้งระบบเบิกจ่าย จัดซื้อ และอนุมัติเบิกจ่ายเวชภัณฑ์ในคลังหลัก
+                        br
+                        br
+                .card__actions
+                    button.btn.btn--l.btn--orange.btn--raised(lx-ripple) จัดการข้อมูลปีงบ
+                        

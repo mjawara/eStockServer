@@ -1,73 +1,14 @@
 extends ../layouts/Main
 
 block scripts
-    script(src="../js/orders/OrdersController.js")
-    script(src="../js/orders/OrdersService.js")
-    
-block content
-    
-    div(ng-controller="OrdersController")
-        span.fs-headline
-            i.icon.icon--l.icon--green.icon--circled.mdi.mdi--shopping-cart
-            | &nbsp; รายการขอเบิกออนไลน์จากหน่วยบริการเครือข่าย
-        br
-        br
-        .grid
-            .grid__col8
-                br
-                lx-text-field(label="ระบุเลขที่ใบขอเบิก", fixed-label="true", icon="search")
-                    input(type="text", ng-model="query")
-            .grid__col2
-                br
-                button(type="button", lx-ripple).btn.btn--l.btn--blue.btn--raised
-                    | ค้นหา
-            .grid__col2
-                lx-select(ng-model="status", change="changeSatus()", placeholder="สถานะใบเบิก", choices="orderStatus", floating-label)
-                    lx-select-selected
-                        | {{setStatus($selected.val)}}
-                        | {{$selected.name}}
-                    lx-select-choices
-                        | {{$choice.name}}
-                //- input(type="checkbox", ng-model="onlyApproved", ng-checked="onlyApproved" ng-change="filterList()")#chkStatus.switch__input
-                //- label(for="chkStatus").switch__label เฉพาะที่อนุมัติแล้ว
-                //- span.switch__help เฉพาะรายการที่ได้อนุมัติไปแล้วเท่านั้น
-                
-        .grid
-            .grid__col12
-                | &nbsp;
-                #progress
-            
-        .data-table-container
-            table.data-table.data-table--has-secondary
-                thead
-                    tr
-                        th #
-                        th วันที่
-                        th เลขที่ใบเบิก
-                        th หน่วยบริการ
-                        th ราคา
-                        th เจ้าหน้าที่
-                        th 
-                tbody
-                    tr.data-table__clickable-row(ng-repeat="o in orders")
-                        td {{ $index+1 }}
-                        td {{ o.orders_date | toThaiDate }}
-                        td {{ o.orders_code }}
-                        td {{ o.hospcode }} {{ o.hospname }}
-                        td 123,2220.00
-                        td {{ o.client_staff_name }}
-                        td
-                            lx-dropdown(position="right", from-top)
-                                button.btn.btn--l.btn--black.btn--icon(lx-ripple, lx-dropdown-toggle)
-                                    i.mdi.mdi--more-vert
 
-                                lx-dropdown-menu
-                                    ul
-                                        li(ng-show="o.orders_status == '2'")
-                                            a(href="/orders/approve/detail/{{o.id}}").dropdown-link 
-                                                i.mdi.mdi--event-note
-                                                | &nbsp; ดูรายละเอียดการอนุมัติ
-                                        li(ng-show="o.orders_status != '2'")
-                                            a(href="/orders/{{o.id}}").dropdown-link
-                                                i.mdi.mdi--done
-                                                | &nbsp; อนุมัติรายการที่ขอเบิก
+    script(src="../js/orders/Orders.js")
+    script(src="../js/orders/MainController.js")
+    script(src="../js/orders/MainService.js")
+    script(src="../js/orders/ApproveController.js")
+    script(src="../js/orders/ApproveService.js")
+    script(src="../js/orders/DetailController.js")
+    script(src="../js/orders/DetailService.js")
+
+block content
+    div(ng-view)

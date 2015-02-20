@@ -1,0 +1,110 @@
+
+i.icon.icon--l.icon--green.icon--circled.mdi.mdi-shopping
+span.fs-headline &nbsp;รายการเบิกเวชภัณฑ์
+
+div(flex-container="row", flex-gutter="24")
+    div(flex-item="3")
+        lx-text-field(label="วันที่เบิก")
+            input(type="text", ng-model="orders_date", ng-disabled="true")
+    div(flex-item="3")
+        lx-text-field(label="เลขที่เอกสาร")
+            input(type="text", ng-model="orders.orders_code", ng-disabled="true")
+div(flex-container="row", flex-gutter="24")
+    div(flex-item="6")
+        lx-text-field(label="เจ้าหน้าที่เบิก")
+            input(type="text", ng-model="orders.client_staff_name", ng-disabled="true")
+    div(flex-item="6")
+        lx-text-field(label="หน่วยงานที่เบิก")
+            input(type="text", ng-model="orders.hospital", ng-disabled="true")
+
+.data-table-container
+    table.data-table.data-table--has-secondary
+        thead
+            tr
+                th #
+                th รายการ
+                th หน่วย
+                th ราคา
+                th เบิก
+                th อนุมัติ
+                th Lot
+                th
+            tr
+                td(colspan="8").divider.divider--dark
+        tbody
+            tr.data-table__clickable-row(ng-repeat="p in products")
+                td {{$index+1}}
+                td {{p.name}}
+                td {{p.units}}
+                td {{p.cost | number}}
+                td {{p.qty | number}}
+                td {{p.approve_qty | number}}
+                td {{p.lot_name}}
+                td
+                    lx-dropdown(position="right", from-top)
+                            button.btn.btn--m.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                                i.mdi.mdi-dots-vertical
+
+                            lx-dropdown-menu
+                                ul
+                                    li
+                                        a.dropdown-link(ng-click="showApprove(p.code, p.name, p.qty)")
+                                            i.mdi.mdi-plus-circle
+                                            | &nbsp;ระบุยอดอนุมัติเบิก
+    br
+    br
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="8")
+            | &nbsp;
+        div(flex-item="4")
+            button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doApprove()") บันทึกอนุมัติ
+            | &nbsp;
+            button.btn.btn--m.btn--red.btn--raised(lx-ripple, ng-click="doCancel()") ไม่อนุมัติ
+
+            | &nbsp;
+            a(href="#!/", lx-ripple).btn.btn--m.btn--grey.btn--raised กลับหน้าหลัก
+
+
+lx-dialog.dialog.dialog--l#mdlApprove
+    .dialog__header
+        .toolbar.bgc-green-500
+            span.toolbar__label.tc-white.fs-title อนุมัติเบิกเวชภัณฑ์
+            .toolbar__right
+                button.btn.btn--l.btn--white.btn--icon(lx-ripple, lx-dialog-close)
+                    i.mdi.mdi--close
+
+    .dialog__content
+        .card
+            div(class="p+")
+                div(flex-container="row", flex-gutter="24")
+                    div(flex-item="2")
+                        lx-text-field(label="รหัส")
+                            input(type="text", ng-model="productCode", ng-disabled="true")
+                    div(flex-item="10")
+                        lx-text-field(label="รายการ")
+                            input(type="text", ng-model="productName", ng-disabled="true")
+                div(flex-container="row", flex-gutter="24")
+                    div(flex-item="3")
+                        lx-text-field(label="จำนวนขอเบิก")
+                            input(type="number", ng-model="orderQty", ng-disabled="true")
+                    div(flex-item="3")
+                        lx-text-field(label="อนุมัติเบิก")
+                            input(type="number", ng-model="approveQty")
+                    div(flex-item="3")
+                        lx-select(ng-model="lotNumber", placeholder="ระบุ Lot", choices="lots", floating-label)
+                            lx-select-selected
+                                | {{setLot($selected.lot_id)}}
+                                | {{$selected.lot_name}}
+                            lx-select-choices
+                                | {{$choice.lot_name}}
+                div(flex-container="row", flex-gutter="24")
+                    div(flex-item="3")
+                        lx-text-field(label="วันผลิต", ng-disabled="true")
+                            input(type="text", ng-model="mfd")
+                    div(flex-item="3")
+                        lx-text-field(label="วันหมดอายุ", ng-disabled="true")
+                            input(type="text", ng-model="expd")
+    .dialog__actions
+        button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doAddApproveItem()") บันทึก
+        | &nbsp;
+        button.btn.btn--m.btn--red.btn--raised(lx-ripple, lx-dialog-close) ยกเลิก

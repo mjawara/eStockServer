@@ -1,4 +1,4 @@
-App.controller('OrdersController', function ($scope, OrdersService,
+App.controller('MainController', function ($scope, MainService,
     LxNotificationService, LxProgressService) {
 
     $scope.onlyApproved = false;
@@ -23,7 +23,7 @@ App.controller('OrdersController', function ($scope, OrdersService,
 
         LxProgressService.linear.show('#5fa2db', '#progress');
 
-        OrdersService.getOrderList(opt)
+        MainService.getOrderList(opt)
             .then(function (data) {
                 if (data.ok) {
                     $scope.orders = data.rows;

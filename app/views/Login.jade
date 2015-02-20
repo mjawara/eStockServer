@@ -1,0 +1,15 @@
+extends layouts/Login
+
+block content
+    div(class="mt++", flex-container="row", flex-gutter="24")
+        div(flex-item)
+            span.fs-display-1.display-block
+                i.icon.icon--l.icon--green.icon--circled.mdi.mdi-account-key
+                | &nbsp; Please login
+            form(action="/login", method="post", name="frmLogin")
+                lx-text-field(label="Username")
+                    input(type="text", ng-model="username", name="username")
+                lx-text-field(label="Password")
+                    input(type="password", ng-model="password", name="password")
+                br
+                button(type="submit", ng-click="doLogin()").btn.btn--l.btn--green.btn--raised Login

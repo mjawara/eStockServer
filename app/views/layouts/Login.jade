@@ -1,0 +1,40 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        
+        title eStock : Server
+        
+        link(href="../vendor/lumx/dist/lumx.css", rel="stylesheet")
+        link(href="../css/style.css", rel="stylesheet")
+        link(href="../vendor/mdi/materialdesignicons.css", rel="stylesheet")
+        
+    body(ng-app="App")
+        .toolbar.bgc-indigo-500
+            .toolbar__left.mr
+                button.btn.btn--l.btn--white.btn--icon(lx-ripple)
+                    i.mdi.mdi-windows
+            span(style="color: #fff;").toolbar__label.fs-title
+                | Drug inventory system
+        div(flex-container="column", flex-align="space-between center")
+            div(style="width: 400px;")
+                .card
+                    div(class="p++")
+                        block content
+                    
+        script(src="../vendor/jquery/dist/jquery.min.js")
+        script(src="../vendor/velocity/velocity.min.js")
+        script(src="../vendor/moment/min/moment-with-locales.min.js")
+        script(src="../vendor/angular/angular.js")
+        script(src="../vendor/angular-route/angular-route.min.js")
+        script(src="../vendor/angular-i18n/angular-locale_th-th.js")
+        script(src="../vendor/lumx/dist/lumx.min.js")
+        script(src="../vendor/lodash/lodash.min.js")
+        
+        script(src="../app.js")
+        script(src="../js/common.js")
+        script(src="../js/filters.js")
+        
+        block scripts

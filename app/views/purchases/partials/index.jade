@@ -1,6 +1,18 @@
 .fs-headline
     | ประวัติการจัดซื้อเวชภัณฑ์
-    
+br
+div(flex-container="row", flex-gutter="24")
+    div(flex-item="7")
+        lx-text-field(label="พิมพ์รหัสสั่งซื้อเพื่อค้นหา...", fixed-label="true", icon="magnify")
+            input(type="text", ng-model="query")
+    div(flex-item="2")
+        button.btn.btn--m.btn--blue.btn--raised(lx-ripple) ค้นหา
+    div(flex-item="3")
+        .switch
+            input(type="checkbox")#isImported.switch__input
+            label(for="isImported").switch__label นำเข้าแล้ว
+            span.switch__help แสดงเฉพาะรายการที่นำเข้าแล้ว
+
 .data-table-container
     table.data-table.data-table--has-secondary
         thead
@@ -9,15 +21,48 @@
                 th วันที่
                 th เลขที่ใบสั่งซื้อ
                 th บริษัท/ร้านค้า
-                th ราคา
+                th ติดต่อ
+                th นำเข้า
                 th
-        tbody
             tr
-                td(colspan="6") ...
+                td(colspan="7").divider.divider--dark
+        tbody
+            tr(ng-repeat="p in purchases | filter: query").data-table__clickable-row
+                td {{$index+1}}
+                td {{p.purchase_date | toThaiDate }}
+                td {{p.code}}
+                td {{p.supplier_name}}
+                td {{p.contact_name}}
+                td 
+                    i.icon.icon--l.icon--green.icon--flat.mdi.mdi-check(ng-if="p.is_imported == 'Y'")
+                    i.icon.icon--l.icon--red.icon--flat.mdi.mdi-close(ng-if="p.is_imported == 'N'")
+                td 
+                    lx-dropdown(position="right", from-top)
+                        button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                            i.mdi.mdi-dots-vertical
+                                
+                        lx-dropdown-menu
+                            ul
+                                li(ng-show="p.is_imported == 'Y'")
+                                    a(href="#!detail/{{p.id}}").dropdown-link 
+                                        i.mdi.mdi-pencil-box
+                                        | &nbsp; ดูรายละเอียด
+                                li(ng-show="p.is_imported == 'N'")
+                                    a(href="#!edit/{{p.id}}").dropdown-link 
+                                        i.mdi.mdi-pencil-box
+                                        | &nbsp; แก้ไข
+                                li(ng-show="p.is_imported == 'N'")
+                                    a(ng-click="doRemove(p.id)").dropdown-link
+                                        i.mdi.mdi-close
+                                        | &nbsp; ลบ
+                                li(ng-show="p.is_imported == 'N'")
+                                    a(ng-click="doImport(p.id)").dropdown-link
+                                        i.mdi.mdi-content-save
+                                        | &nbsp; ตัดสต๊อก
 br
-.grid
-    .grid__col11
+div(flex-container="row", flex-gutter="24")
+    div(flex-item="11")
         | &nbsp;
-    .grid__col1
-        a(href="#/new", lx-ripple).btn.btn--l.btn--green.btn--fab
-            i.mdi.mdi--add
+    div(flex-item="1")
+        a(href="#!new", lx-ripple).btn.btn--m.btn--green.btn--fab
+            i.mdi.mdi-plus

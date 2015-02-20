@@ -41,7 +41,6 @@ exports.getDetail = function(req, res) {
                 products: orders.products
             });
         }, function(err) {
-            console.log(err);
             res.send({
                 ok: false,
                 msg: err
@@ -69,41 +68,60 @@ exports.getLots = function(req, res) {
 };
 
 exports.saveApprove = function(req, res) {
-    var orderId = req.body.order_id;
-    var products = req.body.products;
 
-    //products = JSON.parse(products);
+    var orderId = req.body.order_id,
+        products = req.body.products,
+        orderCode, hospcode, orderDate;
 
-    Orders.updateOrdersApprove(req.db, orderId)
-        .then(function() {
-            Q.forEach(products, function(v) {
-                    //console.log(v.code);
-                    var defer = Q.defer();
+    // Get orders detail
+    var promise = Orders.getDetail(req.db, orderId);
 
-                    Orders.saveItemApprove(req.db, orderId, v.code, v.qty, v.lot)
-                        .then(function() {
-                            defer.resolve();
-                        }, function(err) {
-                            defer.reject(err);
-                        });
+    promise.then(function (orders) {
+        orderCode = orders.orders_code;
+        hospcode = orders.hospcode;
+        orderDate = orders.orders_date;
+    }).then(function () {
+        return Orders.updateOrdersApprove(req.db, orderId);
+    }).then(function () {
+        Q.forEach(products, function(v) {
 
-                    return defer.promise;
+            var defer = Q.defer();
 
-                })
+            Orders.saveItemApprove(req.db, orderId, v.code, v.qty, v.lot)
                 .then(function() {
-                    res.send({
-                        ok: true
+                    // Set item
+                    var item = {};
+                    item.code = orderCode;
+                    item.hospcode = hospcode;
+                    item.purchase_date = orderDate;
+                    item.product_code = v.code; // Product code
+                    item.qty = v.qty;
+                    //Update stock card
+                    Orders.doImport(req.db, item).then(function () {
+                        // Success
+                        defer.resolve();
+                    }, function (err) {
+                        defer.reject(err);
                     });
+
+                }, function(err) {
+                    defer.reject(err);
                 });
 
-        }, function(err) {
+            return defer.promise;
+
+        }).then(function() {
             res.send({
-                ok: false,
-                msg: err
+                ok: true
             });
         });
+    }, function(err) {
+        res.send({
+            ok: false,
+            msg: err
+        });
+    });
 
-    // do save approve data
 };
 
 exports.doCancel = function(req, res) {

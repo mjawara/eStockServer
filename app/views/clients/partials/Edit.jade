@@ -1,0 +1,29 @@
+
+.fs-headline 
+    i.mdi.mdi-account-plus.icon.icon--l.icon--green.icon--circled
+    | &nbsp;New client
+
+form(name="frmAdd")
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="12")
+            | &nbsp;
+            #progress
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="2")
+            lx-text-field(label="รหัสหน่วยบริการ")
+                input(type="text", ng-model="client.hospcode", ng-required="true", ng-disabled="true")
+        div(flex-item="10")
+            lx-text-field(label="ชื่อหน่วยบริการ")
+                input(type="text", ng-model="client.hospname", ng-required="true")
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="12")
+            lx-text-field(label="Private key")
+                input(type="text", ng-model="client.private_key", ng-required="true")
+                    
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="8")
+            | &nbsp;
+        div(flex-item="4")
+            button.btn.btn--l.btn--green.btn--raised(ng-click="update()", ng-disabled="frmAdd.$invalid") บันทึกข้อมูล
+            | &nbsp;
+            a(href="#!/").btn.btn--l.btn--grey.btn--raised ยกเลิก/หนัาหลัก

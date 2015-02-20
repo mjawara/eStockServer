@@ -1,22 +1,27 @@
 .fs-headline
-    i.mdi.mdi--add-shopping-cart.icon.icon--l.icon--green.icon--circled
+    i.mdi.mdi-cart.icon.icon--l.icon--green.icon--circled
     | &nbsp;บันทึกการจัดซื้อ
 form(name="frmPurchases")
-    .grid
-        .grid__col2
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="4")
             lx-text-field(label="เลขที่สั่งซื้อ")
-                input(type="text", ng-model="code")
-        .grid__col3
-            lx-date-picker(model="purchaseDate", label="วันที่สั่งซื้อ")
-        .grid__col7
+                input(type="text", ng-model="purchaseCode")
+        div(flex-item="3")
+            lx-date-picker(model="purchaseDate", label="วันที่สั่งซื้อ", locale="th")
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="6")
             lx-select(ng-model="selectedSupplier", placeholder="บริษัท/ร้านค้า...", choices="suppliers", floating-label)
                 lx-select-selected
+                    | {{setSupplier($selected.id, $selected.contact_name)}}
                     | {{ $selected.name }}
                 lx-select-choices
                     | {{ $choice.name }}
+        div(flex-item="6")
+            lx-text-field(label="ชื่อผู้ติดต่อ")
+                input(type="text", ng-model="contact_name")
     br
     .fs-subhead
-        i.mdi.mdi--shopping-cart
+        i.mdi.mdi-shopping
         | &nbsp;รายการเวชภัณฑ์
 
     .data-table-container
@@ -30,42 +35,44 @@ form(name="frmPurchases")
                     th จำนวน
                     th รวม
                     th
+                tr
+                    td(colspan="7").divider.divider--dark
             tbody
                 tr(ng-repeat="d in drugs").data-table__clickable-row
                     td {{$index+1}}
                     td {{d.name}}
                     td {{d.units}}
-                    td {{d.cost}}
-                    td {{d.qty}}
-                    td {{d.qty*d.cost | number}}
+                    td {{d.cost | currency}}
+                    td {{d.qty | number}}
+                    td {{d.qty*d.cost | currency}}
                     td
                         lx-dropdown(position="right", from-top)
                             button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
-                                i.mdi.mdi--settings-ethernet
+                                i.mdi.mdi-dots-vertical
                                     
                             lx-dropdown-menu
                                 ul
                                     li
-                                        a(ng-click="doEdit(d.code)").dropdown-link 
-                                            i.mdi.mdi--edit
+                                        a(ng-click="doEdit(d.code, d.qty)").dropdown-link 
+                                            i.mdi.mdi-pencil
                                             | &nbsp; Edit
                                     li
                                         a(ng-click="doRemove(d.code)").dropdown-link
-                                            i.mdi.mdi--remove-circle
+                                            i.mdi.mdi-close
                                             | &nbsp; Delete
     br
-    .grid
-        .grid__col11
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="11")
             | &nbsp;
-        .grid__col1
+        div(flex-item="1")
             button(type="button", ng-click="showModal()").btn.btn--m.btn--green.btn--fab
-                i.mdi.mdi--add
+                i.mdi.mdi-plus
                     
                     
     br
-    button.btn.btn--m.btn--raised.btn--green Save
+    button.btn.btn--m.btn--raised.btn--green(ng-click="doSavePurchase()") Save
     | &nbsp;
-    button.btn.btn--m.btn--raised.btn--grey Clear
+    a(href="#!/").btn.btn--m.btn--raised.btn--grey Back
         
 
 lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
@@ -75,14 +82,16 @@ lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
                 | เพิ่มรายการเวชภัณฑ์
             .toolbar__right
                 button.btn.btn--l.btn--white.btn--icon(lx-ripple, lx-dialog-close)
-                    i.mdi.mdi--clear
+                    i.mdi.mdi-close
                         
     .dialog__content
         .card
-            .card__content
+            div(class="p+")
+                div(flex-container="row", flex-gutter="24", class="mt++")
+                    div(flex-item)
+                        lx-text-field(label="...", fixed-label="true", icon="magnify")
+                            input(type="text", ng-model="query")
 
-                lx-text-field(label="ระบุชื่อเพื่อค้นหา", fixed-label="true", icon="search")
-                    input(type="text", ng-model="query")
                 .data-data-table-container
                     table.data-table.data-data-table--has-secondary
                         thead
@@ -91,13 +100,15 @@ lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
                                 th รายการ
                                 th หน่วย
                                 th ราคา
-                                th 
+                                th
+                            tr
+                                td(colspan="5").divider.divider--dark
                         tbody
                             tr(ng-repeat="p in products | filter: query")
                                 td {{p.code}}
                                 td {{p.name}}
                                 td {{p.units}}
-                                td {{p.cost}}
+                                td {{p.cost | currency}}
                                 td
                                     button.btn.btn--m.btn--flat.btn--green(lx-ripple, ng-click="addItem(p.code)", ng-disabled="p.added == 'Y'") Add
                                         
