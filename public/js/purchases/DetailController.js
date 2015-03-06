@@ -1,14 +1,14 @@
 /**
  * Detail Controller
  */
-App.controller('DetailController', function ($scope, $routeParams, DetailService, LxNotificationService) {
+App.controller('DetailController', function ($scope, $routeParams, $filter, DetailService, LxNotificationService) {
 
     var purchaseId = $routeParams.id;
 
     DetailService.getPurchase(purchaseId)
         .then(function (items) {
             $scope.purchaseCode = items.purchase.code;
-            $scope.purchaseDate = moment(items.purchase.purchase_date);
+            $scope.purchaseDate = $filter('toThaiDate')(items.purchase.purchase_date);
             $scope.supplier_name = items.purchase.supplier_name;
             $scope.contact_name = items.purchase.contact_name;
 

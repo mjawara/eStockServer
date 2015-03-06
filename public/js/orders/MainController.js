@@ -2,28 +2,21 @@ App.controller('MainController', function ($scope, MainService,
     LxNotificationService, LxProgressService) {
 
     $scope.onlyApproved = false;
+    $scope.orderStatus = [];
 
-    $scope.orderStatus = [{
-        val: '1',
-        name: 'รออนุมัติ'
-    }, {
-        val: '2',
-        name: 'อนุมัติ'
-    }, {
-        val: '3',
-        name: 'ยกเลิก'
-    }];
+    $scope.getOrders = function (status) {
 
-    $scope.status = {
-        val: '1',
-        name: 'รออนุมัติ'
-    };
-
-    $scope.getOrders = function (opt) {
+        var statusId;
 
         LxProgressService.linear.show('#5fa2db', '#progress');
 
-        MainService.getOrderList(opt)
+        if (!status) {
+            statusId = -1;
+        } else {
+            statusId = status;
+        }
+
+        MainService.getOrderList(statusId)
             .then(function (data) {
                 if (data.ok) {
                     $scope.orders = data.rows;
@@ -42,14 +35,26 @@ App.controller('MainController', function ($scope, MainService,
 
     };
 
-    $scope.getOrders('1');
-
-    $scope.setStatus = function (status) {
-        $scope.statusCode = status;
+    $scope.getOrderStatusList = function () {
+        MainService.getOrderStatusList()
+            .then(function (data) {
+                $scope.orderStatus = data.rows;
+            }, function (err) {
+                console.log(err);
+                LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log.');
+            });
     };
 
-    $scope.changeSatus = function () {
-        $scope.getOrders($scope.statusCode);
+    /**
+     * Set status
+     */
+    $scope.setStatus = function (data) {
+        if (data) {
+            $scope.getOrders(data.id);
+        }
     };
+    // Initial
+    $scope.getOrders();
+    $scope.getOrderStatusList();
 
 });

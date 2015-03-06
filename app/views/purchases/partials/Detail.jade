@@ -1,23 +1,24 @@
 .fs-headline
-    i.mdi.mdi--add-shopping-cart.icon.icon--l.icon--green.icon--circled
+    i.mdi.mdi-shopping.icon.icon--l.icon--green.icon--circled
     | &nbsp;แก้ไขการจัดซื้อ
 form(name="frmPurchases")
-    .grid
-        .grid__col2
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="2")
             lx-text-field(label="เลขที่สั่งซื้อ")
                 input(type="text", ng-model="purchaseCode", ng-disabled="true")
-        .grid__col3
-            lx-date-picker(model="purchaseDate", label="วันที่สั่งซื้อ")
-    .grid
-        .grid__col6
+        div(flex-item="3")
+            lx-text-field(label="วันที่สั่งซื้อ")
+                input(type="text", ng-model="purchaseDate", ng-disabled="true")
+    div(flex-container="row", flex-gutter="24")
+        div(flex-item="6")
             lx-text-field(label="บริษัท/ร้านค้า")
                 input(type="text", ng-model="supplier_name", ng-disabled="true")
-        .grid__col6
+        div(flex-item="6")
             lx-text-field(label="ชื่อผู้ติดต่อ")
                 input(type="text", ng-model="contact_name", ng-disabled="true")
     br
-    .fs-subhead
-        i.mdi.mdi--shopping-cart
+    .fs-title
+        i.mdi.mdi-shopping
         | &nbsp;รายการเวชภัณฑ์
 
     .data-table-container
@@ -30,6 +31,8 @@ form(name="frmPurchases")
                     th ราคา
                     th จำนวน
                     th รวม
+                tr
+                    td(colspan="6").divider.divider--dark
             tbody
                 tr(ng-repeat="d in drugs").data-table__clickable-row
                     td {{$index+1}}

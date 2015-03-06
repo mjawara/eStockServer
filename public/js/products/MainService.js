@@ -1,15 +1,34 @@
-App.factory('ApproveService', function ($q, $http) {
+App.factory('MainService', function ($q, $http) {
 
     return {
 
-        getDetail: function (orderId) {
+        getList: function () {
             var q = $q.defer();
 
             var options = {
+                url: '/products/list',
+                method: 'POST'
+            };
+
+            $http(options)
+                .success(function (data) {
+                    q.resolve(data);
+                })
+                .error(function (data, status) {
+                    q.reject('Error status code: ' + status);
+                });
+
+            return q.promise;
+        },
+
+        save: function (item) {
+            var q = $q.defer();
+
+            var options = {
+                url: '/products/save',
                 method: 'POST',
-                url: '/orders/detail',
                 data: {
-                    id: orderId
+                    item: item
                 }
             };
 
@@ -17,19 +36,41 @@ App.factory('ApproveService', function ($q, $http) {
                 .success(function (data) {
                     q.resolve(data);
                 })
-                .error(function (err) {
-                    q.reject(err);
+                .error(function (data, status) {
+                    q.reject('Error status code: ' + status);
                 });
 
             return q.promise;
         },
 
-        getLots: function (code) {
+        update: function (item) {
             var q = $q.defer();
 
             var options = {
+                url: '/products/update',
                 method: 'POST',
-                url: '/orders/lots',
+                data: {
+                    item: item
+                }
+            };
+
+            $http(options)
+                .success(function (data) {
+                    q.resolve(data);
+                })
+                .error(function (data, status) {
+                    q.reject('Error status code: ' + status);
+                });
+
+            return q.promise;
+        },
+
+        remove: function (code) {
+            var q = $q.defer();
+
+            var options = {
+                url: '/products/remove',
+                method: 'POST',
                 data: {
                     code: code
                 }
@@ -39,59 +80,12 @@ App.factory('ApproveService', function ($q, $http) {
                 .success(function (data) {
                     q.resolve(data);
                 })
-                .error(function (err) {
-                    q.reject(err);
-                });
-
-            return q.promise;
-        },
-
-        doSave: function (orderId, statusId, products) {
-            var q = $q.defer();
-
-            var options = {
-                method: 'POST',
-                url: '/orders/approve',
-                data: {
-                    orderId: orderId,
-                    statusId: statusId,
-                    products: products
-                }
-            };
-
-            $http(options)
-                .success(function (data) {
-                    q.resolve(data);
-                })
-                .error(function (err) {
-                    q.reject(err);
-                });
-
-            return q.promise;
-        },
-
-        doCancel: function (orderId) {
-            var q = $q.defer();
-
-            var options = {
-                method: 'POST',
-                url: '/orders/cancel',
-                data: {
-                    order_id: orderId
-                }
-            };
-
-            $http(options)
-                .success(function (data) {
-                    q.resolve(data);
-                })
-                .error(function (err) {
-                    q.reject(err);
+                .error(function (data, status) {
+                    q.reject('Error status code: ' + status);
                 });
 
             return q.promise;
         }
-
     };
 
 });

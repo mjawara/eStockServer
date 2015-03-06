@@ -13,15 +13,9 @@ div(flex-container="row")
         button(type="button", lx-ripple).btn.btn--l.btn--blue.btn--raised
             | ค้นหา
     div(flex-item="2")
-        lx-select(ng-model="status", change="changeSatus()", placeholder="สถานะใบเบิก", choices="orderStatus", floating-label)
-            lx-select-selected
-                | {{setStatus($selected.val)}}
-                | {{$selected.name}}
-            lx-select-choices
-                | {{$choice.name}}
-        //- input(type="checkbox", ng-model="onlyApproved", ng-checked="onlyApproved" ng-change="filterList()")#chkStatus.switch__input
-        //- label(for="chkStatus").switch__label เฉพาะที่อนุมัติแล้ว
-        //- span.switch__help เฉพาะรายการที่ได้อนุมัติไปแล้วเท่านั้น
+        lx-select(ng-model="statusList",selection-to-model="setStatus(data,callback)", change="changeStatus()", placeholder="สถานะใบเบิก", choices="orderStatus", floating-label)
+            lx-select-selected {{ $selected.name }}
+            lx-select-choices {{$choice.name}}
 
 div(flex-container="row")
     div(flex-item="12")

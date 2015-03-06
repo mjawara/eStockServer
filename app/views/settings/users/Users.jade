@@ -27,17 +27,17 @@ block content
                             tr
                                 td(colspan="7").divider.divider--dark
                         tbody
-                            tr(ng-repeat="u in users")
+                            tr(ng-repeat="u in users").data-table__clickable-row
                                 td {{$index+1}}
                                 td {{u.fullname}}
                                 td {{u.username}}    
                                 td
-                                    i.icon.icon--l.icon--green.icon--flat.mdi.mdi-check(ng-if="u.is_admin == 'Y'")
-                                    i.icon.icon--l.icon--red.icon--flat.mdi.mdi-close(ng-if="u.is_admin == 'N'")
+                                    i.icon.icon--s.icon--green.icon--flat.mdi.mdi-check(ng-if="u.is_admin == 'Y'")
+                                    i.icon.icon--s.icon--red.icon--flat.mdi.mdi-close(ng-if="u.is_admin == 'N'")
                                     
                                 td
-                                    i.icon.icon--l.icon--green.icon--flat.mdi.mdi-check(ng-if="u.is_active == 'Y'")
-                                    i.icon.icon--l.icon--red.icon--flat.mdi.mdi-close(ng-if="u.is_active == 'N'")
+                                    i.icon.icon--s.icon--green.icon--flat.mdi.mdi-check(ng-if="u.is_active == 'Y'")
+                                    i.icon.icon--s.icon--red.icon--flat.mdi.mdi-close(ng-if="u.is_active == 'N'")
                                 
                                 td {{u.last_login | date: 'dd/MM/yyyy HH:mm:ss'}}
                                 td
