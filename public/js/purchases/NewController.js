@@ -48,6 +48,7 @@ App.controller('NewController', function ($scope, $location, NewService, LxDialo
             }
             // add to drugs
             $scope.drugs.push($scope.products[idx]);
+
         } else {
             LxNotificationService.error('กรุณาระบุจำนวนที่ต้องการสั่งซื้อ');
         }
