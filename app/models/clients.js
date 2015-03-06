@@ -23,7 +23,7 @@ exports.checkDuplicate = function(db, hospcode) {
         .exec(function(err, rows) {
             if (err) q.reject(err);
             else {
-                var isDuplicated = rows[0].total > 0 ? true : false;
+                var isDuplicated = rows[0].total > 0;
                 q.resolve(isDuplicated);
             }
         });

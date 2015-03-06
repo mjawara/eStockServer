@@ -35,7 +35,7 @@ App.controller('NewController', function ($scope, $location, NewService, LxDialo
     };
 
     $scope.addItem = function (code) {
-        var qty = prompt('ระบุจำนวนที่ต้องการสั่ง', 0);
+        var qty = prompt('ระบุจำนวนที่ต้องการสั่ง', '0');
 
         if (qty > 0) {
             var idx = _.findIndex($scope.products, {
@@ -48,6 +48,7 @@ App.controller('NewController', function ($scope, $location, NewService, LxDialo
             }
             // add to drugs
             $scope.drugs.push($scope.products[idx]);
+
         } else {
             LxNotificationService.error('กรุณาระบุจำนวนที่ต้องการสั่งซื้อ');
         }
