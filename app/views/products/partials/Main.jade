@@ -7,6 +7,11 @@ div(flex-container="row")
         button.btn.btn--l.btn--red.btn--fab(lx-ripple, ng-click="showModal()")
             i.mdi.mdi-plus
 
+div(flex-container="row")
+    div(flex-item="10")
+        lx-text-field(label="รายการ...", fixed-label="true", icon="magnify")
+            input(type="text", ng-model="query")
+
 .data-table-container
     table.data-table.data-table--has-secondary
         thead
@@ -18,13 +23,13 @@ div(flex-container="row")
                 th ต้นทุน
                 th ขาย
                 th เหลือ
-                //th รหัสมาตรฐาน
+                th ใช้งาน
                 th
             tr
-                td(colspan="8").divider.divider--dark
+                td(colspan="9").divider.divider--dark
 
         tbody
-            tr.data-table__clickable-row(ng-repeat="p in products")
+            tr.data-table__clickable-row(ng-repeat="p in products | filter: query")
                 td {{ $index + 1 }}
                 td {{ p.code }}
                 td {{ p.name }}
@@ -32,7 +37,9 @@ div(flex-container="row")
                 td {{ p.cost | number }}
                 td {{ p.price | number }}
                 td
-                //td {{ p.stdcode }}
+                td
+                    i.icon.icon--l.icon--green.icon--flat.mdi.mdi-checkbox-marked-circle(ng-if="p.is_active == 'Y'")
+                    i.icon.icon--l.icon--red.icon--flat.mdi.mdi-checkbox-blank-circle-outline(ng-if="p.is_active == 'N'")
                 td
                     lx-dropdown(position="right", from-top)
                         button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
@@ -41,17 +48,13 @@ div(flex-container="row")
                         lx-dropdown-menu
                             ul
                                 li
-                                    a.dropdown-link
+                                    a(ng-click="showEdit(p.id, p.code, p.name, p.units, p.cost, p.price, p.stdcode, p.is_active)").dropdown-link
                                         i.mdi.mdi-pencil
                                         | &nbsp; แก้ไขรายการ
                                 li
-                                    a.dropdown-link
-                                        i.mdi.mdi-close
+                                    a(ng-click="remove(p.code)").dropdown-link
+                                        i.mdi.mdi-delete
                                         | &nbsp; ลบรายการ
-                                li
-                                    a.dropdown-link
-                                        i.mdi.mdi-block-helper
-                                        | &nbsp; ยกเลิกการใช้งาน
 
 lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
     .dialog__header
@@ -67,7 +70,7 @@ lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
             div(flex-container="row", flex-gutter="24")
                 div(flex-item="3")
                     lx-text-field(label="รหัสเวชภัณฑ์")
-                        input(type="text", ng-model="code")
+                        input(type="text", ng-model="code", ng-disabled="isEdit")
                 div(flex-item="9")
                     lx-text-field(label="ชื่อเวชภัณฑ์")
                         input(type="text", ng-model="name")
@@ -77,17 +80,22 @@ lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
             div(flex-container="rows", flex-gutter="24")
                 div(flex-item="6")
                     lx-text-field(label="ราคาทุน")
-                        input(type="text", ng-model="cost")
+                        input(type="number", ng-model="cost")
                 div(flex-item="6")
                     lx-text-field(label="ราคาขาย")
-                        input(type="text", ng-model="price")
+                        input(type="number", ng-model="price")
             div(flex-container="rows", flex-gutter="24")
-                div(flex-item="12")
+                div(flex-item="7")
                     lx-text-field(label="รหัสมาตรฐาน")
                         input(type="text", ng-model="stdcode")
+                div(flex-item="5")
+                    .switch(class="mt+")
+                        input(type="checkbox", ng-model="isActive")#chkActive.switch__input
+                        label(for="chkActive").switch__label เปิดใช้งาน
+                        span.switch__help เปิดการใช้งานรายการนี้
     .dialog__actions
-        button.btn.btn--m.btn--red.btn--raised(lx-ripple, lx-dialog-close)
-            | ปิดหน้าต่าง
-        | &nbsp;
         button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="save()")
             | บันทึกรายการ
+        | &nbsp;
+        button.btn.btn--m.btn--red.btn--raised(lx-ripple, lx-dialog-close)
+            | ปิดหน้าต่าง

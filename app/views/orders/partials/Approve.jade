@@ -17,52 +17,50 @@ div(flex-container="row", flex-gutter="24")
         lx-text-field(label="หน่วยงานที่เบิก")
             input(type="text", ng-model="orders.hospital", ng-disabled="true")
 
-.data-table-container
-    table.data-table.data-table--has-secondary
-        thead
-            tr
-                th #
-                th รายการ
-                th หน่วย
-                th ราคา
-                th เบิก
-                th อนุมัติ
-                th Lot
-                th
-            tr
-                td(colspan="8").divider.divider--dark
-        tbody
-            tr.data-table__clickable-row(ng-repeat="p in products")
-                td {{$index+1}}
-                td {{p.name}}
-                td {{p.units}}
-                td {{p.cost | number}}
-                td {{p.qty | number}}
-                td {{p.approve_qty | number}}
-                td {{p.lot_name}}
-                td
-                    lx-dropdown(position="right", from-top)
-                            button.btn.btn--m.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
-                                i.mdi.mdi-dots-vertical
+table.data-table.data-table--has-secondary
+    thead
+        tr
+            th #
+            th รายการ
+            th หน่วย
+            th ราคา
+            th เบิก
+            th อนุมัติ
+            th Lot
+            th
+        tr
+            td(colspan="8").divider.divider--dark
+    tbody
+        tr.data-table__clickable-row(ng-repeat="p in products")
+            td {{$index+1}}
+            td {{p.name}}
+            td {{p.units}}
+            td {{p.cost | number}}
+            td {{p.qty | number}}
+            td {{p.approve_qty | number}}
+            td {{p.lot_name}}
+            td
+                lx-dropdown(position="right", from-top)
+                        button.btn.btn--m.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                            i.mdi.mdi-dots-vertical
 
-                            lx-dropdown-menu
-                                ul
-                                    li
-                                        a.dropdown-link(ng-click="showApprove(p.code, p.name, p.qty)")
-                                            i.mdi.mdi-plus-circle
-                                            | &nbsp;ระบุยอดอนุมัติเบิก
-    br
-    br
-    div(flex-container="row", flex-gutter="24")
-        div(flex-item="8")
-            | &nbsp;
-        div(flex-item="4")
-            button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doApprove()") บันทึกอนุมัติ
-            | &nbsp;
-            button.btn.btn--m.btn--red.btn--raised(lx-ripple, ng-click="doCancel()") ไม่อนุมัติ
-
-            | &nbsp;
-            a(href="#!/", lx-ripple).btn.btn--m.btn--grey.btn--raised กลับหน้าหลัก
+                        lx-dropdown-menu
+                            ul
+                                li
+                                    a.dropdown-link(ng-click="showApprove(p.code, p.name, p.qty)")
+                                        i.mdi.mdi-plus-circle
+                                        | &nbsp;ระบุยอดอนุมัติเบิก
+br
+div(flex-container="row", flex-gutter="24")
+    div(flex-item="8")
+        lx-select(ng-model="statusList", selection-to-model="setStatus(data,callback)", placeholder="เปลี่ยนสถานะใบเบิก", choices="orderStatus", floating-label)
+            lx-select-selected {{ $selected.name }}
+            lx-select-choices {{$choice.name}}
+    div(flex-item="4")
+        br
+        button.btn.btn--m.btn--green.btn--raised(lx-ripple, ng-click="doSave()") บันทึกรายการ
+        | &nbsp;
+        a(href="#!/", lx-ripple).btn.btn--m.btn--grey.btn--raised กลับหน้าหลัก
 
 
 lx-dialog.dialog.dialog--l#mdlApprove

@@ -27,9 +27,9 @@ div(flex-container="row", flex-gutter="24")
                 td {{ c.hospname }}
                 td {{ c.private_key }}
                 td(ng-if="c.is_active == 'Y'")
-                    i.icon.icon--l.icon--green.icon--flat.mdi.mdi-check
+                    i.icon.icon--s.icon--green.icon--flat.mdi.mdi-check
                 td(ng-if="c.is_active == 'N'")
-                    i.icon.icon--l.icon--red.icon--flat.mdi.mdi-close
+                    i.icon.icon--s.icon--red.icon--flat.mdi.mdi-close
                 td
                     lx-dropdown(position="right", from-top)
                         button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)

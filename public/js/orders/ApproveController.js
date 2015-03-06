@@ -1,7 +1,28 @@
 App.controller('ApproveController', function ($scope, $location, $routeParams, $filter, ApproveService,
-                                              LxNotificationService, LxDialogService) {
+                                              MainService, LxNotificationService, LxDialogService) {
 
     var orderId = $routeParams.id;
+
+    $scope.statusId = null;
+
+    $scope.getOrderStatusList = function () {
+        MainService.getOrderStatusList()
+            .then(function (data) {
+                $scope.orderStatus = data.rows;
+            }, function (err) {
+                console.log(err);
+                LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log.');
+            });
+    };
+
+    $scope.setStatus = function (data) {
+        if (data) {
+            $scope.statusId = data.id;
+        }
+    };
+
+    // Get orders status list
+    $scope.getOrderStatusList();
 
     ApproveService.getDetail(orderId)
         .then(function (data) {
@@ -139,34 +160,46 @@ App.controller('ApproveController', function ($scope, $location, $routeParams, $
         }
     };
 
-    $scope.doApprove = function () {
+    $scope.doSave = function () {
         //console.log($scope.products);
 
-        var products = [];
+        LxNotificationService.confirm('ยืนยันการอนุมัติ', 'คุณต้องการบันทึกรายการนี้ ใช่หรือไม่?', {
+            ok: 'ใช่, ฉันต้องการบันทึก',
+            cancel: 'ไม่ใช่'
+        }, function (res) {
+            if (res) {
+                if ($scope.statusId) {
+                    var products = [];
 
-        _.forEach($scope.products, function (v) {
-            var obj = {};
-            obj.code = v.code;
-            obj.qty = v.approve_qty;
-            obj.lot = v.lot_id;
+                    _.forEach($scope.products, function (v) {
+                        var obj = {};
+                        obj.code = v.code;
+                        obj.qty = v.approve_qty;
+                        obj.lot = v.lot_id;
 
-            products.push(obj);
-        });
+                        products.push(obj);
+                    });
 
-        //console.log(products);
-        ApproveService.saveApprove(orderId, products)
-            .then(function (data) {
-                if (data.ok) {
-                    LxNotificationService.success('บันทึกรายการเสร็จเรียบร้อยแล้ว');
-                    // Redirect to main page
-                    $location.path('/');
+                    //console.log(products);
+                    ApproveService.doSave(orderId, $scope.statusId, products)
+                        .then(function (data) {
+                            if (data.ok) {
+                                LxNotificationService.success('บันทึกรายการเสร็จเรียบร้อยแล้ว');
+                                // Redirect to main page
+                                $location.path('/');
+                            } else {
+                                LxNotificationService.error(data.msg);
+                            }
+                        }, function (err) {
+                            console.log(err);
+                            LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
+                        });
+
                 } else {
-                    LxNotificationService.error(data.msg);
+                    LxNotificationService.warning('กรุณาระบุสถานะใบสั่งเวชภัณฑ์');
                 }
-            }, function (err) {
-                console.log(err);
-                LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
-            })
+            }
+        });
 
     };
 

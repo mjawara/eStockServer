@@ -1,25 +1,41 @@
 App.factory('MainService', function ($q, $http) {
 
     return {
-        getOrderList: function (opt) {
+        getOrderList: function (statusId) {
             var q = $q.defer(),
                 options = {
                     method: 'POST',
                     url: '/orders/list',
                     data: {
-                        opt: opt
+                        status: statusId
                     }
                 };
-
-            // $http.post('/orders/list', {opt: opt})
 
             $http(options)
                 .success(function (data) {
                     q.resolve(data);
                 })
-                .error(function (data, status, headers, config) {
+                .error(function () {
                     q.reject('Internet connection failed.')
+                });
+
+            return q.promise;
+        },
+
+        getOrderStatusList: function () {
+            var q = $q.defer(),
+                options = {
+                    method: 'POST',
+                    url: '/orders/status/list'
+                };
+
+            $http(options)
+                .success(function (data) {
+                    q.resolve(data);
                 })
+                .error(function () {
+                    q.reject('Internet connection failed.')
+                });
 
             return q.promise;
         }

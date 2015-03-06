@@ -9,8 +9,8 @@ html(lang="en")
         
         link(href="../vendor/lumx/dist/lumx.css", rel="stylesheet")
         link(href="../css/style.css", rel="stylesheet")
-        link(href="../vendor/mdi/materialdesignicons.css", rel="stylesheet")
-
+        link(href="../vendor/mdi/css/materialdesignicons.css", rel="stylesheet")
+        link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700")
         
     body(ng-app="App")
         .toolbar.bgc-indigo-500
@@ -45,54 +45,55 @@ html(lang="en")
                                     | &nbsp; ออกจากระบบ
 
 
-        div(flex-container="row")
+        div(flex-container="row", flex-gutter="24")
             div(flex-item="3")
-                ul.list
-                    li.list-row.list-row--has-primary.list-row--has-separator
-                        .list-primary-tile
-                            a(href="/")
-                                i.icon.icon--l.icon--teal.icon--circled.mdi.mdi-home
-                        .list-content-tile.list-content-tile--two-lines
-                            strong Home
-                            span หน้าหลัก
+                .card(style="min-height: 580px;")
+                    ul.list(class="mt++")
+                        li.list-row.list-row--has-separator
+                            .list-row__primary
+                                a
+                                    i.icon.icon--l.icon--teal.icon--circled.mdi.mdi-home
+                            .list-row__content
+                                span.display-block Home
+                                span.display-block.fs-body-1.tc-black-2 หน้าหลัก
 
-                    li.list-row.list-row--has-primary.list-row--has-separator
-                        .list-primary-tile
-                            a(href="/orders")
-                                i.icon.icon--l.icon--green.icon--circled.mdi.mdi-cart-outline
-                        .list-content-tile.list-content-tile--two-lines
-                            strong Orders
-                            span ข้อมูลการเบิก
-                    li.list-row.list-row--has-primary.list-row--has-separator
-                        .list-primary-tile
-                            a(href="/purchases")
-                                i.icon.icon--l.icon--blue.icon--circled.mdi.mdi-cart
-                        .list-content-tile.list-content-tile--two-lines
-                            strong Purchases
-                            span ข้อมูลจัดซื้อเวชภัณฑ์
-                    li.list-row.list-row--has-primary.list-row--has-separator
-                        .list-primary-tile
-                            a(href="/clients")
-                                i.icon.icon--l.icon--red.icon--circled.mdi.mdi-account-multiple-plus
-                        .list-content-tile.list-content-tile--two-lines
-                            strong Clients
-                            span ข้อมูลเครือข่าย
-                    li.list-row.list-row--has-primary.list-row--has-separator
-                        .list-primary-tile
-                            a(href="/suppliers")
-                                i.icon.icon--l.icon--pink.icon--circled.mdi.mdi-account-network
-                        .list-content-tile.list-content-tile--two-lines
-                            strong Suppliers
-                            span ข้อมูลผู้จำหน่าย
-                    li.list-row.list-row--has-primary.list-row--has-separator
-                        .list-primary-tile
-                            a(href="/settings")
-                                i.icon.icon--l.icon--deep-purple.icon--circled.mdi.mdi-settings
-                        .list-content-tile.list-content-tile--two-lines
-                            strong Settings
-                            span กำหนดค่าระบบ
+                        li.list-row.list-row--has-separator
+                            .list-row__primary
+                                a(href="/orders")
+                                    i.icon.icon--l.icon--green.icon--circled.mdi.mdi-cart-outline
+                            .list-row__content
+                                span.display-block Orders
+                                span.display-block.fs-body-1.tc-black-2 ข้อมูลการเบิก
+                        li.list-row.list-row--has-separator
+                            .list-row__primary
+                                a(href="/purchases")
+                                    i.icon.icon--l.icon--blue.icon--circled.mdi.mdi-cart
+                            .list-row__content
+                                span.display-block Purchases
+                                span.display-block.fs-body-1.tc-black-2 ข้อมูลจัดซื้อเวชภัณฑ์
+                        li.list-row.list-row--has-separator
+                            .list-row__primary
+                                a(href="/clients")
+                                    i.icon.icon--l.icon--red.icon--circled.mdi.mdi-account-multiple-plus
+                            .list-row__content
+                                span.display-block Clients
+                                span.display-block.fs-body-1.tc-black-2 ข้อมูลเครือข่าย
+                        li.list-row.list-row--has-separator
+                            .list-row__primary
+                                a(href="/suppliers")
+                                    i.icon.icon--l.icon--pink.icon--circled.mdi.mdi-account-network
+                            .list-row__content
+                                span.display-block Suppliers
+                                span.display-block.fs-body-1.tc-black-2 ข้อมูลผู้จำหน่าย
+                        li.list-row.list-row--has-separator
+                            .list-row__primary
+                                a(href="/settings")
+                                    i.icon.icon--l.icon--deep-purple.icon--circled.mdi.mdi-settings
+                            .list-row__content
+                                span.display-block Settings
+                                span.display-block.fs-body-1.tc-black-2 กำหนดค่าระบบ
             div(flex-item="9")
-                .card(style="min-height: 420px;")
+                .card(style="min-height: 580px;")
                     div(class="p+")
                         block content
 

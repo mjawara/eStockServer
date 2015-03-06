@@ -1,7 +1,7 @@
 var Q = require('q'),
     moment = require('moment');
 
-exports.saveOrders = function(db, hospcode, orders) {
+exports.saveOrdersOnline = function(db, hospcode, orders) {
     var q = Q.defer();
 
     db('orders')
@@ -23,7 +23,7 @@ exports.saveOrders = function(db, hospcode, orders) {
     return q.promise;
 };
 
-exports.saveOrdersDetail = function(db, items) {
+exports.saveOrdersOnlineDetail = function(db, items) {
     var q = Q.defer();
 
     db('orders_detail')
@@ -36,18 +36,31 @@ exports.saveOrdersDetail = function(db, items) {
     return q.promise;
 };
 
-exports.getOrdersList = function(db, opt) {
+exports.getOrdersList = function(db, statusId) {
 
     var q = Q.defer();
-    db('orders as o')
-        .select('o.*', 'h.hospname')
-        .leftJoin('hospcode as h', 'h.hospcode', 'o.hospcode')
-        .where('o.orders_status', opt)
-        .orderBy('o.created_at', 'asc')
-        .exec(function(err, rows) {
-            if (err) q.reject(err);
-            else q.resolve(rows);
-        });
+
+    if (statusId > 0) {
+        db('orders as o')
+            .select('o.*', 'h.hospname')
+            .leftJoin('hospcode as h', 'h.hospcode', 'o.hospcode')
+            .where('o.orders_status_id', statusId)
+            .orderBy('o.created_at', 'asc')
+            .exec(function(err, rows) {
+                if (err) q.reject(err);
+                else q.resolve(rows);
+            });
+    } else {
+        db('orders as o')
+            .select('o.*', 'h.hospname')
+            .leftJoin('hospcode as h', 'h.hospcode', 'o.hospcode')
+            //.where('o.orders_status_id', statusId)
+            .orderBy('o.created_at', 'asc')
+            .exec(function(err, rows) {
+                if (err) q.reject(err);
+                else q.resolve(rows);
+            });
+    }
 
     return q.promise;
 
@@ -117,14 +130,14 @@ exports.saveItemApprove = function(db, orderId, productCode, approveQty, lot) {
     return q.promise;
 };
 
-exports.updateOrdersApprove = function(db, orderId) {
+exports.updateOrdersApprove = function(db, orderId, statusId) {
     var q = Q.defer();
 
     db('orders')
         .where('id', orderId)
         .update({
-            orders_status: '2', // 1 = normal, 2 = approved, 3 = denied
-            approve_date: moment().format('YYYY-MM-DD HH:mm:ss')
+            orders_status_id: statusId,
+            updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
         })
         .exec(function(err) {
             if (err) q.reject(err);
@@ -173,4 +186,56 @@ exports.doImport = function (db, item) {
 
     return q.promise;
 
+};
+
+/**
+ * Get orders status
+ */
+exports.getOrderStatusList = function (db) {
+    var q = Q.defer();
+
+    db('orders_status')
+        .exec(function (err, rows) {
+            if (err) q.reject(err);
+            else q.resolve(rows);
+        });
+
+    return q.promise;
+};
+/**
+ * Client api
+ */
+exports.getOnlineStatus = function (db, hospcode) {
+
+    var q = Q.defer();
+
+    db('orders as o')
+        .select('o.id', 'o.client_orders_id', 'o.orders_date', 'o.orders_code', 'o.client_staff_name', 'o.client_staff_id', 's.name as status_name', 'o.orders_status_id', 'o.updated_at',
+        db.raw('(select count( distinct product_code) from orders_detail where orders_id=o.id) as total_qty'))
+        .leftJoin('orders_status as s', 's.id', 'o.orders_status_id')
+        .where('o.hospcode', hospcode)
+        .groupBy('o.id')
+        .exec(function (err, rows) {
+            if (err) q.reject(err);
+            else q.resolve(rows);
+        });
+
+    return q.promise;
+
+};
+
+exports.getOnlineDetail = function (db, id) {
+    var q = Q.defer();
+
+    db('orders_detail as o')
+        .select('p.code', 'p.name as product_name', 'o.qty', 'o.approve_qty', 'l.lot_name', 'p.cost', 'p.price', 'p.stdcode')
+        .leftJoin('products as p', 'p.code', 'o.product_code')
+        .leftJoin('lots as l', 'l.lot_id', 'o.lot_id')
+        .where('o.orders_id', id)
+        .exec(function (err, rows) {
+            if (err) q.reject(err);
+            else q.resolve(rows);
+        });
+
+    return q.promise;
 };

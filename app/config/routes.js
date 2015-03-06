@@ -10,37 +10,45 @@ var Main = require('../controllers/Main'),
 var Auth = require('../models/Auth');
 
 module.exports = function (app, auth) {
+
     // Main page
     app.get('/', auth, Main.index);
-    app.get('/orders', function (req, res) {
+
+    /**********************************************************************************
+     * Client api
+     **********************************************************************************/
+    app.get('/api/products', Main.products);
+    app.post('/api/products/list', Products.getList);
+    app.post('/api/orders/save', Orders.saveOrdersOnline);
+    app.post('/api/orders/all', Orders.getOnlineStatus);
+    app.post('/api/orders/detail', Orders.getOnlineDetail);
+
+    /************************************************************************************
+     * Orders resources
+     ***********************************************************************************/
+    app.get('/orders', auth, function (req, res) {
         res.render('orders/Index');
     });
-
-    app.get('/partials/orders/main', auth, function (req, res) {
-        res.render('orders/partials/Main');
-    });
-
-    app.get('/partials/orders/approve', auth, function (req, res) {
-        res.render('orders/partials/Approve');
-    });
-
-    app.get('/partials/orders/detail', auth, function (req, res) {
-        res.render('orders/partials/Detail');
-    });
-
-    // Cancel order request
     app.post('/orders/cancel', Orders.doCancel);
-    // Approve order request
     app.post('/orders/approve', Orders.saveApprove);
     app.post('/orders/lots', Orders.getLots);
     app.post('/orders/detail', Orders.getDetail);
     app.post('/orders/list', Orders.getList);
-    app.get('/orders/save', Main.saveOrders);
+    app.post('/orders/status/list', Orders.getOrderStatusList);
+    /************************************* Partials ***********************************/
+    app.get('/partials/orders/main', auth, function (req, res) {
+        res.render('orders/partials/Main');
+    });
+    app.get('/partials/orders/approve', auth, function (req, res) {
+        res.render('orders/partials/Approve');
+    });
+    app.get('/partials/orders/detail', auth, function (req, res) {
+        res.render('orders/partials/Detail');
+    });
 
-    app.get('/api/products', Main.products);
-    app.post('/api/products/list', Products.getList);
-
-    /** Clients setting **/
+    /***********************************************************************************
+     *  Clients setting
+     **********************************************************************************/
     app.get('/clients', auth, function (req, res) {
         res.render('clients/Index');
     });
@@ -161,6 +169,8 @@ module.exports = function (app, auth) {
 
     app.post('/products/list', Products.getList);
     app.post('/products/save', Products.save);
+    app.post('/products/update', Products.update);
+    app.post('/products/remove', Products.remove);
 
     /** login **/
     app.get('/login', function (req, res) {

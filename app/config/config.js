@@ -10,7 +10,7 @@ module.exports = {
         connection: {
             host: '127.0.0.1',
             user: 'root',
-            password: '',
+            password: '789124',
             database: 'estock_serv',
             port: 3306
         }

@@ -1,6 +1,9 @@
 /** Main Controller **/
 App.controller('MainController', function ($scope, MainService, LxNotificationService, LxDialogService) {
 
+    $scope.isEdit = false;
+    $scope.isActive = true;
+
     $scope.getList = function () {
 
         MainService.getList()
@@ -28,7 +31,23 @@ App.controller('MainController', function ($scope, MainService, LxNotificationSe
         LxDialogService.open('mdlNew');
 
     };
+    /**
+     * Show edit modal
+     * @param id
+     */
+    $scope.showEdit = function (id, code, name, units, cost, price, stdcode, is_active) {
+        $scope.id = id;
+        $scope.code = code;
+        $scope.name = name;
+        $scope.units = units;
+        $scope.cost = cost;
+        $scope.price = price;
+        $scope.stdcode = stdcode;
+        $scope.isActive = is_active == 'Y' ? true : false;
+        $scope.isEdit = true;
 
+        LxDialogService.open('mdlNew');
+    };
     /**
      * Save product
      */
@@ -40,8 +59,8 @@ App.controller('MainController', function ($scope, MainService, LxNotificationSe
         item.cost = $scope.cost;
         item.price = $scope.price;
         item.stdcode = $scope.stdcode;
-
-        console.log(item);
+        item.id = $scope.id;
+        item.is_active = $scope.isActive ? 'Y' : 'N';
 
         if (!item.code || !item.name || !item.code || !item.cost) {
             LxNotificationService.error('ข้อมูลไม่สมบูรณ์ กรุณาตรวจสอบ');
@@ -53,23 +72,32 @@ App.controller('MainController', function ($scope, MainService, LxNotificationSe
                 cancel: 'ไม่ใช่'
             }, function (res) {
                if (res) {
-                   MainService.save(item)
-                       .then(function (data) {
-                           if (data.ok) {
-                               LxNotificationService.success('บันทึกข้อมูลเสร็จเรียบร้อยแล้ว');
-                               LxDialogService.close('mdlNew');
+
+                   var promise = null;
+
+                   if ($scope.isEdit) {
+                       promise = MainService.update(item);
+                   } else {
+                       promise = MainService.save(item);
+                   }
+
+                   promise.then(function (data) {
+                       if (data.ok) {
+                           $scope.getList();
+                           LxNotificationService.success('บันทึกข้อมูลเสร็จเรียบร้อยแล้ว');
+                           LxDialogService.close('mdlNew');
+                       } else {
+                           if (angular.isObject(data.msg)) {
+                               console.log(data.msg);
+                               LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู Log');
                            } else {
-                               if (angular.isObject(data.msg)) {
-                                   console.log(data.msg);
-                                   LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู Log');
-                               } else {
-                                   LxNotificationService.error(data.msg);
-                               }
+                               LxNotificationService.error(data.msg);
                            }
-                       }, function (err) {
-                           console.log(err);
-                           LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู Log');
-                       });
+                       }
+                   }, function (err) {
+                       console.log(err);
+                       LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู Log');
+                   });
                }
             });
         }
@@ -77,12 +105,43 @@ App.controller('MainController', function ($scope, MainService, LxNotificationSe
     };
 
     $scope.closingDialog = function () {
+        $scope.id = null;
         $scope.code = null;
         $scope.name = null;
         $scope.units = null;
         $scope.cost = 0;
         $scope.price = 0;
         $scope.stdcode = null;
+        $scope.isActive = true;
+        $scope.isEdit = false;
+
+    };
+
+    $scope.remove = function (code) {
+        LxNotificationService.confirm('ยืนยันการลบ', 'คุณต้องการลบรายการ ใช่หรือไม่?', {
+            ok: 'ใช่, ฉันต้องการลบ',
+            cancel: 'ไม่ใช่'
+        }, function (res) {
+            if (res) {
+                MainService.remove(code)
+                    .then(function (data) {
+                        if (data.ok) {
+                            $scope.getList();
+                            LxNotificationService.success('ลบรายการเสร็จเรียบร้อยแล้ว');
+                        } else {
+                            if (angular.isObject(data.msg)) {
+                                console.log(data.msg);
+                                LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู Log');
+                            } else {
+                                LxNotificationService.error(data.msg);
+                            }
+                        }
+                    }, function (err) {
+                        console.log(err);
+                        LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู Log');
+                    });
+            }
+        });
     };
 
 });

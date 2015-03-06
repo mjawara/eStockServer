@@ -46,14 +46,15 @@ App.factory('ApproveService', function ($q, $http) {
             return q.promise;
         },
 
-        saveApprove: function (orderId, products) {
+        doSave: function (orderId, statusId, products) {
             var q = $q.defer();
 
             var options = {
                 method: 'POST',
                 url: '/orders/approve',
                 data: {
-                    order_id: orderId,
+                    orderId: orderId,
+                    statusId: statusId,
                     products: products
                 }
             };
