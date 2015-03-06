@@ -41,9 +41,11 @@ App.controller('NewController', function ($scope, $location, NewService, LxDialo
             var idx = _.findIndex($scope.products, {
                 code: code
             });
-            $scope.products[idx].added = 'Y';
-            $scope.products[idx].qty = qty;
 
+            if(idx != -1) {
+                $scope.products[idx].added = 'Y';
+                $scope.products[idx].qty = qty;
+            }
             // add to drugs
             $scope.drugs.push($scope.products[idx]);
         } else {

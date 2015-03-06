@@ -31,6 +31,7 @@ App.controller('EditController', function ($scope, $routeParams, $location, $fil
             $scope.setSelected(v.code);
         });
     }, function (err) {
+        console.log(err);
         LxNotificationService.error('เกิดข้อผิดพลาด กรุณาดู Log');
     });
 
@@ -38,7 +39,8 @@ App.controller('EditController', function ($scope, $routeParams, $location, $fil
         var idx = _.findIndex($scope.products, {
             code: code
         });
-        $scope.products[idx].added = 'Y';
+
+        if (idx != -1) $scope.products[idx].added = 'Y';
     };
 
     $scope.showModal = function () {
