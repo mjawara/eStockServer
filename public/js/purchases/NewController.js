@@ -1,5 +1,5 @@
 App.controller('NewController', function ($scope, $location, NewService, LxDialogService, LxNotificationService) {
-    // Initial params
+
     $scope.suppliers = [];
     $scope.supplier = null;
     $scope.contact_name = null;
