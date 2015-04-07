@@ -83,7 +83,7 @@ exports.saveApprove = function(req, res) {
         hospcode = orders.hospcode;
         orderDate = orders.orders_date;
     }).then(function () {
-        return Orders.updateOrdersApprove(req.db, orderId, statusId);
+        return Orders.updateOrdersApprove(req.db, orderId, statusId, req.session.userId);
     }).then(function () {
         Q.forEach(products, function(v) {
 
@@ -256,6 +256,32 @@ exports.saveOrdersOnline = function(req, res) {
 };
 
 /**
+ * Cancel orders
+ */
+exports.cancelOrdersOnline = function (req, res) {
+
+    var hospcode = req.body.hospcode,
+        key = req.body.key,
+        orderCode = req.body.order_code;
+
+    var promise = Utils.checkAuth(req.db, hospcode, key);
+
+    promise.then(function (isOk) {
+        if (isOk) {
+            Orders.doCancelOnline(req.db, orderCode)
+                .then(function () {
+                    res.send({ok: true});
+                }, function (err) {
+                    res.send({ok: false, msg: err});
+                });
+        } else {
+            res.send({ok: false, msg: "Authentication failed."});
+        }
+    });
+
+};
+
+/**
  * Get Orders detail
  */
 exports.getOnlineDetail = function (req, res) {
@@ -263,22 +289,30 @@ exports.getOnlineDetail = function (req, res) {
         key = req.body.key,
         id = req.body.id;
 
+    var orders = {};
+
     var promise = Utils.checkAuth(req.db, hospcode, key);
 
     promise.then(function (isOk) {
         if (isOk) {
-            Orders.getOnlineDetail(req.db, id)
-                .then(function (rows) {
-                    res.send({
-                        ok: true,
-                        rows: rows
-                    });
-                }, function (err) {
-                    res.send({
-                        ok: false,
-                        msg: err
-                    });
+            promise.then(function () {
+                return Orders.getDetail(req.db, id);
+            }).then(function(o) {
+                orders.detail = o;
+                return Orders.getProducts(req.db, id);
+            }).then(function(products) {
+                orders.products = products;
+                res.send({
+                    ok: true,
+                    orders: orders.detail,
+                    products: orders.products
                 });
+            }, function(err) {
+                res.send({
+                    ok: false,
+                    msg: err
+                });
+            });
         } else {
             res.send({
                 ok: false,

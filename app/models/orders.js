@@ -71,8 +71,9 @@ exports.getDetail = function(db, orderId) {
     var q = Q.defer();
 
     db('orders as o')
-        .select('o.*', 'h.hospname')
+        .select('o.*', 'h.hospname', 'u.fullname as master_staff_name')
         .leftJoin('hospcode as h', 'h.hospcode', 'o.hospcode')
+        .leftJoin('users as u', 'u.id', 'o.master_staff_id')
         .where('o.id', orderId)
         .exec(function(err, rows) {
 
@@ -88,8 +89,9 @@ exports.getProducts = function(db, orderId) {
     var q = Q.defer();
 
     db('orders_detail as o')
-        .select('o.*', 'p.name as product_name', 'p.units', 'p.price', 'p.cost')
+        .select('o.*', 'p.name as product_name', 'p.units', 'p.price', 'p.cost', 'p.stdcode', 'l.lot_name')
         .leftJoin('products as p', 'p.code', 'o.product_code')
+        .leftJoin('lots as l', 'l.lot_id', 'o.lot_id')
         .where('o.orders_id', orderId)
         .exec(function(err, rows) {
             q.resolve(rows);
@@ -130,12 +132,14 @@ exports.saveItemApprove = function(db, orderId, productCode, approveQty, lot) {
     return q.promise;
 };
 
-exports.updateOrdersApprove = function(db, orderId, statusId) {
+exports.updateOrdersApprove = function(db, orderId, statusId, userId) {
     var q = Q.defer();
 
     db('orders')
         .where('id', orderId)
         .update({
+            approved_date: moment().format('YYYY-MM-DD HH:mm:ss'),
+            master_staff_id: userId,
             orders_status_id: statusId,
             updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
         })
@@ -155,6 +159,20 @@ exports.doCancel = function(db, orderId) {
         .update({
             orders_status: '3'
         })
+        .exec(function(err) {
+            if (err) q.reject(err);
+            else q.resolve();
+        });
+
+    return q.promise;
+};
+
+exports.doCancelOnline = function(db, orderCode) {
+    var q = Q.defer();
+
+    db('orders')
+        .where('orders_code', orderCode)
+        .delete()
         .exec(function(err) {
             if (err) q.reject(err);
             else q.resolve();
@@ -210,8 +228,9 @@ exports.getOnlineStatus = function (db, hospcode) {
     var q = Q.defer();
 
     db('orders as o')
-        .select('o.id', 'o.client_orders_id', 'o.orders_date', 'o.orders_code', 'o.client_staff_name', 'o.client_staff_id', 's.name as status_name', 'o.orders_status_id', 'o.updated_at',
-        db.raw('(select count( distinct product_code) from orders_detail where orders_id=o.id) as total_qty'))
+        .select('o.id', 'o.client_orders_id', 'o.orders_date', 'o.orders_code', 'o.client_staff_name',
+            'o.client_staff_id', 's.name as status_name', 'o.orders_status_id', 'o.updated_at', 'o.approved_date',
+            db.raw('(select count(distinct product_code) from orders_detail where orders_id=o.id) as total_qty'))
         .leftJoin('orders_status as s', 's.id', 'o.orders_status_id')
         .where('o.hospcode', hospcode)
         .groupBy('o.id')

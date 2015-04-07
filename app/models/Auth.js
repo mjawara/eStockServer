@@ -6,15 +6,13 @@ exports.doAuth = function (db, username, password) {
     var q = Q.defer();
 
     db('users')
+        .select('*')
         .where('username', username)
         .where('password', md5(password))
-        .count('* as total')
         .exec(function (err, rows) {
+            console.log(rows[0]);
             if (err) q.reject(err);
-            else {
-                var success = rows[0].total > 0 ? true : false;
-                q.resolve(success);
-            }
+            else  q.resolve(rows[0]);
         });
 
     return q.promise;

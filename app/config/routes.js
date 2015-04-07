@@ -7,6 +7,8 @@ var Main = require('../controllers/Main'),
     Period = require('../controllers/Period'),
     Users = require('../controllers/Users');
 
+var _ = require('lodash');
+
 var Auth = require('../models/Auth');
 
 module.exports = function (app, auth) {
@@ -20,6 +22,7 @@ module.exports = function (app, auth) {
     app.get('/api/products', Main.products);
     app.post('/api/products/list', Products.getList);
     app.post('/api/orders/save', Orders.saveOrdersOnline);
+    app.post('/api/orders/cancel', Orders.cancelOrdersOnline);
     app.post('/api/orders/all', Orders.getOnlineStatus);
     app.post('/api/orders/detail', Orders.getOnlineDetail);
 
@@ -186,9 +189,11 @@ module.exports = function (app, auth) {
         var password = req.body.password;
 
         Auth.doAuth(req.db, username, password)
-            .then(function (success) {
-                if (success) {
-                    req.session.username = username;
+            .then(function (rows) {
+                if (_.size(rows)) {
+                    req.session.username = rows.username;
+                    req.session.userId = rows.id;
+                    req.session.fullname = rows.fullname;
                     //res.send({ok: true, username: req.session.username});
                     res.redirect('/');
                 } else {
