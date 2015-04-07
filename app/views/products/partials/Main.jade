@@ -11,6 +11,9 @@ div(flex-container="row")
     div(flex-item="10")
         lx-text-field(label="รายการ...", fixed-label="true", icon="magnify")
             input(type="text", ng-model="query")
+    div(flex-item="2")
+        br
+        div#progress.progress-circular--is-small
 
 .data-table-container
     table.data-table.data-table--has-secondary
@@ -37,9 +40,11 @@ div(flex-container="row")
                 td {{ p.cost | number }}
                 td {{ p.price | number }}
                 td
+                    span(style="color: red;", ng-if="(p.totalGet-p.totalPaid) <= 0") {{ p.totalGet - p.totalPaid | number }}
+                    span(style="color: green;", ng-if="(p.totalGet-p.totalPaid) > 0") {{ p.totalGet - p.totalPaid | number }}
                 td
-                    i.icon.icon--l.icon--green.icon--flat.mdi.mdi-checkbox-marked-circle(ng-if="p.is_active == 'Y'")
-                    i.icon.icon--l.icon--red.icon--flat.mdi.mdi-checkbox-blank-circle-outline(ng-if="p.is_active == 'N'")
+                    i.icon.icon--s.icon--green.icon--flat.mdi.mdi-checkbox-marked-circle(ng-if="p.is_active == 'Y'")
+                    i.icon.icon--s.icon--red.icon--flat.mdi.mdi-checkbox-blank-circle-outline(ng-if="p.is_active == 'N'")
                 td
                     lx-dropdown(position="right", from-top)
                         button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
@@ -55,6 +60,11 @@ div(flex-container="row")
                                     a(ng-click="remove(p.code)").dropdown-link
                                         i.mdi.mdi-delete
                                         | &nbsp; ลบรายการ
+                                li.dropdown-divider
+                                li
+                                    a(href="#/card/{{p.code}}").dropdown-link
+                                        i.mdi.mdi-filter
+                                        | &nbsp; ข้อมูล Stock Card...
 
 lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
     .dialog__header

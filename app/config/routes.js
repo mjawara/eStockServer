@@ -172,10 +172,15 @@ module.exports = function (app, auth) {
         res.render('products/partials/Main');
     });
 
+    app.get('/partials/products/card', auth, function (req, res) {
+        res.render('products/partials/Card');
+    });
+
     app.post('/products/list', Products.getList);
     app.post('/products/save', Products.save);
     app.post('/products/update', Products.update);
     app.post('/products/remove', Products.remove);
+    app.post('/products/card', Products.getCard);
 
     /** login **/
     app.get('/login', function (req, res) {

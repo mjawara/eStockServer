@@ -28,8 +28,9 @@ div(flex-container="row", flex-gutter="24")
                 th เบิก
                 th อนุมัติ
                 th Lot
+                th
             tr
-                td(colspan="7").divider.divider--dark
+                td(colspan="8").divider.divider--dark
         tbody
             tr.data-table__clickable-row(ng-repeat="p in products")
                 td {{$index+1}}
@@ -39,13 +40,24 @@ div(flex-container="row", flex-gutter="24")
                 td {{p.qty | number}}
                 td {{p.approve_qty | number}}
                 td {{p.lot_name}}
-    br
-    br
-    div(flex-container="row", flex-gutter="24")
-        div(flex-item="10")
-            | &nbsp;
-        div(flex-item="2")
-            | &nbsp;
-            a(href="#/", lx-ripple).btn.btn--m.btn--grey.btn--raised
-                i.mdi.mdi-home
-                | &nbsp; กลับหน้าหลัก
+                td
+                    lx-dropdown(position="right", from-top)
+                        button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                            i.mdi.mdi-dots-vertical
+
+                        lx-dropdown-menu
+                            ul
+                                li
+                                    a.dropdown-link
+                                        i.mdi.mdi-block-helper
+                                        | &nbsp; No action
+br
+br
+div(flex-container="row", flex-gutter="24")
+    div(flex-item="10")
+        | &nbsp;
+    div(flex-item="2")
+        | &nbsp;
+        a(href="#/", lx-ripple).btn.btn--m.btn--grey.btn--raised
+            i.mdi.mdi-home
+            | &nbsp; กลับหน้าหลัก

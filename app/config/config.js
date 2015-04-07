@@ -13,7 +13,8 @@ module.exports = {
             password: '789124',
             database: 'estock_serv',
             port: 3306
-        }
+        },
+        debug: true
     },
 
     rootPath: path.join(__dirname, '../../'),

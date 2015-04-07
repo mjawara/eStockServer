@@ -24,7 +24,7 @@ App.controller('DetailController', function ($scope, $routeParams, $filter, Deta
                     obj.qty = v.qty;
                     obj.cost = v.cost;
                     obj.units = v.units;
-                    obj.approve_qty = 0;
+                    obj.approve_qty = v.approve_qty;
                     obj.lot_id = null;
                     obj.lot_name = null;
 

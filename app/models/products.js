@@ -3,12 +3,14 @@ var Q = require('q');
 exports.getProductList = function (db) {
     var q = Q.defer();
 
-    db('products')
-        .select('*')
-        .orderBy('name', 'asc')
+    var sql = 'select p.*, ' +
+        '(select ifnull(sum(qty_in), 0) from stock_cards where product_code=p.code) as totalGet, ' +
+        '(select ifnull(sum(qty_out), 0) from stock_cards where product_code=p.code) as totalPaid ' +
+        'from products as p order by name';
+    db.raw(sql)
         .exec(function (err, rows) {
             if (err) q.reject(err);
-            else q.resolve(rows);
+            else q.resolve(rows[0]);
         });
 
     return q.promise;
@@ -88,7 +90,7 @@ exports.isDuplicated = function (db, name) {
         .exec(function (err, rows) {
             if (err) q.reject(err);
             else {
-                var isDuplicated = rows[0].total > 0 ? true : false;
+                var isDuplicated = rows[0].total > 0;
                 q.resolve(isDuplicated);
             }
         });
@@ -109,7 +111,7 @@ exports.isDuplicatedUpdate = function (db, id, name) {
         .exec(function (err, rows) {
             if (err) q.reject(err);
             else {
-                var isDuplicated = rows[0].total > 0 ? true : false;
+                var isDuplicated = rows[0].total > 0;
                 q.resolve(isDuplicated);
             }
         });
@@ -160,6 +162,38 @@ exports.isPurchased = function (db, code) {
         .exec(function (err, rows) {
             if (err) q.reject(err);
             else  q.resolve(rows[0].total);
+        });
+
+    return q.promise;
+};
+
+exports.getCard = function (db, code, startDate, endDate) {
+    var q = Q.defer();
+
+    db('stock_cards as c')
+        .select('c.ccode', 'c.cdate', 'c.qty_in', 'c.qty_out', 's.name as supplier_name', 'h.hospname')
+        .leftJoin('suppliers as s', 's.id', 'c.supplier_id')
+        .leftJoin('hospcode as h', 'h.hospcode', 'c.hospcode')
+        .where('c.product_code', code)
+        .whereBetween('c.cdate', [startDate, endDate])
+        .orderBy('c.cdate')
+        .exec(function (err, rows) {
+            if (err) q.reject(err);
+            else q.resolve(rows);
+        });
+
+    return q.promise;
+};
+
+exports.getDetail = function (db, code) {
+    var q = Q.defer();
+    db('products')
+        .select()
+        .where('code', code)
+        .limit(1)
+        .exec(function (err, rows) {
+            if (err) q.reject(err);
+            else q.resolve(rows[0]);
         });
 
     return q.promise;

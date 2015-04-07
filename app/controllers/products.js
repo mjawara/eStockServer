@@ -173,3 +173,25 @@ exports.remove = function (req, res) {
     });
 
 };
+
+exports.getCard = function (req, res) {
+
+    var db = req.db;
+    var code = req.body.code;
+    var startDate = req.body.startDate;
+    var endDate = req.body.endDate;
+
+    var _detail, _cards;
+
+    Products.getCard(db, code, startDate, endDate)
+        .then(function (data) {
+            _cards = data;
+            return Products.getDetail(db, code);
+        })
+        .then(function (detail) {
+            _detail = detail;
+            res.send({ok: true, cards: _cards, detail: _detail});
+        }, function (err) {
+            res.send({ok: false, msg: err});
+        });
+};

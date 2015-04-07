@@ -1,24 +1,29 @@
 /** Main Controller **/
-App.controller('MainController', function ($scope, MainService, LxNotificationService, LxDialogService) {
+App.controller('MainController', function ($scope, MainService, LxNotificationService, LxDialogService, LxProgressService) {
 
     $scope.isEdit = false;
     $scope.isActive = true;
 
     $scope.getList = function () {
 
+        LxProgressService.circular.show('#5fa2db', '#progress');
+
         MainService.getList()
             .then(function (data) {
                 if (data.ok) {
                     $scope.products = data.rows;
+                    LxProgressService.circular.hide();
                 } else {
                     if (angular.isObject(data.msg)) {
                         console.log(data.msg);
                         LxNotificationService.error('เกิดข้อผิดพลาดกรุณาดู Log');
+                        LxProgressService.circular.hide();
                     } else {
                         LxNotificationService.error(data.msg);
                     }
                 }
             }, function (err) {
+                LxProgressService.circular.hide();
                 LxNotificationService.error(err);
             });
     };
