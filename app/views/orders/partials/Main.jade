@@ -51,10 +51,10 @@ div(flex-container="row")
                         lx-dropdown-menu
                             ul
                                 li(ng-show="o.orders_status == '2'")
-                                    a(href="#!/detail/{{o.id}}").dropdown-link
+                                    a(href="#/detail/{{o.id}}").dropdown-link
                                         i.mdi.mdi-file-document
                                         | &nbsp; ดูรายละเอียดการอนุมัติ
                                 li(ng-show="o.orders_status != '2'")
-                                    a(href="#!/approve/{{o.id}}").dropdown-link
+                                    a(href="#/approve/{{o.id}}").dropdown-link
                                         i.mdi.mdi-cart
                                         | &nbsp; อนุมัติรายการที่ขอเบิก

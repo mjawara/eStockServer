@@ -10,7 +10,6 @@ exports.doAuth = function (db, username, password) {
         .where('username', username)
         .where('password', md5(password))
         .exec(function (err, rows) {
-            console.log(rows[0]);
             if (err) q.reject(err);
             else  q.resolve(rows[0]);
         });

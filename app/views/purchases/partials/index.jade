@@ -44,11 +44,11 @@ div(flex-container="row", flex-gutter="24")
                         lx-dropdown-menu
                             ul
                                 li(ng-show="p.is_imported == 'Y'")
-                                    a(href="#!detail/{{p.id}}").dropdown-link 
+                                    a(href="#/detail/{{p.id}}").dropdown-link
                                         i.mdi.mdi-pencil-box
                                         | &nbsp; ดูรายละเอียด
                                 li(ng-show="p.is_imported == 'N'")
-                                    a(href="#!edit/{{p.id}}").dropdown-link 
+                                    a(href="#/edit/{{p.id}}").dropdown-link
                                         i.mdi.mdi-pencil-box
                                         | &nbsp; แก้ไข
                                 li(ng-show="p.is_imported == 'N'")
@@ -64,5 +64,5 @@ div(flex-container="row", flex-gutter="24")
     div(flex-item="11")
         | &nbsp;
     div(flex-item="1")
-        a(href="#!new", lx-ripple).btn.btn--m.btn--green.btn--fab
+        a(href="#/new", lx-ripple).btn.btn--m.btn--green.btn--fab
             i.mdi.mdi-plus

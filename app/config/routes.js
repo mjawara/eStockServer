@@ -19,7 +19,9 @@ module.exports = function (app, auth) {
     /**********************************************************************************
      * Client api
      **********************************************************************************/
-    app.get('/api/products', Main.products);
+    // for client import
+    app.post('/api/products', Main.products);
+
     app.post('/api/products/list', Products.getList);
     app.post('/api/orders/save', Orders.saveOrdersOnline);
     app.post('/api/orders/cancel', Orders.cancelOrdersOnline);

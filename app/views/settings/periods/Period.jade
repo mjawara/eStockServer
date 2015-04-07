@@ -45,15 +45,12 @@ block content
                                                         | &nbsp;ลบรายการ
         br
         div(flex-container="row", flex-gutter="24")
-            div(flex-item="10")
+            div(flex-item="11")
                 | &nbsp;
                     
-            div(flex-item="2")
+            div(flex-item="1")
                 button(lx-ripple, ng-click="showModal()").btn.btn--l.btn--green.btn--fab
                     i.mdi.mdi-plus
-                | &nbsp;
-                a(href="#!/", lx-ripple).btn.btn--l.btn--grey.btn--fab
-                    i.mdi.mdi-home
             
         lx-dialog.dialog.dialog--l#mdlNew(onclose="closingDialog()")
             div.dialog__header

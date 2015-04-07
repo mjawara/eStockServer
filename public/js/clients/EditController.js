@@ -3,7 +3,7 @@ App.controller('EditController', function ($scope, $routeParams, $location,
 
     $scope.id = $routeParams.id;
 
-    $scope.get = function (id) {
+    $scope.get = function () {
         EditService.get($scope.id)
             .then(function (data) {
                 if (data.ok) {

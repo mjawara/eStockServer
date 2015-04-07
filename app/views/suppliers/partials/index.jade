@@ -14,7 +14,7 @@
             tr
                 td(colspan="6").divider.divider--dark
         tbody
-            tr(ng-repeat="s in suppliers")
+            tr(ng-repeat="s in suppliers").data-table__clickable-row
                 td {{$index+1}}
                 td {{s.name}}
                 td {{s.contact_name}}
@@ -28,7 +28,7 @@
                         lx-dropdown-menu
                             ul
                                 li
-                                    a(href="#!edit/{{s.id}}").dropdown-link 
+                                    a(href="#/edit/{{s.id}}").dropdown-link
                                         i.mdi.mdi-pencil
                                         | &nbsp; Edit
                                 li
@@ -42,5 +42,5 @@ div(flex-container="row", flex-gutter="24")
     div(flex-item="1")
         br
         br
-        a(href="#!add", lx-ripple).btn.btn--m.btn--red.btn--fab
+        a(href="#/add", lx-ripple).btn.btn--m.btn--red.btn--fab
             i.mdi.mdi-plus

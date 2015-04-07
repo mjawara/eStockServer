@@ -1,6 +1,6 @@
-var Products = require('../models/products'),
-    Orders = require('../models/orders'),
-    Utils = require('../models/utils'),
+var Products = require('../models/Products'),
+    Orders = require('../models/Orders'),
+    Utils = require('../models/Utils'),
     _ = require('lodash');
 
 exports.index = function(req, res) {
@@ -20,14 +20,14 @@ exports.index = function(req, res) {
 
 exports.products = function(req, res) {
 
-    var hospcode = req.query.hospcode;
-    var key = req.query.key;
+    var hospcode = req.body.hospcode;
+    var key = req.body.key;
 
     var promise = Utils.checkAuth(req.db, hospcode, key);
 
     promise.then(function(isOk) {
         if (isOk) {
-            Products.getProductList(req.db)
+            Products.getProductListClient(req.db)
                 .then(function(rows) {
                     res.send({
                         ok: true,

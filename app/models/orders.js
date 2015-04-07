@@ -228,8 +228,9 @@ exports.getOnlineStatus = function (db, hospcode) {
     var q = Q.defer();
 
     db('orders as o')
-        .select('o.id', 'o.client_orders_id', 'o.orders_date', 'o.orders_code', 'o.client_staff_name',
-            'o.client_staff_id', 's.name as status_name', 'o.orders_status_id', 'o.updated_at', 'o.approved_date',
+        .select(
+            'o.id', 'o.client_orders_id', 'o.orders_date', 'o.orders_code', 'o.client_staff_name',
+            'o.client_staff_id', 's.name as status_name', 'o.orders_status_id', 'o.updated_at',
             db.raw('(select count(distinct product_code) from orders_detail where orders_id=o.id) as total_qty'))
         .leftJoin('orders_status as s', 's.id', 'o.orders_status_id')
         .where('o.hospcode', hospcode)

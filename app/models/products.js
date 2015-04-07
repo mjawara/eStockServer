@@ -13,6 +13,20 @@ exports.getProductList = function (db) {
 
     return q.promise;
 };
+exports.getProductListClient = function (db) {
+    var q = Q.defer();
+
+    db('products')
+        .select('*')
+        .where('is_active', 'Y')
+        .orderBy('name', 'asc')
+        .exec(function (err, rows) {
+            if (err) q.reject(err);
+            else q.resolve(rows);
+        });
+
+    return q.promise;
+};
 
 /**
  * Save product

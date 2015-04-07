@@ -1,7 +1,7 @@
 /**
  * Detail Controller
  */
-App.controller('DetailController', function ($scope, $routeParams, $filter, DetailService) {
+App.controller('DetailController', function ($scope, $routeParams, $filter, DetailService, LxNotificationService) {
 
     var orderId = $routeParams.id;
 

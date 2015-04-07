@@ -46,7 +46,7 @@ div(flex-container="row", flex-gutter="24")
                                         i.mdi.mdi-check
                                         | &nbsp; เปิดการใช้งาน
                                 li
-                                    a(href="#!/edit/{{c.id}}").dropdown-link
+                                    a(href="#/edit/{{c.id}}").dropdown-link
                                         i.mdi.mdi-pencil
                                         | &nbsp; แก้ไขข้อมูล
                                 li
@@ -59,5 +59,5 @@ div(flex-container="row", flex-gutter="24")
     div(flex-item="11")
         | &nbsp;
     div(flex-item="1")
-        a(lx-ripple, href="#!new").btn.btn--red.btn--l.btn--fab
+        a(lx-ripple, href="#/new").btn.btn--red.btn--l.btn--fab
             i.mdi.mdi-account-plus
