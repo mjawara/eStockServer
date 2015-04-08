@@ -157,9 +157,6 @@ exports.remove = function (req, res) {
 exports.import = function (req, res) {
     var db = req.db;
     var id = req.body.id;
-    var _purchase = null;
-    var _products = null;
-
     // Get purchase detail
     Purchases.checkImported(db, id)
         .then(function (isImported) {

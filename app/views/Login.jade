@@ -1,15 +1,27 @@
 extends layouts/Login
 
+block scripts
+    script(src="/js/login/LoginController.js")
+    script(src="/js/login/LoginService.js")
+
 block content
-    div(class="mt++", flex-container="row", flex-gutter="24")
+    div(class="mt++", flex-container="row", flex-gutter="24", ng-controller="LoginController")
         div(flex-item)
             span.fs-display-1.display-block
                 i.icon.icon--l.icon--green.icon--circled.mdi.mdi-account-key
                 | &nbsp; Please login
-            form(action="/login", method="post", name="frmLogin")
+            form(name="frmLogin")
                 lx-text-field(label="Username")
-                    input(type="text", ng-model="username", name="username")
+                    input(type="text", ng-model="username", ng-required="true")
                 lx-text-field(label="Password")
-                    input(type="password", ng-model="password", name="password")
+                    input(type="password", ng-model="password", ng-required="true")
+                lx-select(ng-model="selectedYear", placeholder="ปีงบประมาณ", choices="years", floating-label,  allow-clear="true", selection-to-model="setSelected(data)")
+                    lx-select-selected {{ $selected.name }} [ {{ $selected.start_date | toThaiDate }} - {{ $selected.end_date | toThaiDate }} ]
+                    lx-select-choices {{ $choice.name }}
                 br
-                button(type="submit", ng-click="doLogin()").btn.btn--l.btn--green.btn--raised Login
+                div(flex-container="row", flex-gutter="24")
+                    div(flex-item="3")
+                        button(ng-click="doLogin()", ng-disabled="frmLogin.$invalid").btn.btn--l.btn--green.btn--raised Login
+                    div(flex-item="1")
+                        br
+                        div#progress.progress-circular--is-small

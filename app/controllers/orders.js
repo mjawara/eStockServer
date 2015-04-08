@@ -75,55 +75,63 @@ exports.saveApprove = function(req, res) {
         products = req.body.products,
         orderCode, hospcode, orderDate;
 
-    // Get orders detail
-    var promise = Orders.getDetail(req.db, orderId);
+    if (statusId != 2) {
+        Orders.updateOrdersApprove(req.db, orderId, statusId, req.session.userId)
+            .then(function () {
+                res.send({ok: true});
+            }, function (err) {
+                res.send({ok: false, msg: err});
+            });
+    } else {
+        // Get orders detail
+        var promise = Orders.getDetail(req.db, orderId);
 
-    promise.then(function (orders) {
-        orderCode = orders.orders_code;
-        hospcode = orders.hospcode;
-        orderDate = orders.orders_date;
-    }).then(function () {
-        return Orders.updateOrdersApprove(req.db, orderId, statusId, req.session.userId);
-    }).then(function () {
-        Q.forEach(products, function(v) {
+        promise.then(function (orders) {
+            orderCode = orders.orders_code;
+            hospcode = orders.hospcode;
+            orderDate = orders.orders_date;
+        }).then(function () {
+            return Orders.updateOrdersApprove(req.db, orderId, statusId, req.session.userId);
+        }).then(function () {
+            Q.forEach(products, function(v) {
 
-            var defer = Q.defer();
+                var defer = Q.defer();
 
-            Orders.saveItemApprove(req.db, orderId, v.code, v.qty, v.lot)
-                .then(function() {
-                    // Set item
-                    var item = {};
-                    item.code = orderCode;
-                    item.hospcode = hospcode;
-                    item.purchase_date = orderDate;
-                    item.product_code = v.code; // Product code
-                    item.qty = v.qty;
-                    //Update stock card
-                    Orders.doImport(req.db, item).then(function () {
-                        // Success
-                        defer.resolve();
-                    }, function (err) {
+                Orders.saveItemApprove(req.db, orderId, v.code, v.qty, v.lot)
+                    .then(function() {
+                        // Set item
+                        var item = {};
+                        item.code = orderCode;
+                        item.hospcode = hospcode;
+                        item.purchase_date = orderDate;
+                        item.product_code = v.code; // Product code
+                        item.qty = v.qty;
+                        //Update stock card
+                        Orders.doImport(req.db, item).then(function () {
+                            // Success
+                            defer.resolve();
+                        }, function (err) {
+                            defer.reject(err);
+                        });
+
+                    }, function(err) {
                         defer.reject(err);
                     });
 
-                }, function(err) {
-                    defer.reject(err);
+                return defer.promise;
+
+            }).then(function() {
+                res.send({
+                    ok: true
                 });
-
-            return defer.promise;
-
-        }).then(function() {
+            });
+        }, function(err) {
             res.send({
-                ok: true
+                ok: false,
+                msg: err
             });
         });
-    }, function(err) {
-        res.send({
-            ok: false,
-            msg: err
-        });
-    });
-
+    }
 };
 
 exports.doCancel = function(req, res) {

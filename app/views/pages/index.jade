@@ -1,4 +1,44 @@
 extends ../layouts/Main
 
+block scripts
+    script(src="/js/pages/MainController.js")
+    script(src="/js/pages/MainService.js")
+
 block content
-    | Hello
+    .fs-headline.display-block
+        i.mdi.mdi-desktop-mac.icon.icon--l.icon--green.icon--circled
+        | &nbsp; Dashboard
+
+    div(ng-controller="MainController")
+        div(flex-container="row", flex-gutter="24")
+            div(flex-item="6")
+                highchart(config="chartTopTenConfig")
+
+            div(flex-item="6")
+                .data-table-container
+                    table.data-table.data-table--has-secondary
+                        thead
+                            tr
+                                th #
+                                th รายการเวชภัณฑ์
+                                th รับ
+                                th จ่าย
+                                th
+                            tr
+                                td(colspan="5")
+                        tbody
+                            tr(ng-repeat="i in items").data-table__clickable-row
+                                td {{ $index+1 }}
+                                td {{ i.name }}
+                                td {{ i.totalIn | number }}
+                                td {{ i.totalOut | number }}
+                                td
+                                    lx-dropdown(position="right", from-top)
+                                        button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)
+                                            i.mdi.mdi-dots-vertical
+                                        lx-dropdown-menu
+                                            ul
+                                                li
+                                                    a.dropdown-link
+                                                        i.mdi.mdi-block-helper
+                                                        | &nbsp; No action.

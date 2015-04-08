@@ -9,7 +9,7 @@ var auth = function (req, res, next) {
     if (req.session.username) {
         next();
     } else {
-        req.session.error = 'Access denied!';
+        req.session.error = 'Oop!, Session timeout.';
         res.redirect('/login');
     }
 };

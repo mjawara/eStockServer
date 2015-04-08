@@ -42,8 +42,9 @@ exports.getOrdersList = function(db, statusId) {
 
     if (statusId > 0) {
         db('orders as o')
-            .select('o.*', 'h.hospname')
+            .select('o.*', 'h.hospname', 'os.name as status_name')
             .leftJoin('hospcode as h', 'h.hospcode', 'o.hospcode')
+            .leftJoin('orders_status as os', 'os.id', 'o.orders_status_id')
             .where('o.orders_status_id', statusId)
             .orderBy('o.created_at', 'asc')
             .exec(function(err, rows) {
@@ -52,8 +53,9 @@ exports.getOrdersList = function(db, statusId) {
             });
     } else {
         db('orders as o')
-            .select('o.*', 'h.hospname')
+            .select('o.*', 'h.hospname', 'os.name as status_name')
             .leftJoin('hospcode as h', 'h.hospcode', 'o.hospcode')
+            .leftJoin('orders_status as os', 'os.id', 'o.orders_status_id')
             //.where('o.orders_status_id', statusId)
             .orderBy('o.created_at', 'asc')
             .exec(function(err, rows) {

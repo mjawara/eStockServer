@@ -1,5 +1,2 @@
 "use strict";
-
-moment().locale('th');
-
-var App = angular.module('App', ['lumx', 'ngRoute']);
+var App = angular.module('App', ['lumx', 'ngRoute', 'highcharts-ng']);

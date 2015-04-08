@@ -30,19 +30,19 @@ div(flex-container="row")
                 th วันที่
                 th เลขที่ใบเบิก
                 th หน่วยบริการ
-                //- th ราคา
                 th เจ้าหน้าที่
+                th สถานะ
                 th
             tr
-                td(colspan="7").divider.divider--dark
+                td(colspan="8").divider.divider--dark
         tbody
             tr.data-table__clickable-row(ng-repeat="o in orders")
                 td {{ $index+1 }}
                 td {{ o.orders_date | toThaiDate }}
                 td {{ o.orders_code }}
                 td {{ o.hospcode }} {{ o.hospname }}
-                //- td 123,2220.00
                 td {{ o.client_staff_name }}
+                td {{ o.status_name }}
                 td
                     lx-dropdown(position="right", from-top)
                         button.btn.btn--l.btn--grey.btn--icon(lx-ripple, lx-dropdown-toggle)

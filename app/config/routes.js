@@ -5,7 +5,8 @@ var Main = require('../controllers/Main'),
     Products = require('../controllers/Products'),
     Purchases = require('../controllers/Purchases'),
     Period = require('../controllers/Period'),
-    Users = require('../controllers/Users');
+    Users = require('../controllers/Users'),
+    Reports = require('../controllers/Reports');
 
 var _ = require('lodash');
 
@@ -187,13 +188,16 @@ module.exports = function (app, auth) {
         if (req.session.username) {
             res.redirect('/');
         } else {
-            res.render('Login');
+            var error = req.session.error;
+            res.render('Login', {error: error});
         }
     });
 
     app.post('/login', function (req, res) {
         var username = req.body.username;
         var password = req.body.password;
+        var startYear = req.body.startYear;
+        var endYear = req.body.endYear;
 
         Auth.doAuth(req.db, username, password)
             .then(function (rows) {
@@ -201,17 +205,20 @@ module.exports = function (app, auth) {
                     req.session.username = rows.username;
                     req.session.userId = rows.id;
                     req.session.fullname = rows.fullname;
+                    req.session.startYear = startYear;
+                    req.session.endYear = endYear;
+                    console.log(req.session);
                     //res.send({ok: true, username: req.session.username});
-                    res.redirect('/');
+                    res.send({ok: true});
                 } else {
                     req.session.error = 'Username/Password incorrect.';
-                    res.redirect('/login');
+                    res.send({ok: false, msg: 'Username/Password incorrect.'});
                     //res.send({ok: false, username: username});
                 }
             }, function (err) {
                 console.log(err);
                 req.session.error = 'Server error!';
-                res.redirect('/login');
+                res.send({ok: false, msg: err});
             });
 
     });
@@ -222,4 +229,11 @@ module.exports = function (app, auth) {
             else res.redirect('/login');
         });
     });
+
+    app.get('/year', Period.all);
+
+    /**
+     * Reports
+     */
+    app.post('/reports/topten', Reports.getTopTen);
 };

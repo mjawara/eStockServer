@@ -189,18 +189,19 @@ exports.doImport = function (db, item) {
 
     var q = Q.defer();
 
-    db('stock_cards')
-        .insert({
-            ccode: item.code,
-            supplier_id: item.supplier_id,
-            cdate: moment(item.purchase_date).format('YYYY-MM-DD HH:mm:ss'),
-            product_code: item.product_code,
-            qty_in: item.qty,
-            created_at: moment().format('YYYY-MM-DD HH:mm:ss')
-        })
+    var sql = 'insert into stock_cards set ccode=?, supplier_id=?, cdate=?, ' +
+        'product_code=?, qty_in=?, created_at=? ' +
+        'ON DUPLICATE KEY UPDATE qty_in=?';
+
+    db.raw(sql, [
+        item.code, item.supplier_id, moment(item.purchase_date).format('YYYY-MM-DD HH:mm:ss'),
+        item.product_code, item.qty, moment().format('YYYY-MM-DD HH:mm:ss'), item.qty])
         .exec(function (err) {
-            if (err) q.reject(err);
-            else q.resolve();
+            if (err) {
+                q.reject(err);
+            } else {
+                q.resolve();
+            }
         });
 
     return q.promise;

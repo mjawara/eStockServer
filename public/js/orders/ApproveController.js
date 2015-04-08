@@ -174,9 +174,14 @@ App.controller('ApproveController', function ($scope, $location, $routeParams, $
                     _.forEach($scope.products, function (v) {
                         var obj = {};
                         obj.code = v.code;
-                        obj.qty = v.approve_qty;
-                        obj.lot = v.lot_id;
 
+                        if (v.approve_qty <= 0) {
+                            obj.qty = v.qty;
+                        } else {
+                            obj.qty = v.approve_qty;
+                        }
+
+                        obj.lot = v.lot_id;
                         products.push(obj);
                     });
 
