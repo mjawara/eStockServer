@@ -28,6 +28,8 @@ module.exports = function (app, auth) {
     app.post('/api/orders/cancel', Orders.cancelOrdersOnline);
     app.post('/api/orders/all', Orders.getOnlineStatus);
     app.post('/api/orders/detail', Orders.getOnlineDetail);
+    app.post('/api/orders/update_client_orders_stats', Orders.updateClientOrdersStatus);
+
 
     /************************************************************************************
      * Orders resources
@@ -207,7 +209,6 @@ module.exports = function (app, auth) {
                     req.session.fullname = rows.fullname;
                     req.session.startYear = startYear;
                     req.session.endYear = endYear;
-                    console.log(req.session);
                     //res.send({ok: true, username: req.session.username});
                     res.send({ok: true});
                 } else {

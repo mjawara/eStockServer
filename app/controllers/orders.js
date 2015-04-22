@@ -232,6 +232,7 @@ exports.saveOrdersOnline = function(req, res) {
                     var obj = {};
                     obj.orders_id = orderId;
                     obj.product_code = v.code;
+                    obj.icode = v.icode;
                     obj.qty = v.qty;
 
                     items.push(obj);
@@ -333,4 +334,35 @@ exports.getOnlineDetail = function (req, res) {
             msg: err
         });
     });
+};
+
+exports.updateClientOrdersStatus = function (req, res) {
+    var hospcode = req.body.hospcode,
+        key = req.body.key,
+        id = req.body.id;
+
+    var promise = Utils.checkAuth(req.db, hospcode, key);
+
+    promise.then(function (isOk) {
+        if (isOk) {
+            Orders.updateClientOrdersStatus(req.db, id)
+                .then(function () {
+                    res.send({ok: true});
+                }, function (err) {
+                    res.send({ok: false, msg: err});
+                });
+        } else {
+            res.send({
+                ok: false,
+                msg: 'Authentication failed.'
+            });
+        }
+    }, function (err) {
+        console.log(err);
+        res.send({
+            ok: false,
+            msg: err
+        });
+    });
+
 };

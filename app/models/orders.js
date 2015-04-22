@@ -231,7 +231,7 @@ exports.getOnlineStatus = function (db, hospcode) {
 
     db('orders as o')
         .select(
-            'o.id', 'o.client_orders_id', 'o.orders_date', 'o.orders_code', 'o.client_staff_name',
+            'o.id', 'client_imported', 'client_imported_date', 'o.client_orders_id', 'o.orders_date', 'o.orders_code', 'o.client_staff_name',
             'o.client_staff_id', 's.name as status_name', 'o.orders_status_id', 'o.updated_at',
             db.raw('(select count(distinct product_code) from orders_detail where orders_id=o.id) as total_qty'))
         .leftJoin('orders_status as s', 's.id', 'o.orders_status_id')
@@ -257,6 +257,22 @@ exports.getOnlineDetail = function (db, id) {
         .exec(function (err, rows) {
             if (err) q.reject(err);
             else q.resolve(rows);
+        });
+
+    return q.promise;
+};
+
+exports.updateClientOrdersStatus = function (db, id) {
+    var q = Q.defer();
+    db('orders')
+        .where('id', id)
+        .update({
+            client_imported: 'Y',
+            client_imported_date: moment().format('YYYY-MM-DD HH:mm:ss')
+        })
+        .exec(function (err) {
+            if (err) q.reject(err);
+            else q.resolve();
         });
 
     return q.promise;

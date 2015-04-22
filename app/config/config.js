@@ -14,11 +14,11 @@ module.exports = {
             database: 'estock_serv',
             port: 3306
         },
-        debug: true
+        debug: false
     },
 
     rootPath: path.join(__dirname, '../../'),
     uploadedPath: path.join(__dirname + '/../uploaded/'),
     tmpPath: path.join(__dirname + '/../tmp/'),
-    port: 3000
+    port: 8888
 };
